@@ -1,0 +1,23 @@
+:root {
+  --primary-color: #1FC29D;
+  --secondary-color: #178F73;
+  --primary-dark-color:  #1E423A;
+  --primary-light-color: #5ECCB2;
+  --background-color: #ebf7f6;
+  --color-title: #00224f;
+  --color-title-hover: #178F73;
+  --color-button: #1FC29D;
+  --color-button-hover: #178F73;
+  --primary-color-border: #e5eded;
+  --color-border: #ccc;
+  --color-text: #808080;
+  --color-title-box: #053c3cc9;
+  --color-outline: #186fc6;
+  --font-size-title: 16px;
+  --font-size-text: 14px;
+  --line-height-text: 18px;
+}
+
+* {
+  font-family: 'Poppins', sans-serif;
+}

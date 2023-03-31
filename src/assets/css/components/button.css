@@ -1,0 +1,16 @@
+.button__customize {
+  color: #fff;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 4px;
+  padding: 16px 40px;
+  font-size: var(--font-size-title);
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0px 4px 9px 2px #d5edea;
+  transition: all 500ms ease;
+}
+
+.button__customize:hover{
+    background: var(--color-button-hover);
+}

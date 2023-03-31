@@ -1,0 +1,98 @@
+.book__appointment {
+  padding: 100px 70px;
+  background-color: var(--background-color);
+}
+
+.container__form__book {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: rgb(32 33 36 / 28%) 0px 1px 6px;
+}
+
+.container__form__book .form__title {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+}
+
+.container__form__book .label__input {
+  display: block;
+  font-size: 16px;
+  color: #2b4a47;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.form__control__label span {
+  font-size: 14px;
+}
+
+.container__form__book .label__input .sign__required {
+  color: red;
+}
+
+.container__form__book .container__input {
+  margin-bottom: 20px;
+}
+
+.container__form__book .text__field input {
+  padding: 12px 14px;
+}
+
+.container__form__book .text__field p {
+  margin-left: 0px;
+}
+
+.container__form__book
+  .text__field
+  input[type='number']::-webkit-inner-spin-button,
+.container__form__book
+  .text__field
+  input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.booking__summary .infomation__summary {
+  border-bottom: 1px solid #ccc;
+}
+
+.booking__summary .infomation__summary ul li {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.booking__summary .infomation__summary ul li .title__information {
+  display: inline-block;
+  font-weight: 600;
+  color: #2b4a47;
+}
+
+.booking__summary .value {
+  color: #757575;
+  font-weight: 400;
+  font-size: 14px;
+  float: right;
+}
+
+.booking__summary .infomation__price {
+  padding: 20px 0px;
+  border-bottom: 1px solid #ccc;
+  font-weight: 600;
+  color: #2b4a47;
+}
+
+.booking__summary .container__total__price {
+  padding: 20px 0px;
+}
+
+.booking__summary .container__total__price h3 {
+  display: inline;
+}
+
+.booking__summary .container__total__price .total__price {
+  color: var(--primary-color);
+  font-size: 16px;
+  font-weight: 600;
+}
