@@ -4,11 +4,11 @@ import Avatar from 'react-avatar'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
-import '../../../assets/css/pages/guestPage/detail_examination.css'
+import '../../../assets/css/pages/guestPage/detailExamination/detail_examination.css'
 import { IMedicalExaminationTime } from '../../../interface/MedicalExaminationInterfaces'
 import { DispatchType, RootState } from '../../../redux/configStore'
-import { getDetailMedicalExaminationTimeThunk } from '../../../redux/reducers/medicalExaminationReducer'
-import { getDetailMedicalExaminationTimeService } from '../../../service/medicalExaminationService'
+import { getDetailMedicalExaminationTimeThunk } from '../../../redux/slices/medicalExaminationSlice'
+import { getDetailMedicalExaminationTimeService } from '../../../services/medicalExaminationService'
 import ScheduleExamination from './ScheduleExamination'
 import TabInfomation from './TabInfomation'
 
@@ -34,7 +34,7 @@ export default function DetailExamination(props: Props) {
 
   const medical = medicalExaminationDetail?.medicalExamination
 
-  const timeSlots = medicalExaminationDetail?.listTimeSlot
+  const timeSlotsResponse = medicalExaminationDetail?.listTimeSlot
 
   return (
     <div className='container__deatail_examination'>
@@ -74,7 +74,7 @@ export default function DetailExamination(props: Props) {
           </Grid>
           <Grid item lg={4} className=''>
             <ScheduleExamination
-              timeSlots={timeSlots}
+              timeSlotsResponse={timeSlotsResponse}
               examinationPrice={medical?.examinationPrice}
             />
           </Grid>

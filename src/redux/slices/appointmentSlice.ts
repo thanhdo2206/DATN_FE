@@ -1,0 +1,69 @@
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+
+import { IAppointmentPageable } from '../../interface/AppointmentInterfaces'
+import {
+  changeStatusAppointmentService,
+  getAllAppointmentDoctorPageableService
+} from '../../services/appointmentService'
+import { DispatchType } from '../configStore'
+
+export type AppointmentState = {
+  appointmentPageable: IAppointmentPageable | null
+}
+
+const initialState: AppointmentState = {
+  appointmentPageable: null
+}
+
+const appointmentSlice = createSlice({
+  name: 'appointmentReducer',
+  initialState,
+  reducers: {
+    getAllAppointmentDoctorPageableAction: (
+      state: AppointmentState,
+      action: PayloadAction<IAppointmentPageable>
+    ) => {
+      state.appointmentPageable = action.payload
+    }
+  }
+})
+
+export const { getAllAppointmentDoctorPageableAction } =
+  appointmentSlice.actions
+
+export default appointmentSlice.reducer
+
+export const changeStatusAppointmentThunk = (
+  appointmentId: number,
+  appointmentStatus: number
+) => {
+  return async (dispatch: DispatchType) => {
+    try {
+      await changeStatusAppointmentService(appointmentId, appointmentStatus)
+
+      dispatch(getAllAppointmentDoctorPageableThunk(1, 4, 0))
+    } catch (error) {
+      return error
+    }
+  }
+}
+
+export const getAllAppointmentDoctorPageableThunk = (
+  pageIndex: number,
+  limit: number,
+  appointmentStatus: number
+) => {
+  return async (dispatch: DispatchType) => {
+    try {
+      const data = await getAllAppointmentDoctorPageableService(
+        pageIndex,
+        limit,
+        appointmentStatus
+      )
+
+      dispatch(getAllAppointmentDoctorPageableAction(data))
+    } catch (error) {
+      return error
+    }
+  }
+}

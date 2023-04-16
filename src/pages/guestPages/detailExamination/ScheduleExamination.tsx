@@ -3,7 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 
-import { ITimeSlot } from '../../../interface/TimeSlotInterfaces'
+import {
+  ITimeSlot,
+  ITimeSlotResponse
+} from '../../../interface/TimeSlotInterfaces'
 import { RootState } from '../../../redux/configStore'
 import { convertVND } from '../../../utils/convertMoney'
 import {
@@ -18,12 +21,21 @@ import {
 } from '../../../utils/date'
 
 type Props = {
-  timeSlots?: ITimeSlot[]
+  timeSlotsResponse?: ITimeSlotResponse[]
   examinationPrice?: number
 }
 
 export default function ScheduleExamination(props: Props) {
-  const { timeSlots, examinationPrice } = props
+  const { timeSlotsResponse, examinationPrice } = props
+
+  const timeSlotsNoAppointment = timeSlotsResponse
+    ? timeSlotsResponse.filter((item) => !item.appointmentId)
+    : []
+
+  const timeSlots: ITimeSlot[] =
+    timeSlotsNoAppointment.length === 0
+      ? []
+      : timeSlotsNoAppointment.map((item) => item.timeSlotDTO)
 
   const listTimeSlotsAfterCurrentDay: ITimeSlot[] = timeSlots
     ? getTimeSlotsAfterCurrentDay(timeSlots)
@@ -46,7 +58,7 @@ export default function ScheduleExamination(props: Props) {
 
   useEffect(() => {
     setListTimeSlot(sortStartTime(listTimeSlotsCurrentDay))
-  }, [timeSlots])
+  }, [timeSlotsResponse])
 
   const handleDateSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const dateSelect: string = event.target.value
@@ -91,10 +103,7 @@ export default function ScheduleExamination(props: Props) {
           <div className='container__schedule--time'>
             {listTimeSlot.map((item, index) => {
               return (
-                <NavLink
-                  key={index}
-                  to={`/home/examination/book-appointment/${item.id}`}
-                >
+                <NavLink key={index} to={`/home/book-appointment/${item.id}`}>
                   <span className='schedule__time--item'>
                     {`${getTimeZone(item.startTime)} - ${getTimeZone(
                       addHoursToDate(new Date(item.startTime), item.duration)

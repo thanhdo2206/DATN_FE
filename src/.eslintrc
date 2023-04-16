@@ -1,6 +1,6 @@
 {
   "extends": ["react-app", "prettier"],
-  "plugins": ["prettier", "sort-exports"],
+  "plugins": ["prettier", "sort-exports", "simple-import-sort"],
   "rules": {
     "prettier/prettier": [
       "warn",
@@ -14,12 +14,12 @@
         "singleQuote": true,
         "printWidth": 80,
         "jsxSingleQuote": true,
-        "importOrder": ["^components/(.*)$", "^[./]"],
-        "importOrderSeparation": true,
-        "importOrderSortSpecifiers": true
+        "importOrder": ["^components/(.*)$", "^[./]" ],
+        "importOrderSeparation": true, 
+        "importOrderSortSpecifiers": true 
       }
     ],
-    "sort-exports/sort-exports": ["warn", { "sortDir": "asc" }],
+    "sort-exports/sort-exports": ["warn", { "sortDir": "asc" }], 
     "react-hooks/exhaustive-deps": 0
   }
 }

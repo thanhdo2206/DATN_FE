@@ -4,30 +4,29 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import EmailIcon from '@mui/icons-material/Email'
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
-import { Button } from '@mui/material'
+import { Button, Skeleton } from '@mui/material'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
+import Pagination from '@mui/material/Pagination'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
-import React from 'react'
+import Stack from '@mui/material/Stack'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 
-import '../../../assets/css/pages/doctorPages/appointment_doctor.css'
+import '../../../assets/css/pages/doctorPage/appointmentDoctor/appointment_doctor.css'
+import { IAppointmentPageable } from '../../../interface/AppointmentInterfaces'
+import { DispatchType, RootState } from '../../../redux/configStore'
+import {
+  changeStatusAppointmentThunk,
+  getAllAppointmentDoctorPageableThunk
+} from '../../../redux/slices/appointmentSlice'
+import { formatDate } from '../../../utils/date'
+import { StatusAppointment } from '../../../utils/statusAppointment'
+import SketonItem from './SketonItem'
 
 type Props = {}
-
-const arrInforPatient = [
-  {
-    icon: <AccessTimeFilledOutlinedIcon className='icon__infor' />,
-    value: '14 Nov 2019, 10.00 AM'
-  },
-  {
-    icon: <LocationOnIcon className='icon__infor' />,
-    value: ' Newyork, United States'
-  },
-  { icon: <EmailIcon className='icon__infor' />, value: 'richard@example.com' },
-  { icon: <LocalPhoneIcon className='icon__infor' />, value: '+1 923 782 4575' }
-]
 
 const arrStatus = [
   { value: 0, text: 'Pending' },
@@ -35,15 +34,81 @@ const arrStatus = [
   { value: 2, text: 'Cancel' }
 ]
 
+const PAGINATION_LIMIT = 4
+
 export default function AppointmentDoctor({}: Props) {
-  const renderActionAppointmentByStatus = (status: number) => {
-    if (status === 0) {
+  const dispatch: DispatchType = useDispatch()
+
+  const { appointmentPageable } = useSelector(
+    (state: RootState) => state.appointmentReducer
+  )
+
+  const [status, setStatus] = useState(`${StatusAppointment.Pending}`)
+  const [page, setPage] = useState(1)
+  const [isLoading, setIsLoading] = useState(true)
+
+  const getAllAppointmentDoctorPageable = async (
+    pageIndex: number,
+    limit: number,
+    appointmentStatus: number
+  ) => {
+    setIsLoading(true)
+    setTimeout(() => {
+      dispatch(
+        getAllAppointmentDoctorPageableThunk(
+          pageIndex,
+          limit,
+          appointmentStatus
+        )
+      )
+      setIsLoading(false)
+    }, 2000)
+  }
+
+  useEffect(() => {
+    getAllAppointmentDoctorPageable(page, PAGINATION_LIMIT, +status)
+  }, [])
+
+  const handleChangePagination = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    const pageIndex: number = value
+    setPage(value)
+    getAllAppointmentDoctorPageable(pageIndex, PAGINATION_LIMIT, +status)
+  }
+
+  const handleChangeSelect = (event: SelectChangeEvent) => {
+    const appointmentStatus: number = +event.target.value
+    setStatus(event.target.value)
+    setPage(1)
+
+    getAllAppointmentDoctorPageable(1, PAGINATION_LIMIT, appointmentStatus)
+  }
+
+  const changeStatusAppointment = async (
+    appointmentId: number,
+    appointmentStatus: number
+  ) => {
+    await dispatch(
+      changeStatusAppointmentThunk(appointmentId, appointmentStatus)
+    )
+  }
+
+  const renderActionAppointmentByStatus = (
+    checkStatus: number,
+    appointmentId: number
+  ) => {
+    if (checkStatus === StatusAppointment.Pending) {
       return (
         <>
           <Button
             variant='contained'
             className='btn accept'
             startIcon={<CheckOutlinedIcon />}
+            onClick={() => {
+              changeStatusAppointment(appointmentId, StatusAppointment.Approved)
+            }}
           >
             Approve
           </Button>
@@ -51,6 +116,9 @@ export default function AppointmentDoctor({}: Props) {
             variant='contained'
             className='btn cancel'
             startIcon={<CloseOutlinedIcon />}
+            onClick={() => {
+              changeStatusAppointment(appointmentId, StatusAppointment.Cancel)
+            }}
           >
             Cancel
           </Button>
@@ -58,18 +126,77 @@ export default function AppointmentDoctor({}: Props) {
       )
     }
 
-    if (status === 1) {
+    if (checkStatus === StatusAppointment.Approved) {
       return <span className='text__status approved'>Approved</span>
     }
 
-    if (status === 2) {
+    if (checkStatus === StatusAppointment.Cancel) {
       return <span className='text__status cancelled'>Cancelled</span>
     }
   }
 
-  const handleChange = (event: SelectChangeEvent) => {
-    console.log(event.target.value)
+  const renderAppointmentList = () => {
+    return appointmentPageable?.listAppointmentResult.map((item, index) => {
+      const { patient, timeSlot } = item
+      const arrInforPatient = [
+        {
+          icon: <AccessTimeFilledOutlinedIcon className='icon__infor' />,
+          value: formatDate(new Date(timeSlot.startTime))
+        },
+        {
+          icon: <LocationOnIcon className='icon__infor' />,
+          value: patient.address
+        },
+        {
+          icon: <EmailIcon className='icon__infor' />,
+          value: patient.email
+        },
+        {
+          icon: <LocalPhoneIcon className='icon__infor' />,
+          value: patient.phoneNumber
+        }
+      ]
+      return (
+        <div className='appointment__item' key={index}>
+          <div className='profile__infor'>
+            <div className='avatar__patient'>
+              <img src={patient.profilePicture} alt='' />
+            </div>
+            <div className='infor__patient'>
+              <NavLink
+                to={`/doctor/appointment-patient-of-doctor/${patient.id}`}
+              >
+                <h4>{`${patient.firstName} ${patient.lastName}`}</h4>
+              </NavLink>
+
+              <ul className='infor__list'>
+                {arrInforPatient.map((item, index) => {
+                  return (
+                    <li key={index}>
+                      {item.icon}
+                      {item.value}
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          </div>
+
+          <div className='appointment__action'>
+            {renderActionAppointmentByStatus(item.status, item.id)}
+          </div>
+        </div>
+      )
+    })
   }
+
+  const renderSkeleton = () => {
+    const arrSkeleton = [1, 2, 3, 4]
+    return arrSkeleton.map((item, index) => {
+      return <SketonItem key={index} />
+    })
+  }
+
   return (
     <div className='container__appointment'>
       <div className='appointment__doctor__list'>
@@ -81,7 +208,7 @@ export default function AppointmentDoctor({}: Props) {
               labelId='status__label'
               id='demo-simple-select'
               label='Select Status'
-              onChange={handleChange}
+              onChange={handleChangeSelect}
               className='select__status'
               sx={{
                 '.MuiOutlinedInput-notchedOutline': {
@@ -89,6 +216,7 @@ export default function AppointmentDoctor({}: Props) {
                 }
               }}
               size='small'
+              value={status}
             >
               {arrStatus.map((item, index) => {
                 return (
@@ -106,123 +234,21 @@ export default function AppointmentDoctor({}: Props) {
         </div>
 
         <div className='appointment__list'>
-          <div className='appointment__item'>
-            <div className='profile__infor'>
-              <div className='avatar__patient'>
-                <img
-                  src='http://azim.commonsupport.com/Docpro/assets/images/resource/appointment-1.jpg'
-                  alt=''
-                />
-              </div>
-              <div className='infor__patient'>
-                <NavLink to=''>
-                  <h4>Mary Astor</h4>
-                </NavLink>
-
-                <ul className='infor__list'>
-                  {arrInforPatient.map((item, index) => {
-                    return (
-                      <li key={index}>
-                        {item.icon}
-                        {item.value}
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
-            </div>
-
-            <div className='appointment__action'>
-              <span className='text__status approved'>Approved</span>
-            </div>
-          </div>
-
-          <div className='appointment__item'>
-            <div className='profile__infor'>
-              <div className='avatar__patient'>
-                <img
-                  src='http://azim.commonsupport.com/Docpro/assets/images/resource/appointment-1.jpg'
-                  alt=''
-                />
-              </div>
-              <div className='infor__patient'>
-                <NavLink to=''>
-                  <h4>Mary Astor</h4>
-                </NavLink>
-
-                <ul className='infor__list'>
-                  {arrInforPatient.map((item, index) => {
-                    return (
-                      <li key={index}>
-                        {item.icon}
-                        {item.value}
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
-            </div>
-
-            <div className='appointment__action'>
-              <span className='text__status cancelled'>Cancelled</span>
-            </div>
-          </div>
-
-          <div className='appointment__item'>
-            <div className='profile__infor'>
-              <div className='avatar__patient'>
-                <img
-                  src='http://azim.commonsupport.com/Docpro/assets/images/resource/appointment-1.jpg'
-                  alt=''
-                />
-              </div>
-              <div className='infor__patient'>
-                <NavLink to=''>
-                  <h4>Mary Astor</h4>
-                </NavLink>
-
-                <ul className='infor__list'>
-                  {arrInforPatient.map((item, index) => {
-                    return (
-                      <li key={index}>
-                        {item.icon}
-                        {item.value}
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
-            </div>
-
-            <div className='appointment__action'>
-              <Button
-                variant='contained'
-                className='btn accept'
-                startIcon={<CheckOutlinedIcon />}
-              >
-                Approve
-              </Button>
-              <Button
-                variant='contained'
-                className='btn cancel'
-                startIcon={<CloseOutlinedIcon />}
-              >
-                Cancel
-              </Button>
-            </div>
-          </div>
+          {isLoading ? renderSkeleton() : renderAppointmentList()}
         </div>
       </div>
 
       <div className='pagnination__appointment'>
-        <ul className='pagination'>
-          <li>1</li>
-          <li>2</li>
-          <li>3</li>
-          {/* <li>
-            <i className='icon-Arrow-Right' />
-          </li> */}
-        </ul>
+        <Stack spacing={2}>
+          <Pagination
+            count={appointmentPageable?.totalPage}
+            page={page}
+            onChange={handleChangePagination}
+            className='pagination'
+            variant='outlined'
+            size='large'
+          />
+        </Stack>
       </div>
     </div>
   )

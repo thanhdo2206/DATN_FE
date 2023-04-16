@@ -1,12 +1,14 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
+import HeaderBar from '../components/HeaderBar'
+
 type Props = {}
 
 export default function HomeTemplates(props: Props) {
   return (
     <div>
-      <header>header</header>
+      <HeaderBar />
       <Outlet />
       <footer></footer>
     </div>

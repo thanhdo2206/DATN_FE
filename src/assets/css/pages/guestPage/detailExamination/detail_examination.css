@@ -1,0 +1,164 @@
+
+
+.container__deatail_examination .title__box {
+  padding: 52px 0px 48px 0px;
+  background-color: var(--color-title-box);
+  color: #fff;
+  text-align: center;
+  font-size: 22px;
+}
+
+.container__deatail_examination .container__information {
+  padding: 80px 148px 120px 148px;
+  margin-top: 50px;
+  background-color: var(--background-color);
+}
+
+.container__short__information {
+  display: flex;
+  align-items: center;
+  padding: 34px 40px;
+  background: #fff;
+  border-radius: 10px;
+}
+
+.container__image__doctor {
+  width: 200px;
+  height: 186px;
+}
+
+.container__image__doctor > .img__doctor {
+  width: 100%;
+  border-radius: 20px;
+  height: 100%;
+  object-fit: cover;
+  box-shadow: 0 10px 40px rgb(0 24 73 / 20%);
+}
+
+.brief__information > h1 {
+  font-size: 24px;
+  line-height: 1.2;
+  margin-bottom: 32px;
+  font-weight: bold;
+  color: var(--color-title);
+}
+
+.brief__information {
+  margin-left: 40px;
+}
+
+.brief__text {
+  color: var(--color-text);
+  font-size: var(--font-size-text);
+  line-height: 20px;
+}
+
+.brief__text p {
+  margin-bottom: 4px;
+}
+
+.container__schedule {
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.container__schedule .title__box {
+  background-color: var(--color-title-box);
+  padding: 20px 30px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.box__schedule {
+  border-bottom: 1px solid var(--color-border);
+  padding: 20px 30px;
+}
+
+.container__schedule .schedule__select {
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  outline: none;
+  font-size: var(--font-size-text);
+  color: var(--color-title-hover);
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.container__schedule .container__schedule--package {
+  padding: 10px 0px;
+}
+
+.container__schedule--package .container__schedule--time {
+  margin-top: 20px;
+}
+
+.container__schedule--package .container__schedule--time > a {
+  margin-bottom: 10px;
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.container__schedule--package .container__schedule--time .schedule__time--item {
+  text-decoration: none;
+  font-weight: bolder;
+  color: #000;
+  display: inline-block;
+  padding: 10px 15px;
+  background: #eee;
+  border-radius: 3px;
+}
+
+.container__schedule--package
+  .container__schedule--time
+  .schedule__time--item:hover {
+  box-shadow: 0px 0px 0px 2px var(--color-title) inset;
+  text-decoration: none;
+}
+
+.container__schedule .examination__price {
+  padding: 20px 30px;
+}
+
+.container__schedule .examination__price .value__price {
+  float: right;
+}
+
+.container__schedule .examination__price div {
+  margin-bottom: 10px;
+}
+
+.container__detail__information {
+  margin-top: 40px;
+  background-color: #fff;
+  border-radius: 10px;
+}
+.container__detail__information .tab__list-btn button.Mui-selected,
+.container__detail__information .tab__list-btn button:hover {
+  color: var(--primary-color);
+}
+
+.container__detail__information .tab__content-item h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--color-title);
+}
+
+.container__detail__information .tab__content-item li {
+  position: relative;
+  line-height: 28px;
+  padding-left: 25px;
+  margin-bottom: 6px;
+}
+
+.container__detail__information .tab__content-item li::before {
+  position: absolute;
+  content: '';
+  border: 3px solid #dad9e7;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  left: 0px;
+  top: 7px;
+}

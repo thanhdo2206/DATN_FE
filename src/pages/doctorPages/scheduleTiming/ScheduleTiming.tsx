@@ -1,25 +1,83 @@
-import CloseIcon from '@mui/icons-material/Close'
-import EditIcon from '@mui/icons-material/Edit'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
-import TabPanel from '@mui/lab/TabPanel'
 import Box from '@mui/material/Box'
 import Tab from '@mui/material/Tab'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-import '../../../assets/css/pages/doctorPages/schedule_timing.css'
+import '../../../assets/css/pages/doctorPage/scheduleTiming/schedule_timing.css'
+import { ITimeSlotResponse } from '../../../interface/TimeSlotInterfaces'
+import { DispatchType, RootState } from '../../../redux/configStore'
+import { getAllTimeSlotOfDoctorThunk } from '../../../redux/slices/timeSlotSlice'
+import {
+  compareDate,
+  getAllDateOfCurrentWeek,
+  getDateOfWeek
+} from '../../../utils/date'
 import ModalSchedule from './ModalSchedule'
+import TimeSlotItem from './TimeSlotItem'
 
 type Props = {}
 
-const arrDayOfWeek = ['1', '2', '3']
+const arrDayOfWeek: string[] = getAllDateOfCurrentWeek()
 
 export default function ScheduleTiming({}: Props) {
-  const [value, setValue] = React.useState(arrDayOfWeek[1])
+  const dispatch: DispatchType = useDispatch()
+  const [value, setValue] = useState(arrDayOfWeek[0])
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    // console.log(newValue)
+  const { arrTimeSlotOfDoctorInCurrentWeek } = useSelector(
+    (state: RootState) => state.timeSlotsReducer
+  )
+
+  const [timeSlotsOfDay, setTimeSlotsOfDay] = useState<ITimeSlotResponse[]>([])
+
+  const getAllTimeSlotOfDoctorInCurrentWeek = async () => {
+    await dispatch(getAllTimeSlotOfDoctorThunk())
+  }
+
+  useEffect(() => {
+    getAllTimeSlotOfDoctorInCurrentWeek()
+  }, [])
+
+  const getTimeSlotItemOfCurrentDayOfWeek = () => {
+    const arrTimeSlotsMonday = arrTimeSlotOfDoctorInCurrentWeek.filter(
+      (timeSlot, index) => {
+        return compareDate(value, timeSlot.timeSlotDTO.startTime)
+      }
+    )
+    setTimeSlotsOfDay(arrTimeSlotsMonday)
+  }
+
+  useEffect(() => {
+    getTimeSlotItemOfCurrentDayOfWeek()
+  }, [
+    arrTimeSlotOfDoctorInCurrentWeek.length,
+    arrTimeSlotOfDoctorInCurrentWeek
+  ])
+
+  const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
+    const arrTimeSlots = arrTimeSlotOfDoctorInCurrentWeek.filter(
+      (timeSlot, index) => {
+        return compareDate(newValue, timeSlot.timeSlotDTO.startTime)
+      }
+    )
+    setTimeSlotsOfDay(arrTimeSlots)
     setValue(newValue)
+  }
+
+  const renderTimeSlotItem = () => {
+    if (arrTimeSlotOfDoctorInCurrentWeek.length === 0) return ''
+    if (timeSlotsOfDay.length === 0) return <span>Not Available</span>
+    return timeSlotsOfDay.map((item, index) => {
+      return (
+        <TimeSlotItem
+          key={index}
+          timeSlotResponse={item}
+          timeSlotsOfDay={timeSlotsOfDay}
+          dayOfWeek={new Date(value)}
+        />
+      )
+    })
   }
   return (
     <div>
@@ -33,7 +91,7 @@ export default function ScheduleTiming({}: Props) {
             <TabContext value={value}>
               <Box className='schedule__header'>
                 <TabList
-                  onChange={handleChange}
+                  onChange={handleChangeTab}
                   aria-label='lab API tabs example'
                   TabIndicatorProps={{
                     sx: {
@@ -42,80 +100,28 @@ export default function ScheduleTiming({}: Props) {
                   }}
                   className='tab__list'
                 >
-                  <Tab className='tab__header-item' label='SUNDAY' value='1' />
-                  <Tab className='tab__header-item' label='MONDAY' value='2' />
-                  <Tab className='tab__header-item' label='TUESDAY' value='3' />
-                  <Tab
-                    className='tab__header-item'
-                    label='WEDNESDAY'
-                    value='4'
-                  />
-                  <Tab
-                    className='tab__header-item'
-                    label='THURSDAY'
-                    value='5'
-                  />
-                  <Tab className='tab__header-item' label='FRIDAY' value='6' />
-                  <Tab
-                    className='tab__header-item'
-                    label='SATURDAY'
-                    value='7'
-                  />
-
-                  {/* {arrDayOfWeek.map((item, index) => {
+                  {arrDayOfWeek.map((item, index) => {
                     return (
                       <Tab
+                        key={index}
                         className='tab__header-item'
-                        label={`tab${item}`}
+                        label={getDateOfWeek(item)}
                         value={item}
                       />
                     )
-                  })}  */}
+                  })}
                 </TabList>
               </Box>
 
               <div className='tab__content-title'>
                 <h3>Time Slots</h3>
-                <ModalSchedule day={value}/>
+                <ModalSchedule
+                  dayOfWeek={value}
+                  timeSlotsOfDay={timeSlotsOfDay}
+                />
               </div>
 
-              {arrDayOfWeek.map((item, index) => {
-                return (
-                  <TabPanel className='tab__content-item' value={item}>
-                    <p>item of {item}</p>
-                  </TabPanel>
-                )
-              })}
-
-              {/* <TabPanel className='tab__content-item' value='1'>
-                <div className='tab__content-title'>
-                  <h3>Time Slots</h3>
-                  <ModalSchedule />
-                </div>
-                <div className='tab__content-times'>
-                  <div className='time__slot-item'>
-                    8:00 pm - 11:30 pm
-                    <CloseIcon className='delete__time-icon' />
-                  </div>
-
-                  <div className='time__slot-item'>
-                    8:00 pm - 11:30 pm
-                    <CloseIcon className='delete__time-icon' />
-                  </div>
-                </div>
-              </TabPanel>
-
-              <TabPanel className='tab__content-item' value='2'>
-                Item Two
-              </TabPanel>
-
-              <TabPanel className='tab__content-item' value='3'>
-                <div className='tab__content-title'>
-                  <h3>Time Slots</h3>
-                  <ModalSchedule />
-                </div>
-                <span>Not Available</span>
-              </TabPanel> */}
+              <div className='tab__content-times'>{renderTimeSlotItem()}</div>
             </TabContext>
           </Box>
         </div>

@@ -1,4 +1,4 @@
-import { ITimeSlot } from './TimeSlotInterfaces'
+import { ITimeSlotResponse } from './TimeSlotInterfaces'
 
 export interface IMedicalExamination {
   id: number
@@ -22,5 +22,5 @@ export interface IMedicalExaminationFilter {
 
 export interface IMedicalExaminationTime {
   medicalExamination: IMedicalExamination
-  listTimeSlot: ITimeSlot[]
+  listTimeSlot: ITimeSlotResponse[]
 }
