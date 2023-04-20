@@ -1,20 +1,17 @@
 import { Grid } from '@mui/material'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import Avatar from 'react-avatar'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import '../../../assets/css/pages/guestPage/detailExamination/detail_examination.css'
-import { IMedicalExaminationTime } from '../../../interface/MedicalExaminationInterfaces'
 import { DispatchType, RootState } from '../../../redux/configStore'
+import { useAppSelector } from '../../../redux/hooks'
 import { getDetailMedicalExaminationTimeThunk } from '../../../redux/slices/medicalExaminationSlice'
-import { getDetailMedicalExaminationTimeService } from '../../../services/medicalExaminationService'
 import ScheduleExamination from './ScheduleExamination'
 import TabInfomation from './TabInfomation'
 
-type Props = {}
-
-export default function DetailExamination(props: Props) {
+export default function DetailExamination() {
   const dispatch: DispatchType = useDispatch()
 
   const params = useParams()
@@ -28,8 +25,8 @@ export default function DetailExamination(props: Props) {
     getDetailExamination()
   }, [params.id])
 
-  const { medicalExaminationDetail } = useSelector(
-    (state: RootState) => state.medicalExaminationReducer
+  const { medicalExaminationDetail } = useAppSelector(
+    (state) => state.medicalExaminationReducer
   )
 
   const medical = medicalExaminationDetail?.medicalExamination
@@ -37,10 +34,7 @@ export default function DetailExamination(props: Props) {
   const timeSlotsResponse = medicalExaminationDetail?.listTimeSlot
 
   return (
-    <div className='container__deatail_examination'>
-      <div className='title__box'>
-        <h1>Doctor Details</h1>
-      </div>
+    <div className='container__detail__examination'>
       <div className='container__information'>
         <Grid
           container
@@ -53,18 +47,17 @@ export default function DetailExamination(props: Props) {
                 {medical?.image ? (
                   <img className='img__doctor' src={medical.image} alt='' />
                 ) : (
-                  //TODO:
                   <Avatar facebookId='100008343750912' size='120' />
                 )}
               </div>
               <div className='brief__information'>
                 <h1>{medical?.title}</h1>
                 <div className='brief__text'>
-                  {medical?.shortDescription
-                    .split('\n')
-                    .map((item: string, index: number) => {
-                      return <p key={index}>{item}</p>
-                    })}
+                  <p>{medical?.shortDescription.split('\n')[0]}</p>
+                </div>
+                <div className='department'>
+                  <img src={medical?.department.backgroundImage} alt='' />
+                  <span>{medical?.department.name}</span>
                 </div>
               </div>
             </div>

@@ -265,12 +265,12 @@ export default function ModalSchedule(props: Props) {
       >
         <Box className='container__modal-schedule'>
           <div className='modal__header'>
+            <div className='title'>
+              <h2>Add Time Slots</h2>
+            </div>
             <IconButton className='icon__close' onClick={handleClose}>
               <CloseIcon />
             </IconButton>
-            <div className='title'>
-              <h3>Add Time Slots</h3>
-            </div>
           </div>
           <div className='modal__body'>
             <form action='' onSubmit={handleSubmit}>

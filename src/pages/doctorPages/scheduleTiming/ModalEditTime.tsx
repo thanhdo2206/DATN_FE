@@ -83,17 +83,17 @@ export default function ModalEditTime(props: Props) {
       >
         <Box className='container__modal-schedule'>
           <div className='modal__header'>
-          <IconButton
-            onClick={() => {
-              onAction(MODAL_ACTION_CLOSE)
-            }}
-            className='icon__close'
-          >
-            <CloseIcon />
-          </IconButton>
-          <div className='title'>
-            <h3>Edit Time Slots</h3>
-          </div>
+            <div className='title'>
+              <h2>Edit Time Slots</h2>
+            </div>
+            <IconButton
+              onClick={() => {
+                onAction(MODAL_ACTION_CLOSE)
+              }}
+              className='icon__close'
+            >
+              <CloseIcon />
+            </IconButton>
           </div>
           <div className='modal__body'>
             <form

@@ -1,11 +1,11 @@
-import requestApi from '../utils/requestApi'
+import requestAuthApi from '../utils/requestApi/requestAuthApi'
 
 export const bookAppointmentService = async (
   doctorId: number,
   timeSlotId: number
 ) => {
   try {
-    const response = await requestApi({
+    const response = await requestAuthApi({
       url: `/appointments/book_appointment`,
       method: 'post',
       data: {
@@ -19,12 +19,24 @@ export const bookAppointmentService = async (
   }
 }
 
+export const getListAppointmentService = async () => {
+  try {
+    const response = await requestAuthApi({
+      url: 'appointments/patient',
+      method: 'get'
+    })
+    return response.data
+  } catch (error) {
+    return error
+  }
+}
+
 export const changeStatusAppointmentService = async (
   appointmentId: number,
   appointmentStatus: number
 ) => {
   try {
-    const response = await requestApi({
+    const response = await requestAuthApi({
       url: `/appointments/change_status_appointment/${appointmentId}`,
       method: 'patch',
       data: {
@@ -43,7 +55,7 @@ export const getAllAppointmentDoctorPageableService = async (
   appointmentStatus: number
 ) => {
   try {
-    const response = await requestApi({
+    const response = await requestAuthApi({
       url: `/appointments/doctor/pageable?pageIndex=${pageIndex}&limit=${limit}&appointmentStatus=${appointmentStatus}`,
       method: 'get'
     })
@@ -57,7 +69,7 @@ export const getAllAppointmentPatientForDoctorService = async (
   patientId: string
 ) => {
   try {
-    const response = await requestApi({
+    const response = await requestAuthApi({
       url: `/appointments/doctor/patient?patientId=${patientId}`,
       method: 'get'
     })

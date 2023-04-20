@@ -1,9 +1,34 @@
 import { Box } from '@mui/material'
 
 import '../../../assets/css/pages/guestPage/homePage/home_page.css'
-import ModalConfirm from '../../../components/ModalConfirm'
+import ButtonCustomize from '../../../components/ButtonCustomize'
 
 const nurseImg = require('../../../assets/img/nurse-intro.png')
+
+interface CardItemInterface {
+  title: string
+  content: string
+  contentDetail: string
+}
+
+const cardItem: CardItemInterface[] = [
+  {
+    title: '15+',
+    content: 'Years of ',
+    contentDetail: 'Experience'
+  },
+  {
+    title: '200',
+    content: 'Doctors ',
+    contentDetail: 'Speacialist'
+  },
+  {
+    title: '100%',
+    content: 'Patient ',
+    contentDetail: 'Satisfaction'
+  }
+]
+
 export default function HomePage() {
   return (
     <Box className='home__page--container'>
@@ -20,31 +45,27 @@ export default function HomePage() {
             </p>
           </Box>
           <Box className='banner__intro--btn'>
-            <button className='btn_appointment'>Get Appointment</button>
+            <ButtonCustomize
+              text='Get Appointment'
+              className='btn__appointment btn__radius'
+            />
           </Box>
         </Box>
         <Box className='banner__intro--img'>
           <img src={nurseImg} alt='#' />
         </Box>
         <Box className='banner__intro--experience'>
-          <Box className='box__intro--experience'>
-            <p className='title--experience'>15+</p>
-            <p className='content--experience'>
-              Years of <span>Experience</span>
-            </p>
-          </Box>
-          <Box className='box__intro--experience'>
-            <p className='title--experience'>200</p>
-            <p className='content--experience'>
-              Doctors <span>Speacialist</span>
-            </p>
-          </Box>
-          <Box className='box__intro--experience'>
-            <p className='title--experience'>100%</p>
-            <p className='content--experience'>
-              Patient <span>Satisfaction</span>
-            </p>
-          </Box>
+          {cardItem.map((card) => {
+            return (
+              <Box className='box__intro--experience' key={card.title}>
+                <p className='title--experience'>{card.title}</p>
+                <p className='content--experience'>
+                  {card.content}
+                  <span>{card.contentDetail}</span>
+                </p>
+              </Box>
+            )
+          })}
         </Box>
       </Box>
     </Box>

@@ -1,28 +1,23 @@
-import { Select } from '@mui/material'
-import MenuItem from '@mui/material/MenuItem'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import CurrencyInput from 'react-currency-input-field'
-import { useDispatch } from 'react-redux'
 
 import Button from '../../../components/ButtonCustomize'
 import { ICategory } from '../../../interface/CategoryInterfaces'
 import { IMedicalExaminationFilter } from '../../../interface/MedicalExaminationInterfaces'
-import { DispatchType } from '../../../redux/configStore'
+import { useAppDispatch } from '../../../redux/hooks'
 import {
   filterMedicalExaminationTimeThunkByCategory,
   filterMedicalExaminationTimeThunkByCategoryAndPrice
 } from '../../../redux/slices/medicalExaminationSlice'
 import { getAllCategoryService } from '../../../services/categoryService'
 
-type Props = {}
-
 type checkOptions = {
   [key: string]: boolean
 }
 
-export default function FilterDoctor(props: Props) {
-  const dispatch: DispatchType = useDispatch()
+export default function FilterDoctor() {
+  const dispatch = useAppDispatch()
 
   const [categories, setCategories] = useState<ICategory[]>()
   const getAllCategories = async () => {

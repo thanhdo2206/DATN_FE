@@ -1,13 +1,11 @@
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 
 import {
   ITimeSlot,
   ITimeSlotResponse
 } from '../../../interface/TimeSlotInterfaces'
-import { RootState } from '../../../redux/configStore'
 import { convertVND } from '../../../utils/convertMoney'
 import {
   addHoursToDate,
@@ -96,14 +94,14 @@ export default function ScheduleExamination(props: Props) {
         </select>
 
         <div className='container__schedule--package'>
-          <div className='container__icon-time'>
+          <div>
             <CalendarMonthIcon />
             <b>SCHEDULE</b>
           </div>
-          <div className='container__schedule--time'>
+          <div className='container__schedule__time'>
             {listTimeSlot.map((item, index) => {
               return (
-                <NavLink key={index} to={`/home/book-appointment/${item.id}`}>
+                <NavLink key={index} to={`/book-appointment/${item.id}`}>
                   <span className='schedule__time--item'>
                     {`${getTimeZone(item.startTime)} - ${getTimeZone(
                       addHoursToDate(new Date(item.startTime), item.duration)

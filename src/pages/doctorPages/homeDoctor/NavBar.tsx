@@ -18,14 +18,11 @@ export default function NavBar({}: Props) {
     <nav className='container__nav'>
       <div className='container__nav-content'>
         <div className='nav__left'>
-          <HomeOutlinedIcon />
+          {/* <HomeOutlinedIcon />
           <ChevronRightIcon />
-          <NavLink to='/'>Schedule</NavLink>
+          <NavLink to='/'>Schedule</NavLink> */}
         </div>
         <div className='nav__right'>
-          <IconButton>
-            <NotificationsNoneIcon />
-          </IconButton>
           <div className='avatar'>
             {currentUser.profilePicture ? (
               <img src={currentUser.profilePicture} alt='' />

@@ -8,6 +8,11 @@ export interface FormRegisterValues {
   password: string
   firstName: string
   lastName: string
-  phoneNumber: string
-  confirmPassword: string
+  confirmPassword?: string
+  role: string
+}
+
+export interface RegisterSuccessResponse {
+  message: string
+  status: number
 }

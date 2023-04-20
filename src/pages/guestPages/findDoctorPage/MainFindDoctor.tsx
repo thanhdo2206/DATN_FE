@@ -1,21 +1,22 @@
 import FmdBadIcon from '@mui/icons-material/FmdBad'
 import Grid from '@mui/material/Grid'
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import '../../../assets/css/pages/guestPage/findDoctorPage/find_doctor.css'
 import { IMedicalExaminationTime } from '../../../interface/MedicalExaminationInterfaces'
-import { DispatchType, RootState } from '../../../redux/configStore'
+import { RootState } from '../../../redux/configStore'
+import { useAppDispatch } from '../../../redux/hooks'
 import { getAllMedicalExaminationTimeThunk } from '../../../redux/slices/medicalExaminationSlice'
 import FilterDoctor from './FilterDoctor'
 import InformationAppointment from './InformationAppointment'
 import Search from './Search'
 
-type Props = {}
-
-export default function MainFindDoctor(props: Props) {
-  const dispatch: DispatchType = useDispatch()
-
+export default function MainFindDoctor() {
+  const dispatch = useAppDispatch()
+  const { arrMedicalExaminations } = useSelector(
+    (state: RootState) => state.medicalExaminationReducer
+  )
   const getMedicalExaminationTimeApi = async () => {
     await dispatch(getAllMedicalExaminationTimeThunk())
   }
@@ -23,17 +24,14 @@ export default function MainFindDoctor(props: Props) {
   useEffect(() => {
     getMedicalExaminationTimeApi()
   }, [])
-  const { arrMedicalExaminations } = useSelector(
-    (state: RootState) => state.medicalExaminationReducer
-  )
 
   const renderMedicalExamination = () => {
     if (arrMedicalExaminations.length === 0)
       return (
         <div className='box__filter__not__found'>
-          <div className='filter__not_found--view'>
+          <div className='filter__not__found-view'>
             <FmdBadIcon />
-            <p className='filter__not_found--text'>
+            <p className='filter__not__found-text'>
               No matches were found, please choose again
             </p>
           </div>

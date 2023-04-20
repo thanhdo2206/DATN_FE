@@ -1,5 +1,5 @@
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
 import {
@@ -26,10 +26,6 @@ type Props = {
 
 export default function TimeSlots(props: Props) {
   const { timeSlotsResponse, examinationPrice, examinationTitle } = props
-
-  // const timeSlots: ITimeSlot[] = timeSlotsResponse.map((item, index) => {
-  //   return item.timeSlotDTO
-  // })
 
   const timeSlotsNoAppointment = timeSlotsResponse.filter(
     (item) => !item.appointmentId
@@ -95,7 +91,7 @@ export default function TimeSlots(props: Props) {
             return (
               <NavLink
                 key={index}
-                to={`/home/book-appointment/${item.id}`}
+                to={`/book-appointment/${item.id}`}
                 state={{ examinationPrice, examinationTitle }}
               >
                 <span className='time__slot-item'>

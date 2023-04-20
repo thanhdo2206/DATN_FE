@@ -5,6 +5,7 @@
   border: 1px solid var(--color-border);
   padding: 24px;
   border-radius: 10px;
+  background-color: #fff;
 }
 
 .container__patient--doctor .card.widget__profile-paient .card__header {
@@ -56,6 +57,7 @@
 .container__patient--doctor .table__appointment .container__table__appointment {
   height: 88vh;
   width: 100%;
+  background-color: #fff;
 }
 
 .container__patient--doctor

@@ -21,8 +21,13 @@ import * as Yup from 'yup'
 import ButtonCustomize from '../../../components/ButtonCustomize'
 import ModalConfirm from '../../../components/ModalConfirm'
 import { ITimeSlotResponse } from '../../../interface/TimeSlotInterfaces'
-import { UserInformation } from '../../../interface/UsersInterface'
-import { useAppSelector } from '../../../redux/hooks'
+import {
+  DataUserProfile,
+  UserInformation
+} from '../../../interface/UsersInterface'
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
+import { getAllMedicalExaminationTimeThunk } from '../../../redux/slices/medicalExaminationSlice'
+import { updateUserProfile } from '../../../redux/thunk/userThunk'
 import { bookAppointmentService } from '../../../services/appointmentService'
 import { MODAL_ACTION_CONFIRM } from '../../../utils/contant'
 import { PHONE_REGEX_VN } from '../../../utils/regex'
@@ -35,12 +40,15 @@ import {
 } from '../../../utils/validateInform'
 import CustomizedSwitch from './CustomizedSwitch'
 
+const flagVN = require('../../../assets/img/vietnam_flag.png')
+
 type IPatientInformation = {
   firstName?: string
   lastName?: string
   phoneNumber?: string
   address?: string
   gender: number
+  [key: string]: any
 }
 type Props = {
   timeSlotResponse?: ITimeSlotResponse
@@ -51,6 +59,7 @@ export default function FormAppointment(props: Props) {
   const { currentUser } = useAppSelector((state) => state.auths)
   const [checkSwitch, setCheckSwitch] = useState(false)
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
   const formik = useFormik<IPatientInformation>({
     initialValues: {
@@ -71,24 +80,23 @@ export default function FormAppointment(props: Props) {
     }),
 
     onSubmit: (values) => {
-      const inputData: UserInformation = {
+      const inputData: DataUserProfile = {
         ...values,
-        gender: +values.gender === 1
-      }
-      console.log(inputData)
-      // console.log('checkSwitch', checkSwitch)
-      if (checkSwitch) {
-        // call api update
+        gender: +values.gender === 1,
+        userId: currentUser.id
       }
 
-      // call api book appointment
+      if (checkSwitch) {
+        updateProfile(inputData)
+      }
+
       bookAppointmentApi()
-      navigate('/home/search-doctor')
+      // navigate('/user/appointments')
+      navigate('/search-doctor')
     }
   })
 
-  const { values, touched, errors, handleChange, handleSubmit, handleBlur } =
-    formik
+  const { values, errors, handleChange, handleSubmit, handleBlur } = formik
 
   const bookAppointmentApi = async () => {
     await bookAppointmentService(
@@ -96,22 +104,10 @@ export default function FormAppointment(props: Props) {
       timeSlotResponse?.timeSlotDTO.id as number
     )
   }
-  // const arrInformationPatient = [
-  //   {
-  //     label: 'First Name',
-  //     placeholder: 'e.g. Do Van',
-  //     nameInput: 'firstname',
-  //     valueInput: currentUser.firstName,
-  //     checkError: errors.firstName ? true : false
-  //   },
-  //   {
-  //     label: 'Last Name',
-  //     placeholder: 'e.g. Duc Thanh',
-  //     nameInput: 'lastName',
-  //     valueInput: currentUser.lastName,
-  //     checkError: errors.lastName ? true : false
-  //   }
-  // ]
+
+  const updateProfile = async (dataUserProfile: DataUserProfile) => {
+    await dispatch(updateUserProfile(dataUserProfile))
+  }
 
   const handleChangeSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.checked) {
@@ -120,6 +116,10 @@ export default function FormAppointment(props: Props) {
       values.gender = currentUser.gender ? 1 : 0
       values.phoneNumber = currentUser.phoneNumber
       values.address = currentUser.address
+
+      Object.keys(errors).forEach((key: any) => {
+        errors[key] = ''
+      })
     }
     setCheckSwitch(event.target.checked)
   }
@@ -139,128 +139,143 @@ export default function FormAppointment(props: Props) {
   return (
     <>
       <div className='container__form__book'>
-        <h3 className='form__title'>Personal Information</h3>
-        <div className='container__switch'>
-          <CustomizedSwitch
-            handleChange={handleChangeSwitch}
-            checkSwitch={checkSwitch}
-          />
-          {checkSwitch ? (
-            <p className='text__notification'>
-              If you change your information, your personal information will be
-              updated
-            </p>
-          ) : (
-            ''
-          )}
+        <div className='title__box'>
+          <h3 className='form__title'>Personal Information</h3>
         </div>
-        <form action='' onSubmit={handleSubmit}>
-          <div className='container__input'>
-            <label className='label__input'>
-              First Name <span className='sign__required'>*</span>
-            </label>
-            <TextField
-              disabled={!checkSwitch}
-              fullWidth
-              className='text__field'
-              onBlur={handleBlur}
-              onChange={handleChange}
-              placeholder='e.g. Do Van'
-              error={errors.firstName ? true : false}
-              helperText={errors.firstName}
-              name='firstName'
-              value={values.firstName}
-            />
-          </div>
 
-          <div className='container__input'>
-            <label className='label__input'>
-              Last Name <span className='sign__required'>*</span>
-            </label>
-            <TextField
-              disabled={!checkSwitch}
-              fullWidth
-              className='text__field'
-              onBlur={handleBlur}
-              onChange={handleChange}
-              placeholder='e.g. Duc Thanh'
-              error={errors.lastName ? true : false}
-              helperText={errors.lastName}
-              name='lastName'
-              value={values.lastName}
+        <div className='inner__box'>
+          <div className='container__switch'>
+            <CustomizedSwitch
+              handleChange={handleChangeSwitch}
+              checkSwitch={checkSwitch}
             />
+            {checkSwitch ? (
+              <p className='text__notification'>
+                If you change your information, your personal information will
+                be updated
+              </p>
+            ) : (
+              ''
+            )}
           </div>
-
-          <div className='container__input'>
-            <label className='label__input'>
-              Gender <span className='sign__required'>*</span>
-            </label>
-            <RadioGroup
-              aria-labelledby='demo-radio-buttons-group-label'
-              // defaultValue={0}
-              name='gender'
-              onChange={handleChange}
-              value={values.gender}
-            >
-              <FormControlLabel
-                value={0}
-                control={<Radio size='small' />}
-                label='Female'
-                className='form__control__label'
+          <form action='' onSubmit={handleSubmit}>
+            <div className='container__input'>
+              <label className='label__input'>
+                First Name <span className='sign__required'>*</span>
+              </label>
+              <TextField
                 disabled={!checkSwitch}
+                fullWidth
+                className='text__field'
+                onBlur={handleBlur}
+                onChange={handleChange}
+                placeholder='e.g. Do Van'
+                error={errors.firstName ? true : false}
+                helperText={errors.firstName}
+                name='firstName'
+                value={values.firstName}
               />
-              <FormControlLabel
-                value={1}
-                control={<Radio size='small' />}
-                label='Male'
-                className='form__control__label'
+            </div>
+
+            <div className='container__input'>
+              <label className='label__input'>
+                Last Name <span className='sign__required'>*</span>
+              </label>
+              <TextField
                 disabled={!checkSwitch}
+                fullWidth
+                className='text__field'
+                onBlur={handleBlur}
+                onChange={handleChange}
+                placeholder='e.g. Duc Thanh'
+                error={errors.lastName ? true : false}
+                helperText={errors.lastName}
+                name='lastName'
+                value={values.lastName}
               />
-            </RadioGroup>
-          </div>
+            </div>
 
-          <div className='container__input'>
-            <label className='label__input'>
-              Phone Number <span className='sign__required'>*</span>
-            </label>
-            <TextField
-              disabled={!checkSwitch}
-              fullWidth
-              className='text__field'
-              onBlur={handleBlur}
-              onChange={handleChange}
-              placeholder='e.g. 097371223'
-              error={errors.phoneNumber ? true : false}
-              helperText={errors.phoneNumber}
-              name='phoneNumber'
-              value={values.phoneNumber}
-              type='text'
-            />
-          </div>
+            <div className='container__input'>
+              <label className='label__input'>
+                Gender <span className='sign__required'>*</span>
+              </label>
+              <RadioGroup
+                aria-labelledby='demo-radio-buttons-group-label'
+                // defaultValue={0}
+                name='gender'
+                onChange={handleChange}
+                value={values.gender}
+              >
+                <FormControlLabel
+                  value={0}
+                  control={<Radio size='small' />}
+                  label='Female'
+                  className='form__control__label'
+                  disabled={!checkSwitch}
+                />
+                <FormControlLabel
+                  value={1}
+                  control={<Radio size='small' />}
+                  label='Male'
+                  className='form__control__label'
+                  disabled={!checkSwitch}
+                />
+              </RadioGroup>
+            </div>
 
-          <div className='container__input'>
-            <label className='label__input'>
-              Address <span className='sign__required'>*</span>
-            </label>
-            <TextField
-              disabled={!checkSwitch}
-              fullWidth
-              className='text__field'
-              onBlur={handleBlur}
-              onChange={handleChange}
-              placeholder='e.g. 48 Doan Van Cu, Lien Chieu District, Da Nang City'
-              error={errors.address ? true : false}
-              helperText={errors.address}
-              name='address'
-              value={values.address}
-            />
-          </div>
-        </form>
+            <div className='container__input'>
+              <label className='label__input'>
+                Phone Number <span className='sign__required'>*</span>
+              </label>
+              <TextField
+                disabled={!checkSwitch}
+                fullWidth
+                className='text__field phone__input'
+                onBlur={handleBlur}
+                onChange={handleChange}
+                placeholder='e.g. 0968212841'
+                error={errors.phoneNumber ? true : false}
+                helperText={errors.phoneNumber}
+                name='phoneNumber'
+                value={values.phoneNumber}
+                type='text'
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <img className='img__flag' src={flagVN} alt='' />
+                    </InputAdornment>
+                  )
+                }}
+              />
+            </div>
 
-        <ButtonCustomize
-          text='Book an appointment'
-          onClick={toggleModalConfirm}
-        />
+            <div className='container__input'>
+              <label className='label__input'>
+                Address <span className='sign__required'>*</span>
+              </label>
+              <TextField
+                disabled={!checkSwitch}
+                fullWidth
+                className='text__field'
+                onBlur={handleBlur}
+                onChange={handleChange}
+                placeholder='e.g. 48 Doan Van Cu, Lien Chieu District, Da Nang City'
+                error={errors.address ? true : false}
+                helperText={errors.address}
+                name='address'
+                value={values.address}
+              />
+            </div>
+          </form>
+
+          <ButtonCustomize
+            text='Book an appointment'
+            onClickBtn={() => {
+              if (Object.keys(errors).length === 0 || !checkSwitch)
+                toggleModalConfirm()
+            }}
+          />
+        </div>
       </div>
 
       <ModalConfirm
@@ -271,10 +286,15 @@ export default function FormAppointment(props: Props) {
         backgroundColorBtnConfirm='var(--primary-color)'
         contentBody={
           <>
-            <h3>You are about to book appointment</h3>
-            <p style={{ color: '#da4040' }}>
-              Your personal information will be updated. Are you sure ?
-            </p>
+            <h2 style={{ padding: '20px 0px' }}>Are you sure ?</h2>
+            <p>Do you really want to book appointment?</p>
+            {checkSwitch ? (
+              <p style={{ color: '#da4040' }}>
+                Your personal information will be updated.
+              </p>
+            ) : (
+              ''
+            )}
           </>
         }
       />

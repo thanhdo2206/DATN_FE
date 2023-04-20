@@ -1,21 +1,17 @@
-import { AsyncThunk, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
-import { AuthErrResponse } from '../../interface/AuthInterface'
-import { UserInformation, UserResponse } from '../../interface/UsersInterface'
-import { FormLoginValues } from '../../interface/ValidateInterface'
-import { loginServices } from '../../services/loginService'
-import { getCurrentUser } from '../../services/userServices'
-import { checkResponseSuccess } from '../../utils/checkResponseStatus'
-
-type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>
-
-type PendingAction = ReturnType<GenericAsyncThunk['pending']>
-type RejectedAction = ReturnType<GenericAsyncThunk['rejected']>
-type FulfilledAction = ReturnType<GenericAsyncThunk['fulfilled']>
+import { UserInformation } from '../../interface/UsersInterface'
+import {
+  loginUser,
+  logoutUser,
+  registerUser,
+  updateAuth
+} from '../thunk/authThunk'
 
 interface UserState {
   isAuth: boolean
   message: String
+  status: number
   loading: boolean
   currentUser: UserInformation
   role?: String
@@ -25,6 +21,7 @@ interface UserState {
 const initialState: UserState = {
   isAuth: false,
   message: '',
+  status: 0,
   loading: false,
   currentUser: {},
   role: '',
@@ -34,67 +31,77 @@ const initialState: UserState = {
 export const authSlice = createSlice({
   name: 'auths',
   initialState,
-  reducers: {},
+  reducers: {
+    clearMessage: (state) => {
+      state.message = ''
+      state.status = 0
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.rejected, (state, action: any) => {
         state.message = action.payload.message
+        state.status = action.payload.status
       })
-      .addMatcher<PendingAction>(
-        (action) => action.type.endsWith('/pending'),
-        (state) => {
-          state.loading = true
-          state.message = ''
-        }
-      )
-      .addMatcher<RejectedAction>(
-        (action) => action.type.endsWith('/rejected'),
+      .addCase(loginUser.fulfilled, (state, action: any) => {
+        state.currentUser = action.payload
+        state.role = action.payload.role
+        state.message = ''
+      })
+      .addCase(logoutUser.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.isAuth = false
+        state.loading = false
+        state.currentUser = {}
+        state.role = ''
+        state.isCheckInitialStatus = true
+      })
+      .addCase(updateAuth.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(updateAuth.fulfilled, (state, action: any) => {
+        state.currentUser = action.payload
+        state.role = action.payload.role
+        state.message = ''
+      })
+      .addCase(registerUser.fulfilled, (state, action: any) => {
+        state.message = action.payload.message
+        state.status = action.payload.status
+      })
+      .addCase(registerUser.rejected, (state, action: any) => {
+        state.message = action.payload.message
+        state.status = action.payload.status
+      })
+      .addMatcher(
+        (action) =>
+          action.type.startsWith('auth/') && action.type.endsWith('/rejected'),
         (state) => {
           state.loading = false
           state.isAuth = false
           state.isCheckInitialStatus = false
         }
       )
-      .addMatcher<FulfilledAction>(
-        (action) => action.type.endsWith('/fulfilled'),
-        (state, action: any) => {
+      .addMatcher(
+        (action) =>
+          action.type.startsWith('auth/') && action.type.endsWith('/fulfilled'),
+        (state) => {
           state.loading = false
           state.isAuth = true
-          state.message = ''
-          state.currentUser = action.payload
-          state.role = action.payload.role
           state.isCheckInitialStatus = false
+        }
+      )
+      .addMatcher(
+        (action) =>
+          action.type.startsWith('user/') && action.type.endsWith('/fulfilled'),
+        (state, action: any) => {
+          state.currentUser = action.payload
         }
       )
   }
 })
 
-export const loginUser = createAsyncThunk(
-  'auth/login',
-  async (dataLogin: FormLoginValues, { rejectWithValue }) => {
-    const response: UserResponse & AuthErrResponse = await loginServices(
-      dataLogin
-    )
-    if (checkResponseSuccess(response.status)) {
-      return response.user
-    }
-    const rejectResponse = {
-      message: response.message
-    }
-    return rejectWithValue(rejectResponse)
-  }
-)
-
-export const updateAuth = createAsyncThunk(
-  'auth/update',
-  async (_, { rejectWithValue }) => {
-    const response: UserResponse = await getCurrentUser()
-    if (checkResponseSuccess(response.status)) {
-      return response.user
-    }
-    return rejectWithValue('')
-  }
-)
-
+export const { clearMessage } = authSlice.actions
 const authReducer = authSlice.reducer
 export default authReducer

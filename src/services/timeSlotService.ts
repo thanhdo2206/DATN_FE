@@ -1,9 +1,10 @@
 import { ITimeSlotRequest } from '../interface/TimeSlotInterfaces'
-import requestApi from '../utils/requestApi'
+import requestApi from '../utils/requestApi/requestApi'
+import requestAuthApi from '../utils/requestApi/requestAuthApi'
 
 export const getAllTimeSlotOfDoctorService = async () => {
   try {
-    const response = await requestApi({
+    const response = await requestAuthApi({
       url: `/time_slots/doctor`,
       method: 'get'
     })
@@ -16,7 +17,7 @@ export const getAllTimeSlotOfDoctorService = async () => {
 export const getDetailTimeSlotService = async (id: string) => {
   try {
     const response = await requestApi({
-      url: `/time_slots/guest/${id}`,
+      url: `/time_slots/${id}`,
       method: 'get'
     })
     return response.data
@@ -27,7 +28,7 @@ export const getDetailTimeSlotService = async (id: string) => {
 
 export const deleteTimeSlotService = async (timeSlotId: number) => {
   try {
-    const response = await requestApi({
+    const response = await requestAuthApi({
       url: `/time_slots/${timeSlotId}`,
       method: 'delete'
     })
@@ -42,7 +43,7 @@ export const editTimeSlotService = async (
   timeSlotUpdate: ITimeSlotRequest
 ) => {
   try {
-    const response = await requestApi({
+    const response = await requestAuthApi({
       url: `/time_slots/${timeSlotId}`,
       method: 'patch',
       data: timeSlotUpdate
@@ -57,7 +58,7 @@ export const addArrTimeSlotService = async (
   arrTimeSlot: ITimeSlotRequest[]
 ) => {
   try {
-    const response = await requestApi({
+    const response = await requestAuthApi({
       url: `/time_slots`,
       method: 'post',
       data: arrTimeSlot

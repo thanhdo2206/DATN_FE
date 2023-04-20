@@ -1,5 +1,5 @@
 import { FormLoginValues } from '../interface/ValidateInterface'
-import requestApi from '../utils/requestApi'
+import requestApi from '../utils/requestApi/requestApi'
 
 export const loginServices = async (
   dataLogin: FormLoginValues
@@ -7,7 +7,7 @@ export const loginServices = async (
   try {
     const response = await requestApi({
       method: 'post',
-      url: '/users/guest/authenticate',
+      url: '/auth/authenticate',
       data: {
         email: `${dataLogin.email}`,
         password: `${dataLogin.password}`
@@ -16,7 +16,17 @@ export const loginServices = async (
     return response.data
   } catch (error: any) {
     const responseErr = error.response
-    // console.log(responseErr.status)
     return responseErr.data
+  }
+}
+export const refeshTokenService = async (): Promise<any> => {
+  try {
+    const response = await requestApi({
+      method: 'post',
+      url: `/auth/refresh-token`
+    })
+    return response.data
+  } catch (error: any) {
+    return error
   }
 }

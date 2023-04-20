@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import '../../../assets/css/pages/doctorPage/appointmentDoctor/appointment_patient_of_doctor.css'
-import { IAppointment } from '../../../interface/AppointmentInterfaces'
+import { IAppointment } from '../../../interface/AppointmentInterface'
 import { getAllAppointmentPatientForDoctorService } from '../../../services/appointmentService'
 import TableAppointment from './TableAppointment'
 
@@ -47,38 +47,33 @@ export default function AppointmentPatientOfDoctor({}: Props) {
 
   return (
     <div className='container__patient--doctor'>
-      <Grid container columnSpacing={{ xs: 1, sm: 1, md: 1, lg: 5 }}>
-        <Grid item lg={3}>
-          <div className='card widget__profile-paient'>
-            <div className='card__header'>
-              <div className='profile__info-widget'>
-                <img src={appointments[0]?.patient.profilePicture} alt='' />
-                <h3>
-                  {appointments[0]?.patient.firstName}{' '}
-                  {appointments[0]?.patient.lastName}
-                </h3>
-              </div>
-            </div>
-            <div className='card__body'>
-              <ul>
-                {arrInforPatient.map((item, index) => {
-                  return (
-                    <li key={index}>
-                      <p className='title__information'>{item.title}</p>
-                      <span className='value'>{item.value}</span>
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
+      <div className='table__appointment'>
+        <TableAppointment appointments={appointments} />
+      </div>
+
+      {/* <div className='card widget__profile-paient'>
+        <div className='card__header'>
+          <div className='profile__info-widget'>
+            <img src={appointments[0]?.patient.profilePicture} alt='' />
+            <h3>
+              {appointments[0]?.patient.firstName}{' '}
+              {appointments[0]?.patient.lastName}
+            </h3>
           </div>
-        </Grid>
-        <Grid item lg={9}>
-          <div className='table__appointment'>
-            <TableAppointment appointments={appointments} />
-          </div>
-        </Grid>
-      </Grid>
+        </div>
+        <div className='card__body'>
+          <ul>
+            {arrInforPatient.map((item, index) => {
+              return (
+                <li key={index}>
+                  <p className='title__information'>{item.title}</p>
+                  <span className='value'>{item.value}</span>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      </div> */}
     </div>
   )
 }

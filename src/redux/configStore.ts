@@ -12,8 +12,8 @@ export type RootState = ReturnType<typeof store.getState>
 export const store = configureStore({
   reducer: {
     auths: authReducer,
+    appointments: appointmentReducer,
     medicalExaminationReducer,
-    appointmentReducer,
     timeSlotsReducer
   }
 })

@@ -1,11 +1,9 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
-import HeaderBar from '../components/HeaderBar'
+import HeaderBar from '../components/header/HeaderBar'
 
-type Props = {}
-
-export default function HomeTemplates(props: Props) {
+export default function HomeTemplates() {
   return (
     <div>
       <HeaderBar />

@@ -1,9 +1,9 @@
 import { ITimeSlot } from '../interface/TimeSlotInterfaces'
 
 export const addHoursToDate = (objDate: Date, minuteDuration: number): Date => {
-  let numberOfMlSeconds = objDate.getTime()
-  let addMlSeconds = minuteDuration * 60 * 1000
-  let newDateObj = new Date(numberOfMlSeconds + addMlSeconds)
+  var numberOfMilliseconds = objDate.getTime()
+  var addMilliseconds = minuteDuration * 60 * 1000
+  var newDateObj = new Date(numberOfMilliseconds + addMilliseconds)
   return newDateObj
 }
 
@@ -99,16 +99,6 @@ export const getDateOfWeek = (date: string): string => {
 
   return dayOfWeek
 }
-
-// export const formatDateByDateString = (date: string): string => {
-//   let objDate = new Date(date)
-//   const dayOfWeek = new Intl.DateTimeFormat('en-US', {
-//     weekday: 'long'
-//   }).format(objDate)
-//   const dateFormat = objDate.toLocaleDateString('en-US')
-//   const rs = `${dayOfWeek}, ${dateFormat}`
-//   return rs
-// }
 
 export const getTimeSlotsAfterCurrentDay = (
   arrTimeSlots: ITimeSlot[]

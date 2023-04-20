@@ -10,7 +10,7 @@ function ApplicationRoute() {
   const routes = [
     ...adminRoutes,
     ...doctorRoutes,
-    // ...patientRoutes,
+    ...patientRoutes,
     ...globalRoutes,
     {
       path: '*',

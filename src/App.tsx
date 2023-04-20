@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom'
 
 import '../src/assets/css/base/root.css'
 import { useAppDispatch, useAppSelector } from './redux/hooks'
-import { updateAuth } from './redux/slices/authSlice'
+import { updateAuth } from './redux/thunk/authThunk'
 import './reset_css.css'
 import ApplicationRoute from './routes/ApplicationRoute'
 import Loading from './utils/Loading'

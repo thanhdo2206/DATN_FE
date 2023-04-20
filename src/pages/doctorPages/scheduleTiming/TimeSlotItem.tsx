@@ -238,11 +238,7 @@ export default function TimeSlotItem(props: Props) {
         onAction={onModalDeleteTimeSlot}
         textBtn='Delete'
         backgroundColorBtnConfirm='#cb4c48'
-        icon={
-          <DeleteOutlineIcon
-            sx={{ fontSize: '70px', color: 'red', margin: '0 auto' }}
-          />
-        }
+        title='Delete Time Slot'
         contentBody={
           <>
             <h3>You are about to delete a time slot</h3>

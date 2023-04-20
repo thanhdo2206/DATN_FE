@@ -18,14 +18,13 @@ export default function ShortDescriptionDoctor(props: Props) {
           {medical.image ? (
             <img className='img__doctor' src={medical.image} alt='' />
           ) : (
-            //TODO:
             <Avatar facebookId='100008343750912' size='120' round={true} />
           )}
 
           <div className='btn__detail'>
             <NavLink
               className='link__see-more'
-              to={`/home/examination/detail/${medical?.id}`}
+              to={`/examination/detail/${medical?.id}`}
             >
               See detail
             </NavLink>
@@ -33,17 +32,17 @@ export default function ShortDescriptionDoctor(props: Props) {
         </div>
         <div className='container__infor'>
           <NavLink
-            to={`/home/examination/detail/${medical?.id}`}
+            to={`/examination/detail/${medical?.id}`}
             className='title__doctor'
           >
             {medical.title}
           </NavLink>
-          <div className='container__short__description'>
+          <div className='container__short-description'>
             {medical.shortDescription
               .split('\n')
               .map((item: string, index: number) => {
                 return (
-                  <span className='text_short' key={index}>
+                  <span className='text__short' key={index}>
                     {item}
                   </span>
                 )

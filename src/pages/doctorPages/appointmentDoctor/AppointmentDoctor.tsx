@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 
 import '../../../assets/css/pages/doctorPage/appointmentDoctor/appointment_doctor.css'
-import { IAppointmentPageable } from '../../../interface/AppointmentInterfaces'
+import { IAppointmentPageable } from '../../../interface/AppointmentInterface'
 import { DispatchType, RootState } from '../../../redux/configStore'
 import {
   changeStatusAppointmentThunk,
@@ -40,7 +40,7 @@ export default function AppointmentDoctor({}: Props) {
   const dispatch: DispatchType = useDispatch()
 
   const { appointmentPageable } = useSelector(
-    (state: RootState) => state.appointmentReducer
+    (state: RootState) => state.appointments
   )
 
   const [status, setStatus] = useState(`${StatusAppointment.Pending}`)

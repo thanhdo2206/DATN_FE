@@ -1,3 +1,4 @@
+import { IDepartment } from './Department'
 import { ITimeSlotResponse } from './TimeSlotInterfaces'
 
 export interface IMedicalExamination {
@@ -12,6 +13,7 @@ export interface IMedicalExamination {
   description: string
   examinationObject: number
   image: string
+  department: IDepartment
 }
 
 export interface IMedicalExaminationFilter {

@@ -4,9 +4,11 @@ import InboxIcon from '@mui/icons-material/MoveToInbox'
 import * as React from 'react'
 import Avatar from 'react-avatar'
 import { useSelector } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 import { RootState } from '../../../redux/configStore'
+import { useAppDispatch } from '../../../redux/hooks'
+import { logoutUser } from '../../../redux/thunk/authThunk'
 
 type Props = {}
 
@@ -27,7 +29,14 @@ const arrSelectSideBar = [
 const logo = require('../../../assets/img/logo-hospital-care.png')
 
 export default function SideBar({}: Props) {
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+
   const { currentUser } = useSelector((state: RootState) => state.auths)
+  const handleLogoutUser = async () => {
+    await dispatch(logoutUser())
+    navigate('/home')
+  }
 
   return (
     <div className='conatainer__side__bar'>
@@ -59,7 +68,7 @@ export default function SideBar({}: Props) {
             )
           })}
 
-          <li className='logout__container'>
+          <li className='logout__container' onClick={handleLogoutUser}>
             <InboxIcon className='side__bar-icon' />
             Logout
           </li>

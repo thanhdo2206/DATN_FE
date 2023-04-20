@@ -26,7 +26,7 @@ export default function TabInfomation(props: Props) {
           <TabList
             onChange={handleChange}
             aria-label='lab API tabs example'
-            className='tab__list-btn'
+            className='tab__list__btn'
             variant='fullWidth'
             TabIndicatorProps={{
               sx: {
@@ -36,11 +36,10 @@ export default function TabInfomation(props: Props) {
           >
             <Tab label='Overview' value='1' />
             <Tab label='Experience' value='2' />
-            <Tab label='Reviews' value='3' />
           </TabList>
         </Box>
         <TabPanel value='1'>
-          <div className='tab__content-item'>
+          <div className='tab__content--item'>
             <h3>{medical?.title}</h3>
             <ul>
               {medical?.shortDescription
@@ -52,7 +51,7 @@ export default function TabInfomation(props: Props) {
           </div>
         </TabPanel>
         <TabPanel value='2'>
-          <div className='tab__content-item'>
+          <div className='tab__content--item'>
             <h3>Treatment Of Diseases</h3>
             <ul>
               {medical?.description
@@ -63,7 +62,6 @@ export default function TabInfomation(props: Props) {
             </ul>
           </div>
         </TabPanel>
-        <TabPanel value='3'>Item Three</TabPanel>
       </TabContext>
     </Box>
   )

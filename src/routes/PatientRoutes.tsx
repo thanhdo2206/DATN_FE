@@ -1,20 +1,45 @@
 import { RouteObject } from 'react-router-dom'
 
-import AppointmentDoctor from '../pages/doctorPages/appointmentDoctor/AppointmentDoctor'
-import MainDoctor from '../pages/doctorPages/homeDoctor/MainDoctor'
-import ScheduleTiming from '../pages/doctorPages/scheduleTiming/ScheduleTiming'
 import BookAppointment from '../pages/patientPages/bookAppointment/BookAppointment'
+import PatientBookedAppoitment from '../pages/patientPages/dashboardPage/PatientBookedAppoitment'
+import PatientProfile from '../pages/patientPages/dashboardPage/PatientProfile'
+import HomeTemplates from '../templates/HomeTemplates'
+import PatientDashboardTemplate from '../templates/PatientDashboardTemplate'
 import AuthRoute from '../utils/AuthRoute'
 import { Role } from '../utils/roles'
 
 const patientRoutes: RouteObject[] = [
   {
-    path: 'book-appointment/:id',
+    path: '/user',
     element: (
       <AuthRoute roles={Role.Patient}>
-        <BookAppointment />
+        <PatientDashboardTemplate />
       </AuthRoute>
-    )
+    ),
+    children: [
+      {
+        path: 'profile-settings',
+        element: <PatientProfile />
+      },
+      {
+        path: 'appointments',
+        element: <PatientBookedAppoitment />
+      }
+    ]
+  },
+  {
+    path: '',
+    element: <HomeTemplates />,
+    children: [
+      {
+        path: 'book-appointment/:id',
+        element: (
+          <AuthRoute roles={Role.Patient}>
+            <BookAppointment />
+          </AuthRoute>
+        )
+      }
+    ]
   }
 ]
 

@@ -4,14 +4,15 @@ import '../assets/css/components/button.css'
 
 type Props = {
   text?: string
+  icon?: React.ReactNode
   className?: string
   type?: 'submit' | 'reset' | 'button' | undefined
-  onClick?: () => void
+  onClickBtn?: () => void
   backgroundColor?: string
 }
 
 export default function ButtonCustomize(props: Props) {
-  const { text, className, type, onClick, backgroundColor } = props
+  const { text, icon, className, type, onClickBtn, backgroundColor } = props
   const btnStyle = {
     backgroundColor: backgroundColor
   }
@@ -19,10 +20,10 @@ export default function ButtonCustomize(props: Props) {
     <button
       type={`${type ?? 'button'}`}
       className={`button__customize ${className ?? ''}`}
-      onClick={onClick}
+      onClick={onClickBtn}
       style={btnStyle}
     >
-      {text}
+      {text ?? icon}
     </button>
   )
 }

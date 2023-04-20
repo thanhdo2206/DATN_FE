@@ -10,7 +10,7 @@ import { createFakeServer } from '@mui/x-data-grid-generator'
 import * as React from 'react'
 import { useSelector } from 'react-redux'
 
-import { IAppointment } from '../../../interface/AppointmentInterfaces'
+import { IAppointment } from '../../../interface/AppointmentInterface'
 import { UserInformation } from '../../../interface/UsersInterface'
 import { RootState } from '../../../redux/configStore'
 import { convertVND } from '../../../utils/convertMoney'
@@ -51,7 +51,7 @@ export default function TableAppointment(props: Props) {
               <p>
                 Dr.{doctor.firstName} {doctor.lastName}
               </p>
-              <p>Dental</p>
+              {/* <p>Dental</p> */}
             </div>
           </>
         )

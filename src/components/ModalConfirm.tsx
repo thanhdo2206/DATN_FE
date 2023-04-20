@@ -25,7 +25,6 @@ export default function ModalConfirm(props: Props) {
     openModalConfirm,
     onAction,
     backgroundColorBtnConfirm,
-    icon,
     contentBody,
     title
   } = props
@@ -43,6 +42,9 @@ export default function ModalConfirm(props: Props) {
       >
         <Box className='container__modal-confirm'>
           <div className='modal__header'>
+            <div className='title'>
+              <h2>{title}</h2>
+            </div>
             <IconButton
               className='icon__close'
               onClick={() => {
@@ -51,11 +53,6 @@ export default function ModalConfirm(props: Props) {
             >
               <CloseIcon />
             </IconButton>
-            <div className='title'>
-              <h3>{title}</h3>
-
-              {icon}
-            </div>
           </div>
           <div className='modal__body'>{contentBody}</div>
 
@@ -63,7 +60,7 @@ export default function ModalConfirm(props: Props) {
             <ButtonCustomize
               text='Cancel'
               className='btn__cancel'
-              onClick={() => {
+              onClickBtn={() => {
                 onAction(MODAL_ACTION_CLOSE)
               }}
             />
@@ -71,7 +68,7 @@ export default function ModalConfirm(props: Props) {
             <ButtonCustomize
               text={textBtn}
               className='btn__confirm'
-              onClick={() => {
+              onClickBtn={() => {
                 onAction(MODAL_ACTION_CONFIRM)
               }}
               backgroundColor={backgroundColorBtnConfirm}
