@@ -25,7 +25,7 @@ const doctorRoutes: RouteObject[] = [
         element: <ScheduleTiming />
       },
       {
-        path: 'appointment-patient-of-doctor/:patientId',
+        path: 'appointment/appointment-patient/:patientId',
         element: <AppointmentPatientOfDoctor />
       }
     ]

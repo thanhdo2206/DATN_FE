@@ -1,6 +1,7 @@
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import InboxIcon from '@mui/icons-material/MoveToInbox'
+import { current } from '@reduxjs/toolkit'
 import * as React from 'react'
 import Avatar from 'react-avatar'
 import { useSelector } from 'react-redux'
@@ -49,11 +50,12 @@ export default function SideBar({}: Props) {
           {currentUser.profilePicture ? (
             <img src={currentUser.profilePicture} alt='' />
           ) : (
-            //TODO:
             <Avatar facebookId='100008343750912' size='120' />
           )}
         </div>
-        <h3 className='name__doctor'>Dr. Darren Elder</h3>
+        <h3 className='name__doctor'>
+          Dr {currentUser.firstName} {currentUser.lastName}
+        </h3>
       </div>
       <div className='list__side__bar'>
         <ul>

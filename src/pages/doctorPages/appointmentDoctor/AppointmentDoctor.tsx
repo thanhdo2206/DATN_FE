@@ -4,7 +4,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import EmailIcon from '@mui/icons-material/Email'
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
-import { Button, Skeleton } from '@mui/material'
+import { Button } from '@mui/material'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
@@ -14,6 +14,7 @@ import Stack from '@mui/material/Stack'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import '../../../assets/css/pages/doctorPage/appointmentDoctor/appointment_doctor.css'
 import { IAppointmentPageable } from '../../../interface/AppointmentInterface'
@@ -164,7 +165,7 @@ export default function AppointmentDoctor({}: Props) {
             </div>
             <div className='infor__patient'>
               <NavLink
-                to={`/doctor/appointment-patient-of-doctor/${patient.id}`}
+                to={`/doctor/appointment/appointment-patient/${patient.id}`}
               >
                 <h4>{`${patient.firstName} ${patient.lastName}`}</h4>
               </NavLink>

@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 
 import { RootState } from '../../../redux/configStore'
+import BreadCrumbs from './BreadCrumbs'
+
 
 type Props = {}
 
@@ -21,6 +23,7 @@ export default function NavBar({}: Props) {
           {/* <HomeOutlinedIcon />
           <ChevronRightIcon />
           <NavLink to='/'>Schedule</NavLink> */}
+          <BreadCrumbs />
         </div>
         <div className='nav__right'>
           <div className='avatar'>

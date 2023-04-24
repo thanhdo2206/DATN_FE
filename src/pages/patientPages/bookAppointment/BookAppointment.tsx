@@ -32,18 +32,9 @@ export default function BookAppointment(props: Props) {
 
   return (
     <div className='book__appointment'>
-      <Grid
-        container
-        columnSpacing={{ xs: 2, sm: 2, md: 2, lg: 4 }}
-        className=''
-      >
-        <Grid item lg={8} className=''>
-          <FormAppointment timeSlotResponse={timeSlotResponse} />
-        </Grid>
-        <Grid item lg={4} className=''>
-          <BookingSummary timeSlot={timeSlotResponse?.timeSlotDTO} />
-        </Grid>
-      </Grid>
+      <FormAppointment timeSlotResponse={timeSlotResponse} />
+
+      <BookingSummary timeSlot={timeSlotResponse?.timeSlotDTO} />
     </div>
   )
 }

@@ -1,6 +1,14 @@
 .book__appointment {
   padding: 100px 70px;
   background-color: var(--background-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.book__appointment > .box__personal__infor.container__form__book {
+  flex: 1;
+  margin-right: 46px;
 }
 
 .container__form__book {
@@ -89,6 +97,10 @@
   margin: 0;
 }
 
+.container__form__book.booking__summary {
+  width: 32%;
+}
+
 .booking__summary .information__summary {
   border-bottom: 1px solid #ccc;
 }
@@ -136,12 +148,18 @@
   font-weight: 600;
 }
 
+.booking__summary .payment{
+  display: flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
 .booking__summary .payment h3 {
   display: inline;
 }
 
 .booking__summary .payment span {
   color: var(--primary-color);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
 }

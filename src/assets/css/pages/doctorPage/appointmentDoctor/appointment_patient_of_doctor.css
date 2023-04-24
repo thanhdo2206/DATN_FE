@@ -1,5 +1,4 @@
 .container__patient--doctor {
-  padding: 30px;
 }
 .container__patient--doctor .card.widget__profile-paient {
   border: 1px solid var(--color-border);
@@ -55,7 +54,7 @@
 }
 
 .container__patient--doctor .table__appointment .container__table__appointment {
-  height: 88vh;
+  height: 80vh;
   width: 100%;
   background-color: #fff;
 }

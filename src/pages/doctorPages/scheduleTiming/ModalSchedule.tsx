@@ -6,6 +6,7 @@ import Modal from '@mui/material/Modal'
 import React, { useEffect, useState } from 'react'
 
 import ButtonCustomize from '../../../components/ButtonCustomize'
+import { ProgressListener } from '../../../components/Progress'
 import {
   ITimeSlotRequest,
   ITimeSlotResponse
@@ -119,7 +120,8 @@ export default function ModalSchedule(props: Props) {
     setSelectTimes(values)
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    ProgressListener.emit('start')
     event.preventDefault()
     if (
       !selectTimes[selectTimes.length - 1].startTime ||
@@ -128,10 +130,16 @@ export default function ModalSchedule(props: Props) {
       setCheckSelect(false)
       return
     }
-    console.log('SelectTimes', selectTimes)
-    addArrTimeSlotApi()
-    // thực hiện lưu dữ liệu api ở trên
+    // console.log('SelectTimes', selectTimes)
+
     handleClose()
+    await setTimeout(() => {
+      addArrTimeSlotApi()
+      ProgressListener.emit('stop')
+    }, 2000)
+
+    // thực hiện lưu dữ liệu api ở trên
+
     setSelectTimes([{ startTime: '', endTime: '', isDisable: false }])
   }
 

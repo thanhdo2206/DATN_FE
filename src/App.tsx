@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 import { BrowserRouter } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import '../src/assets/css/base/root.css'
 import { useAppDispatch, useAppSelector } from './redux/hooks'
@@ -7,6 +9,7 @@ import { updateAuth } from './redux/thunk/authThunk'
 import './reset_css.css'
 import ApplicationRoute from './routes/ApplicationRoute'
 import Loading from './utils/Loading'
+import Progress from './components/Progress'
 
 function App() {
   const dispatch = useAppDispatch()
@@ -20,9 +23,24 @@ function App() {
   }, [])
 
   return (
-    <BrowserRouter>
-      {loading ? <Loading /> : <ApplicationRoute />}
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        {loading ? <Loading /> : <ApplicationRoute />}
+      </BrowserRouter>
+      <ToastContainer
+        position='top-right'
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+        theme='light'
+      />
+      <Progress />
+    </>
   )
 }
 

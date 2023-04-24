@@ -158,7 +158,7 @@ export default function TableAppointment(props: Props) {
         rowHeight={70}
         disableSelectionOnClick
         columns={columns}
-        pageSize={1}
+        pageSize={6}
         loading={isLoading}
         pagination
         onPageChange={(newPage) => setPage(newPage)}

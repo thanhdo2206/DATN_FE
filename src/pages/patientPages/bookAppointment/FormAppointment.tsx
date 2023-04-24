@@ -91,8 +91,8 @@ export default function FormAppointment(props: Props) {
       }
 
       bookAppointmentApi()
-      // navigate('/user/appointments')
-      navigate('/search-doctor')
+      navigate('/user/appointments')
+      // navigate('/search-doctor')
     }
   })
 
@@ -138,7 +138,7 @@ export default function FormAppointment(props: Props) {
 
   return (
     <>
-      <div className='container__form__book'>
+      <div className='container__form__book box__personal__infor'>
         <div className='title__box'>
           <h3 className='form__title'>Personal Information</h3>
         </div>

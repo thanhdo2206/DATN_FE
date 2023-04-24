@@ -1,6 +1,7 @@
 import CloseIcon from '@mui/icons-material/Close'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import React, { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import ModalConfirm from '../../../components/ModalConfirm'
 import { ITimeSlotResponse } from '../../../interface/TimeSlotInterfaces'
@@ -83,6 +84,7 @@ export default function TimeSlotItem(props: Props) {
   const onModalDeleteTimeSlot = async (type: string) => {
     if (type === MODAL_ACTION_CONFIRM) {
       await dispatch(deleteTimeSlotThunk(timeSlotDTO.id))
+      toast.success('Time Slot deleted successfully')
     }
 
     toggleModalConfirm()
@@ -113,6 +115,7 @@ export default function TimeSlotItem(props: Props) {
       }
 
       await dispatch(editTimeSlotThunk(timeSlotDTO.id, dataUpdate))
+      toast.success('Time Slot Edit Successfully')
     }
 
     if (type === MODAL_ACTION_CLOSE) {
