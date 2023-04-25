@@ -16,6 +16,7 @@ import {
 } from '../../../utils/contant'
 import {
   addHoursToDate,
+  checkDayOfWeek,
   checkExistArrayDate,
   getAllHour,
   getTimeZone,
@@ -91,7 +92,7 @@ export default function TimeSlotItem(props: Props) {
   }
 
   const toggleModalEdit = () => {
-    setOpenModalEdit(!openModalEdit)
+    if (checkDayOfWeek(dayOfWeek)) setOpenModalEdit(!openModalEdit)
   }
 
   const handleChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -226,7 +227,14 @@ export default function TimeSlotItem(props: Props) {
         >{`${getTimeZone(timeSlotDTO.startTime)} - ${getTimeZone(
           addHoursToDate(new Date(timeSlotDTO.startTime), timeSlotDTO.duration)
         )}`}</span>
-        <CloseIcon className='delete__time-icon' onClick={toggleModalConfirm} />
+        {checkDayOfWeek(dayOfWeek) ? (
+          <CloseIcon
+            className='delete__time-icon'
+            onClick={toggleModalConfirm}
+          />
+        ) : (
+          ''
+        )}
       </>
     )
   }

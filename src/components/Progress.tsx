@@ -54,7 +54,7 @@ export default function Progress() {
     }
   }, [])
 
-  console.log(eventlisteners)
+
 
   return (
     <Box sx={styles.container}>

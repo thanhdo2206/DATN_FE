@@ -4,6 +4,7 @@ import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import Modal from '@mui/material/Modal'
 import React, { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import ButtonCustomize from '../../../components/ButtonCustomize'
 import { ProgressListener } from '../../../components/Progress'
@@ -13,7 +14,12 @@ import {
 } from '../../../interface/TimeSlotInterfaces'
 import { useAppDispatch } from '../../../redux/hooks'
 import { addArrTimeSlotThunk } from '../../../redux/slices/timeSlotSlice'
-import { addHoursToDate, getAllHour, subDate } from '../../../utils/date'
+import {
+  addHoursToDate,
+  checkDayOfWeek,
+  getAllHour,
+  subDate
+} from '../../../utils/date'
 import FormSelectTime from './FormSelectTime'
 
 type SelectTime = {
@@ -42,7 +48,14 @@ export default function ModalSchedule(props: Props) {
 
   const [checkSelect, setCheckSelect] = useState<boolean>(true)
 
-  const handleOpen = () => setOpen(true)
+  const handleOpen = () => {
+    if (arrStartTimeCorrect.length === 0) {
+      toast.warn('Schedule timing of you are full')
+
+      return
+    }
+    setOpen(true)
+  }
   const handleClose = () => {
     setOpen(false)
     setSelectTimes([{ startTime: '', endTime: '', isDisable: false }])
@@ -99,6 +112,12 @@ export default function ModalSchedule(props: Props) {
     }
 
     updateStartTimeCorrectAndEndTime()
+    if (arrStartTimeCorrect.length === 1 || arrStartTimeCorrect.length === 0) {
+      toast.warn('Schedule timing of you are full')
+
+      return
+    }
+
     const arrSelectTimeDisable = selectTimes.map((item, index) => {
       item.isDisable = true
       return item
@@ -180,7 +199,11 @@ export default function ModalSchedule(props: Props) {
     // console.log('arrEndTimeCheck', arrEndTimeCheck)
 
     // setArrStartTime(arrStartTimeCheck)
-    setArrEndTime(arrEndTimeCheck)
+    setArrEndTime([
+      ...arrEndTimeCheck,
+      new Date('2023-05-01T05:30:00.000+00:00'),
+      new Date('2023-05-01T10:30:00.000+00:00')
+    ])
   }
 
   const createArrStartTimeCorrect = (
@@ -194,13 +217,10 @@ export default function ModalSchedule(props: Props) {
       return !checkExist
     })
 
-    // console.log('arrStartTimeCorrect', arrTime)
-
     setArrStartTimeCorrect(arrTime)
   }
 
   const updateStartTimeCorrectAndEndTime = () => {
-    // console.log('update correct start time')
     const arrStartTimeUpdate: Date[] = []
     const arrEndTimeUpdate: Date[] = [...arrEndTime]
 
@@ -257,12 +277,17 @@ export default function ModalSchedule(props: Props) {
 
   return (
     <>
-      <span className='btn__add__time' onClick={handleOpen}>
-        <span>
-          <AddCircleIcon sx={{ marginRight: '2px' }} />
-          Add Time Slot
+      {checkDayOfWeek(dayOfWeek) ? (
+        <span className='btn__add__time' onClick={handleOpen}>
+          <span>
+            <AddCircleIcon sx={{ marginRight: '2px' }} />
+            Add Time Slot
+          </span>
         </span>
-      </span>
+      ) : (
+        ''
+      )}
+
       <Modal
         open={open}
         onClose={() => {

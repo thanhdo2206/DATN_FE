@@ -1,4 +1,5 @@
-import { ITimeSlot } from '../interface/TimeSlotInterfaces'
+import { ITimeSlot } from '../interface/TimeSlotInterfaces';
+
 
 export const addHoursToDate = (objDate: Date, minuteDuration: number): Date => {
   var numberOfMilliseconds = objDate.getTime()
@@ -75,7 +76,7 @@ export const getAllDateOfCurrentWeek = (): string[] => {
 
 export const getAllHour = (): Date[] => {
   let date7Hour = new Date('2023-05-01T00:00:00.000+00:00')
-  let day1 = new Date('2023-05-01T04:00:00.000+00:00') //11h
+  let day1 = new Date('2023-05-01T05:00:00.000+00:00') //12h
   let day2 = new Date('2023-05-01T06:30:00.000+00:00') //13h30
 
   let arrHour: Date[] = [date7Hour]
@@ -154,4 +155,14 @@ export const sortStartTime = (arrTimeSlots: ITimeSlot[]): ITimeSlot[] => {
   return arrTimeSlots.sort(function (a: ITimeSlot, b: ITimeSlot) {
     return new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
   })
+}
+
+export const checkDayOfWeek = (dayOfWeek: string|Date): boolean => {
+  const today = new Date('2023-04-28T00:00:00.000+00:00')
+  today.setHours(0, 0, 0, 0)
+
+  const objDayOfWeek = new Date(dayOfWeek)
+  objDayOfWeek.setHours(0, 0, 0, 0)
+
+  return today <= objDayOfWeek
 }

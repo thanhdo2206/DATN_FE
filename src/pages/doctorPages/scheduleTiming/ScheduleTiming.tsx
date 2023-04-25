@@ -68,6 +68,12 @@ export default function ScheduleTiming({}: Props) {
   const renderTimeSlotItem = () => {
     if (arrTimeSlotOfDoctorInCurrentWeek.length === 0) return ''
     if (timeSlotsOfDay.length === 0) return <span>Not Available</span>
+    timeSlotsOfDay.sort(function (a: ITimeSlotResponse, b: ITimeSlotResponse) {
+      return (
+        new Date(a.timeSlotDTO.startTime).getTime() -
+        new Date(b.timeSlotDTO.startTime).getTime()
+      )
+    })
     return timeSlotsOfDay.map((item, index) => {
       return (
         <TimeSlotItem
