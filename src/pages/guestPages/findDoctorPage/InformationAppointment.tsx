@@ -15,10 +15,10 @@ export default function InformationAppointment(props: Props) {
   return (
     <div className='box__container__information'>
       <Grid container className='container__information-appointment'>
-        <Grid item xs={6} sx={{ borderRight: '1px solid #ccc' }}>
+        <Grid item xs={7} sx={{ borderRight: '1px solid #ccc' }}>
           <ShortDescriptionDoctor medical={medicalExamination} />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={5}>
           <TimeSlots
             timeSlotsResponse={listTimeSlot}
             examinationPrice={medicalExamination.examinationPrice}

@@ -1,3 +1,4 @@
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital'
 import React from 'react'
 import Avatar from 'react-avatar'
 import { NavLink } from 'react-router-dom'
@@ -38,15 +39,11 @@ export default function ShortDescriptionDoctor(props: Props) {
             {medical.title}
           </NavLink>
           <div className='container__short-description'>
-            {medical.shortDescription
-              .split('\n')
-              .map((item: string, index: number) => {
-                return (
-                  <span className='text__short' key={index}>
-                    {item}
-                  </span>
-                )
-              })}
+            <p>{medical?.shortDescription.split('\n')[0]}</p>
+            <div className='department'>
+              <LocalHospitalIcon className='icon__department'/>
+              <span>{medical?.department.name}</span>
+            </div>
           </div>
         </div>
       </div>

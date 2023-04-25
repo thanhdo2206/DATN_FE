@@ -14,19 +14,23 @@ export default function BreadCrumbs({}: Props) {
   const location = useLocation()
 
   let currentLink = ''
+  let check = location.pathname.includes('appointment')
 
-  const crumbs = location.pathname
-    .split('/')
-    .filter((crumb) => crumb !== '')
-    .forEach((crumb, index) => {
-      currentLink += `/${crumb}`
-      if (index !== 0) {
-        let content = crumb.split('-').join(' ')
-        breadcrumbs.push({ content: content, url: currentLink })
-      }
-    })
+  if (check) {
+    breadcrumbs.push({ content: 'Appointment', url: '/doctor/appointment' })
+  } else {
+    location.pathname
+      .split('/')
+      .filter((crumb) => crumb !== '')
+      .forEach((crumb, index) => {
+        currentLink += `/${crumb}`
 
-  // console.log(breadcrumbs)
+        if (index !== 0) {
+          let content = crumb.split('-').join(' ')
+          breadcrumbs.push({ content: content, url: currentLink })
+        }
+      })
+  }
 
   const renderCrumb = () => {
     return breadcrumbs.map((crumb) => {

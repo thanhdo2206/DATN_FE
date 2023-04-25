@@ -81,7 +81,6 @@ export default function ModalSchedule(props: Props) {
         }
       }
     )
-    // console.log(dataRequest)
 
     await dispatch(addArrTimeSlotThunk(dataRequest))
   }
@@ -149,15 +148,12 @@ export default function ModalSchedule(props: Props) {
       setCheckSelect(false)
       return
     }
-    // console.log('SelectTimes', selectTimes)
 
     handleClose()
     await setTimeout(() => {
       addArrTimeSlotApi()
       ProgressListener.emit('stop')
     }, 2000)
-
-    // thực hiện lưu dữ liệu api ở trên
 
     setSelectTimes([{ startTime: '', endTime: '', isDisable: false }])
   }
@@ -167,12 +163,10 @@ export default function ModalSchedule(props: Props) {
   const [arrStartTimeCorrect, setArrStartTimeCorrect] = useState<Date[]>([])
 
   useEffect(() => {
-    // console.log('dayOfWeek', dayOfWeek)
     createArrStartAndEndTime()
   }, [dayOfWeek, timeSlotsOfDay])
 
   const createArrStartAndEndTime = () => {
-    // console.log('createArrStartAndEndTime')
     const arrStartTimeCheck: Date[] = []
     const arrEndTimeCheck: Date[] = []
 
@@ -182,7 +176,6 @@ export default function ModalSchedule(props: Props) {
       dayByStartTime.setDate(1)
       dayByStartTime.setMonth(4)
       dayByStartTime.setFullYear(2023)
-      //dayByStartTime: 01/05/2023 giờ
       arrStartTimeCheck.push(dayByStartTime)
       arrEndTimeCheck.push(addHoursToDate(dayByStartTime, timeSlotDTO.duration))
 
@@ -194,11 +187,6 @@ export default function ModalSchedule(props: Props) {
 
     createArrStartTimeCorrect(arrStartTimeCheck, arrStartTimeDefaut)
 
-    // console.log('arrStartTimeCheck', arrStartTimeCheck)
-
-    // console.log('arrEndTimeCheck', arrEndTimeCheck)
-
-    // setArrStartTime(arrStartTimeCheck)
     setArrEndTime([
       ...arrEndTimeCheck,
       new Date('2023-05-01T05:30:00.000+00:00'),
@@ -261,19 +249,6 @@ export default function ModalSchedule(props: Props) {
     })
     setArrEndTime([...arrEndTimeUpdate])
   }
-
-  // const checkStopAddMore = () => {}
-
-  // useEffect(() => {
-  //   checkStopAddMore()
-  // }, [arrStartTimeCorrect])
-
-  // console.log('arrStartTimeDefaut', arrStartTimeDefaut)
-  // console.log('arrStartTime', arrStartTime)
-
-  // console.log('arrEndTime', arrEndTime)
-
-  // console.log('arrStartTimeCorrect', arrStartTimeCorrect)
 
   return (
     <>

@@ -10,7 +10,6 @@ import { NavLink } from 'react-router-dom'
 import { RootState } from '../../../redux/configStore'
 import BreadCrumbs from './BreadCrumbs'
 
-
 type Props = {}
 
 export default function NavBar({}: Props) {
@@ -20,9 +19,6 @@ export default function NavBar({}: Props) {
     <nav className='container__nav'>
       <div className='container__nav-content'>
         <div className='nav__left'>
-          {/* <HomeOutlinedIcon />
-          <ChevronRightIcon />
-          <NavLink to='/'>Schedule</NavLink> */}
           <BreadCrumbs />
         </div>
         <div className='nav__right'>

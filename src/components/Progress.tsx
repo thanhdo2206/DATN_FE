@@ -8,10 +8,13 @@ const styles = {
     top: 0,
     right: 0,
     left: 0,
-    zIndex:2
+    zIndex: 2
   },
   progress: {
-    height: '6px'
+    height: '6px',
+    '& .MuiLinearProgress-bar': {
+      backgroundColor: '#178f73'
+    }
   }
 }
 
@@ -58,7 +61,7 @@ export default function Progress() {
 
   return (
     <Box sx={styles.container}>
-      {state && <LinearProgress sx={styles.progress} />}
+      {state && <LinearProgress color='success' sx={styles.progress} />}
     </Box>
   )
 }

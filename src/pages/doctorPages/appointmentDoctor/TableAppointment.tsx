@@ -36,34 +36,9 @@ export default function TableAppointment(props: Props) {
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>{params.colDef.headerName} </strong>
       ),
-      field: 'doctor',
-      headerName: 'Doctor',
-      sortable: false,
-      filterable: false,
-      width: 240,
-      renderCell: (params: GridRenderCellParams) => {
-        const doctor: UserInformation = params.value
-
-        return (
-          <>
-            <img src={doctor.profilePicture} alt='' />
-            <div>
-              <p>
-                Dr.{doctor.firstName} {doctor.lastName}
-              </p>
-              {/* <p>Dental</p> */}
-            </div>
-          </>
-        )
-      }
-    },
-    {
-      renderHeader: (params: GridColumnHeaderParams) => (
-        <strong>{params.colDef.headerName} </strong>
-      ),
       field: 'bookingDate',
       headerName: 'Booking Date',
-      width: 220
+      width: 200
     },
     {
       renderHeader: (params: GridColumnHeaderParams) => (
@@ -72,7 +47,7 @@ export default function TableAppointment(props: Props) {
       field: 'startTime',
       headerName: 'Start Time',
       sortable: false,
-      width: 140
+      width: 160
     },
     {
       renderHeader: (params: GridColumnHeaderParams) => (
@@ -81,7 +56,7 @@ export default function TableAppointment(props: Props) {
       field: 'endTime',
       headerName: 'End Time',
       sortable: false,
-      width: 140
+      width: 160
     },
     {
       renderHeader: (params: GridColumnHeaderParams) => (
