@@ -3,6 +3,9 @@
   padding: 0 100px;
   justify-content: space-between;
   margin-top: 20px;
+  /* padding-top: 20px; */
+  /* height: calc(100vh - 75px); */
+  /* background-color: var(--background-color); */
 }
 
 /*patient booked appointment*/
