@@ -1,4 +1,5 @@
-import { ITimeSlot } from '../interface/TimeSlotInterfaces'
+import { ITimeSlot } from '../interface/TimeSlotInterfaces';
+
 
 export const addHoursToDate = (objDate: Date, minuteDuration: number): Date => {
   var numberOfMilliseconds = objDate.getTime()
@@ -156,7 +157,7 @@ export const sortStartTime = (arrTimeSlots: ITimeSlot[]): ITimeSlot[] => {
   })
 }
 
-export const checkDayOfWeek = (dayOfWeek: string | Date): boolean => {
+export const checkDayOfWeek = (dayOfWeek: string|Date): boolean => {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 

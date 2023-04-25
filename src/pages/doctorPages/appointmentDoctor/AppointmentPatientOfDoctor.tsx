@@ -28,30 +28,26 @@ export default function AppointmentPatientOfDoctor({}: Props) {
 
   const arrInforPatient = [
     {
-      title: 'Gender',
+      title: 'Gender:',
       value: appointments[0]?.patient.gender ? 'Male' : 'Female'
     },
     {
-      title: 'Age',
+      title: 'Age:',
       value: '30'
     },
     {
-      title: 'Phone',
+      title: 'Phone:',
       value: appointments[0]?.patient.phoneNumber
     },
     {
-      title: 'Address',
+      title: 'Address:',
       value: appointments[0]?.patient.address
     }
   ]
 
   return (
     <div className='container__patient--doctor'>
-      <div className='table__appointment'>
-        <TableAppointment appointments={appointments} />
-      </div>
-
-      {/* <div className='card widget__profile-paient'>
+      <div className='card widget__profile-paient'>
         <div className='card__header'>
           <div className='profile__info-widget'>
             <img src={appointments[0]?.patient.profilePicture} alt='' />
@@ -73,7 +69,11 @@ export default function AppointmentPatientOfDoctor({}: Props) {
             })}
           </ul>
         </div>
-      </div> */}
+      </div>
+
+      <div className='table__appointment'>
+        <TableAppointment appointments={appointments} />
+      </div>
     </div>
   )
 }

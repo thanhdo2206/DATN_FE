@@ -94,7 +94,7 @@ export default function ScheduleExamination(props: Props) {
         </select>
 
         <div className='container__schedule--package'>
-          <div>
+          <div className='container__schedule--icon'>
             <CalendarMonthIcon />
             <b>SCHEDULE</b>
           </div>

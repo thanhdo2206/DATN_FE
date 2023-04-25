@@ -65,7 +65,7 @@
 }
 
 .container__schedule .title__box {
-  background-color: var(--color-title-box);
+  background-color: var(--color-button-hover);
   padding: 20px 30px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -92,6 +92,11 @@
   padding: 10px 0px;
 }
 
+.container__schedule .container__schedule--package .container__schedule--icon {
+  display: flex;
+  align-items: center;
+}
+
 .container__schedule--package .container__schedule__time {
   margin-top: 20px;
 }
@@ -107,7 +112,7 @@
   font-weight: bolder;
   color: #000;
   display: inline-block;
-  padding: 10px 15px;
+  padding: 6px 4px;
   background: #eee;
   border-radius: 3px;
 }
