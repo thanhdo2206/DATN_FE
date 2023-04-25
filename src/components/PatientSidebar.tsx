@@ -78,23 +78,24 @@ function PatientSidebar() {
   return (
     <div className='patient__sidebar--container'>
       <div className='patient__div--header'>
-        <div className='avatar__div--edit'>
-          <ThemeProvider theme={customFontIconHeader}>
-            <AvatarProfile src={currentUser.profilePicture}>
-              <PersonIcon sx={{ fontSize: '60px' }} />
-            </AvatarProfile>
-            <motion.button
-              whileTap={{ scale: 1.2 }}
-              className='avatar__btn--edit'
-              onClick={handleOpen}
-            >
-              <CreateIcon fontSize='small' />
-            </motion.button>
-          </ThemeProvider>
+        <div className='avatar__div--container'>
+          <div className='avatar__div--edit'>
+            <ThemeProvider theme={customFontIconHeader}>
+              <AvatarProfile src={currentUser.profilePicture}>
+                <PersonIcon sx={{ fontSize: '60px' }} />
+              </AvatarProfile>
+              <motion.button
+                whileTap={{ scale: 1.2 }}
+                className='avatar__btn--edit'
+                onClick={handleOpen}
+              >
+                <CreateIcon fontSize='small' />
+              </motion.button>
+            </ThemeProvider>
+          </div>
         </div>
         <div className='patient__header--content'>
           <p className='patient__text--username'>{`${currentUser.firstName} ${currentUser.lastName}`}</p>
-          <p className='patient__text--email'>{currentUser.email}</p>
         </div>
       </div>
       <div className='profile__list'>
