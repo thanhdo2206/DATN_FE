@@ -15,6 +15,7 @@ import { getListAppointment } from '../../../redux/thunk/appointmentThunk'
 import { TableCellProfile } from '../../../themes/profileStyle'
 import { convertVND } from '../../../utils/convertMoney'
 import { addHoursToDate, formatDate, getTimeZone } from '../../../utils/date'
+import { StatusAppointment } from '../../../utils/statusAppointment'
 
 interface Column {
   id: 'doctorName' | 'apptDate' | 'startTime' | 'endTime' | 'price' | 'status'
@@ -32,7 +33,7 @@ const columns: readonly Column[] = [
   { id: 'status', label: 'Status', minWidth: 100 }
 ]
 
-interface Data {
+interface TableAppointment {
   doctorName: string
   profilePicture: string
   departmentName: string
@@ -43,7 +44,7 @@ interface Data {
   status: number
 }
 
-function createData(
+function createDataTableAppointment(
   doctorName: string,
   profilePicture: string,
   departmentName: string,
@@ -52,7 +53,7 @@ function createData(
   endTime: string,
   price: string,
   status: number
-): Data {
+): TableAppointment {
   return {
     doctorName,
     profilePicture,
@@ -69,7 +70,7 @@ const rowsPerPage = 6
 
 function TableBookedAppointment() {
   const [page, setPage] = useState(0)
-  const [appointmentRows, setAppointmentRows] = useState<Data[]>([])
+  const [appointmentRows, setAppointmentRows] = useState<TableAppointment[]>([])
   const dispatch = useAppDispatch()
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -77,6 +78,7 @@ function TableBookedAppointment() {
   }
   const { listAppointments } = useAppSelector((state) => state.appointments)
 
+  console.log(listAppointments)
   useEffect(() => {
     if (listAppointments.length === 0) {
       const fetchApiGetListAppointment = async () => {
@@ -85,12 +87,14 @@ function TableBookedAppointment() {
       fetchApiGetListAppointment()
       return
     }
+  }, [])
 
+  useEffect(() => {
     const appointments = listAppointments.map((appointment) => {
       const date = new Date(appointment.startTime)
-      return createData(
+      return createDataTableAppointment(
         `Dr. ${appointment.firstNameDoctor} ${appointment.lastNameDoctor}`,
-        `${appointment.imageDoctor}`,
+        `${appointment.profilePictureDoctor}`,
         `${appointment.nameDepartment}`,
         `${formatDate(date)}`,
         `${getTimeZone(appointment.startTime)}`,
@@ -100,7 +104,7 @@ function TableBookedAppointment() {
       )
     })
     setAppointmentRows(appointments)
-  }, [])
+  }, [listAppointments])
 
   return (
     <>
@@ -109,9 +113,9 @@ function TableBookedAppointment() {
           <Table sx={{ minWidth: 650 }} aria-label='simple table'>
             <TableHead>
               <TableRow>
-                {columns.map((column) => (
+                {columns.map((column, index) => (
                   <TableCellProfile
-                    key={column.id}
+                    key={index}
                     align={column.align}
                     style={{ minWidth: column.minWidth }}
                   >
@@ -123,14 +127,9 @@ function TableBookedAppointment() {
             <TableBody>
               {appointmentRows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
+                .map((row, index) => {
                   return (
-                    <TableRow
-                      hover
-                      role='checkbox'
-                      tabIndex={-1}
-                      key={row.apptDate}
-                    >
+                    <TableRow hover role='checkbox' tabIndex={-1} key={index}>
                       {columns.map((column) => {
                         const value = row[column.id]
                         return (
@@ -142,13 +141,17 @@ function TableBookedAppointment() {
                               <>
                                 <div className='doctor__group--name'>
                                   <div className='doctor__profile--picture'>
-                                    <Avatar src={`${row.profilePicture}`} />
+                                    <Avatar src={row.profilePicture} />
                                   </div>
                                   <div className='doctor__name'>
                                     {row.doctorName}
                                     <span>{row.departmentName}</span>
                                   </div>
                                 </div>
+                              </>
+                            ) : value === row.status ? (
+                              <>
+                                <RenderStatus status={row.status} />
                               </>
                             ) : (
                               value
@@ -176,3 +179,18 @@ function TableBookedAppointment() {
 }
 
 export default TableBookedAppointment
+
+type IProps = {
+  status?: number
+}
+
+const RenderStatus = (props: IProps) => {
+  const { status } = props
+  if (status === StatusAppointment.Pending)
+    return <p className='apt__txt--status txt--pending'>Pending</p>
+  if (status === StatusAppointment.Approved)
+    return <p className='apt__txt--status txt--approved'>Approved</p>
+  if (status === StatusAppointment.Cancel)
+    return <p className='apt__txt--status txt--cancel'>Cancel</p>
+  return <></>
+}

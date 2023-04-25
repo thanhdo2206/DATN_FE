@@ -39,6 +39,7 @@ import {
   CHECK_PHONE_NUMBER_MATCH_REGEX
 } from '../../../utils/validateInform'
 import CustomizedSwitch from './CustomizedSwitch'
+import { getListAppointment } from '../../../redux/thunk/appointmentThunk'
 
 const flagVN = require('../../../assets/img/vietnam_flag.png')
 
@@ -103,6 +104,7 @@ export default function FormAppointment(props: Props) {
       timeSlotResponse?.doctorId as number,
       timeSlotResponse?.timeSlotDTO.id as number
     )
+    await dispatch(getListAppointment())
   }
 
   const updateProfile = async (dataUserProfile: DataUserProfile) => {
