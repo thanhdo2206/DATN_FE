@@ -10,27 +10,25 @@ import HeaderBoxLogo from '../components/header/HeaderBoxLogo'
 import { useAppSelector } from '../redux/hooks'
 import { clearMessage } from '../redux/slices/authSlice'
 import { checkResponseSuccess } from '../utils/checkResponseStatus'
+import { Role } from '../utils/roles'
 
 function AuthTemplate() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const { status, message, isAuth, currentUser } = useAppSelector(
+  const { status, message, isAuth, role } = useAppSelector(
     (state) => state.auths
   )
 
   useEffect(() => {
-    if (isAuth) {
+    if (isAuth && role === Role.Patient) {
       navigate('/home')
     }
-    dispatch(clearMessage())
-  }, [])
 
-  useEffect(() => {
-    if (JSON.stringify(currentUser) !== '{}') {
-      navigate('/home')
+    if (isAuth && role === Role.Doctor) {
+      navigate('/doctor/appointment')
     }
-  }, [currentUser])
+  }, [isAuth])
 
   const handleCloseAlert = () => {
     dispatch(clearMessage())

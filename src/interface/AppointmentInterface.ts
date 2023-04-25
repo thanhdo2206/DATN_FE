@@ -8,7 +8,7 @@ export interface AppointmentInforInterface {
   doctorId: number
   lastNameDoctor: string
   genderDoctor: boolean
-  imageDoctor: string
+  profilePictureDoctor: string
   nameDepartment: string
   firstNameDoctor: string
   appointmentId: number
