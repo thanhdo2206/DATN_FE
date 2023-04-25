@@ -57,8 +57,6 @@ export default function Progress() {
     }
   }, [])
 
-
-
   return (
     <Box sx={styles.container}>
       {state && <LinearProgress color='success' sx={styles.progress} />}
