@@ -1,15 +1,16 @@
 import { Box } from '@mui/material'
-import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import * as Yup from 'yup'
 
+import { ProgressListener } from '../../../components/Progress'
 import { FormLoginValues } from '../../../interface/ValidateInterface'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 import { clearMessage } from '../../../redux/slices/authSlice'
 import { loginUser } from '../../../redux/thunk/authThunk'
 import FormikCustomize from '../../../utils/formik/FormikCustomize'
 import { EMAIL_REGEX } from '../../../utils/regex'
-import { Role } from '../../../utils/roles'
 import {
   CHECK_EMAIL_EMPTY,
   CHECK_EMAIL_MATCH_REGEX,
@@ -42,13 +43,18 @@ const loginInputFields: LoginInputField[] = [
 
 export default function LoginPage() {
   const dispatch = useAppDispatch()
-  const [loadingLogin, setLoadingLogin] = useState<boolean>(false)
+  const { isAuth } = useAppSelector((state) => state.auths)
 
+  useEffect(() => {
+    if (isAuth) {
+      toast.success('Login successfullly')
+    }
+  }, [isAuth])
   const handleLoginSubmit = (values: FormLoginValues) => {
     const fetchApiLoign = async (dataLogin: FormLoginValues) => {
-      setLoadingLogin(true)
+      ProgressListener.emit('start')
       await dispatch(loginUser(dataLogin))
-      setLoadingLogin(false)
+      ProgressListener.emit('stop')
     }
     fetchApiLoign(values)
   }
@@ -75,7 +81,6 @@ export default function LoginPage() {
             inputFields={loginInputFields}
             onValidationSchema={handleLoginValidationSchema}
             onSubmitFormik={handleLoginSubmit}
-            loadingFormik={loadingLogin}
             btnText='Sign in'
           />
         </Box>

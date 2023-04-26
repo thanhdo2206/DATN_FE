@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { toast } from 'react-toastify'
 import * as Yup from 'yup'
 
+import { ProgressListener } from '../../../components/Progress'
 import {
   DataUserProfile,
   FormUserProfileValues
@@ -72,9 +73,9 @@ const PatientProfile = () => {
 
   const handleUpdateProfilesSubmit = (values: FormUserProfileValues) => {
     const fetchApiUpdateProfile = async (dataUserProfile: DataUserProfile) => {
-      setLoading(true)
+      ProgressListener.emit('start')
       await dispatch(updateUserProfile(dataUserProfile))
-      setLoading(false)
+      ProgressListener.emit('stop')
       toast.success('Your profile update successfully')
     }
 

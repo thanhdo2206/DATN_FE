@@ -1,7 +1,15 @@
 .box__alert {
   width: 70%;
-  margin: 10px auto 0 auto;
+  margin: 100px auto 0 auto;
   position: relative;
+}
+
+.auth__outlet {
+  margin-top: 120px;
+}
+
+.auth__outlet--alert {
+  margin-top: 40px;
 }
 
 .container__auth {
@@ -9,7 +17,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 55px;
 }
 
 .auth__box--body {

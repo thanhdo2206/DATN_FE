@@ -63,7 +63,9 @@ function AuthTemplate() {
       ) : (
         <></>
       )}
-      <Outlet />
+      <div className={`${!message ? 'auth__outlet' : 'auth__outlet--alert'}`}>
+        <Outlet />
+      </div>
     </>
   )
 }
