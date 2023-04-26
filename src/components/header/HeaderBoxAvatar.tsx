@@ -31,7 +31,7 @@ const MenuHeader = () => {
 
   const handleLogoutUser = async () => {
     await dispatch(logoutUser())
-    // navigate('/home')
+    navigate('/home')
   }
 
   const handleClose = (

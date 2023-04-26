@@ -1,4 +1,3 @@
-import SearchBoxBookedAppointment from './SearchBoxBookedAppointment'
 import TableBookedAppointment from './TableBookedAppointment'
 
 const PatientBookedAppoitment = () => {
@@ -11,7 +10,6 @@ const PatientBookedAppoitment = () => {
         </p>
       </div>
       <div className='appointment__div--body'>
-        <SearchBoxBookedAppointment />
         <TableBookedAppointment />
       </div>
     </div>

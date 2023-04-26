@@ -1,3 +1,7 @@
+.container__home-doctor {
+  margin-top: 75px;
+}
+
 .container__home-doctor .title {
   text-align: center;
   margin-bottom: 40px;
@@ -296,15 +300,15 @@
   margin-top: 12px;
 }
 
-.container__short-description .department{
-  margin-top:12px;
+.container__short-description .department {
+  margin-top: 12px;
   display: flex;
   align-items: center;
 }
 
-.container__short-description .department .icon__department{
- margin-right: 12px;
- color: red;
+.container__short-description .department .icon__department {
+  margin-right: 12px;
+  color: red;
 }
 
 .container__infor .text__short {

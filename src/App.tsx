@@ -10,6 +10,7 @@ import { updateAuth } from './redux/thunk/authThunk'
 import './reset_css.css'
 import ApplicationRoute from './routes/ApplicationRoute'
 import Loading from './utils/Loading'
+import ScrollToTop from './utils/ScrollToTop'
 import { Role } from './utils/roles'
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
+        <ScrollToTop />
         <>{loading ? <Loading /> : <ApplicationRoute />}</>{' '}
       </BrowserRouter>
       <ToastContainer

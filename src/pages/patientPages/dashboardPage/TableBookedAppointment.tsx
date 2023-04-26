@@ -1,3 +1,4 @@
+import SearchIcon from '@mui/icons-material/Search'
 import {
   Avatar,
   Paper,
@@ -8,11 +9,16 @@ import {
   TablePagination,
   TableRow
 } from '@mui/material'
+import { IconButton, InputAdornment } from '@mui/material'
 import { useEffect, useState } from 'react'
 
+import { ProgressListener } from '../../../components/Progress'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 import { getListAppointment } from '../../../redux/thunk/appointmentThunk'
-import { TableCellProfile } from '../../../themes/profileStyle'
+import {
+  TableCellProfile,
+  TextFieldProfile
+} from '../../../themes/profileStyle'
 import { convertVND } from '../../../utils/convertMoney'
 import { addHoursToDate, formatDate, getTimeZone } from '../../../utils/date'
 import { StatusAppointment } from '../../../utils/statusAppointment'
@@ -71,17 +77,38 @@ const rowsPerPage = 6
 function TableBookedAppointment() {
   const [page, setPage] = useState(0)
   const [appointmentRows, setAppointmentRows] = useState<TableAppointment[]>([])
+  const [appointmentRowsSearched, setAppointmentRowsSearched] = useState<
+    TableAppointment[]
+  >([])
   const dispatch = useAppDispatch()
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
   }
+
   const { listAppointments } = useAppSelector((state) => state.appointments)
   const { isCheckInitialStatus } = useAppSelector((state) => state.auths)
+  const [searchTerm, setSearchTerm] = useState<string>('')
+
+  const handleChangeSearchBox = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setSearchTerm(event.target.value)
+  }
+
+  const handleClickSearchBox = () => {
+    const searchAppointments = appointmentRows.filter((item) =>
+      item.doctorName.includes(searchTerm)
+    )
+    setAppointmentRowsSearched(searchAppointments)
+  }
+
   useEffect(() => {
-    if (listAppointments.length === 0 && !isCheckInitialStatus) {
+    if (!isCheckInitialStatus) {
       const fetchApiGetListAppointment = async () => {
+        ProgressListener.emit('start')
         await dispatch(getListAppointment())
+        ProgressListener.emit('stop')
       }
       fetchApiGetListAppointment()
       return
@@ -103,10 +130,27 @@ function TableBookedAppointment() {
       )
     })
     setAppointmentRows(appointments)
+    setAppointmentRowsSearched(appointments)
   }, [listAppointments])
 
   return (
     <>
+      <TextFieldProfile
+        id='search'
+        type='search'
+        size='small'
+        value={searchTerm}
+        onChange={handleChangeSearchBox}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position='end'>
+              <IconButton onClick={handleClickSearchBox}>
+                <SearchIcon />
+              </IconButton>
+            </InputAdornment>
+          )
+        }}
+      />
       <div className='table__container'>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label='simple table'>
@@ -124,7 +168,7 @@ function TableBookedAppointment() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {appointmentRows
+              {appointmentRowsSearched
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   return (

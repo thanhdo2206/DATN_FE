@@ -27,7 +27,7 @@ type Props = {
   onValidationSchema: any
   onValidate?: any
   onSubmitFormik: (values: any) => void
-  loadingFormik: boolean
+  loadingFormik?: boolean
   btnText: string
 }
 

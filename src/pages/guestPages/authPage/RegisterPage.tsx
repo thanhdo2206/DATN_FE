@@ -1,8 +1,9 @@
 import { Box } from '@mui/material'
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
 
+import { ProgressListener } from '../../../components/Progress'
 import { FormRegisterValues } from '../../../interface/ValidateInterface'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 import { clearMessage } from '../../../redux/slices/authSlice'
@@ -66,13 +67,12 @@ const registerInputFields: RegisterInputField[] = [
 const RegisterPage: React.FC = () => {
   const dispatch = useAppDispatch()
   const { role } = useAppSelector((state) => state.auths)
-  const [loadingRegister, setLoadingRegister] = useState<boolean>(false)
 
   const handleRegisterSubmit = (values: FormRegisterValues) => {
     const fetchApiRegister = async (dataRegister: FormRegisterValues) => {
-      setLoadingRegister(true)
+      ProgressListener.emit('start')
       await dispatch(registerUser(dataRegister))
-      setLoadingRegister(false)
+      ProgressListener.emit('stop')
     }
     const { confirmPassword, ...dataRegister } = values
     role === Role.Admin
@@ -149,7 +149,6 @@ const RegisterPage: React.FC = () => {
           onValidationSchema={handleRegisterValidationSchema}
           onValidate={handleRegisterValidation}
           onSubmitFormik={handleRegisterSubmit}
-          loadingFormik={loadingRegister}
           btnText='Sign up'
         />
       </Box>
