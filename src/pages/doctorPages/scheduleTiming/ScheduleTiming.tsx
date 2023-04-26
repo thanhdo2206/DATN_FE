@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import '../../../assets/css/pages/doctorPage/scheduleTiming/schedule_timing.css'
 import { ITimeSlotResponse } from '../../../interface/TimeSlotInterfaces'
 import { DispatchType, RootState } from '../../../redux/configStore'
+import { useAppSelector } from '../../../redux/hooks'
 import { getAllTimeSlotOfDoctorThunk } from '../../../redux/slices/timeSlotSlice'
 import {
   compareDate,
@@ -25,18 +26,20 @@ export default function ScheduleTiming({}: Props) {
   const dispatch: DispatchType = useDispatch()
   const [value, setValue] = useState(arrDayOfWeek[0])
 
-  const { arrTimeSlotOfDoctorInCurrentWeek } = useSelector(
-    (state: RootState) => state.timeSlotsReducer
+  const { arrTimeSlotOfDoctorInCurrentWeek } = useAppSelector(
+    (state) => state.timeSlotsReducer
   )
-
+  const { isCheckInitialStatus } = useAppSelector((state) => state.auths)
   const [timeSlotsOfDay, setTimeSlotsOfDay] = useState<ITimeSlotResponse[]>([])
 
-  const getAllTimeSlotOfDoctorInCurrentWeek = async () => {
-    await dispatch(getAllTimeSlotOfDoctorThunk())
-  }
-
   useEffect(() => {
-    getAllTimeSlotOfDoctorInCurrentWeek()
+    if (!isCheckInitialStatus) {
+      const getAllTimeSlotOfDoctorInCurrentWeek = async () => {
+        await dispatch(getAllTimeSlotOfDoctorThunk())
+      }
+
+      getAllTimeSlotOfDoctorInCurrentWeek()
+    }
   }, [])
 
   const getTimeSlotItemOfCurrentDayOfWeek = () => {

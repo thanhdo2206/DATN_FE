@@ -16,6 +16,7 @@ import { error } from 'console'
 import { useFormik } from 'formik'
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import * as Yup from 'yup'
 
 import ButtonCustomize from '../../../components/ButtonCustomize'
@@ -27,6 +28,7 @@ import {
 } from '../../../interface/UsersInterface'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 import { getAllMedicalExaminationTimeThunk } from '../../../redux/slices/medicalExaminationSlice'
+import { getListAppointment } from '../../../redux/thunk/appointmentThunk'
 import { updateUserProfile } from '../../../redux/thunk/userThunk'
 import { bookAppointmentService } from '../../../services/appointmentService'
 import { MODAL_ACTION_CONFIRM } from '../../../utils/contant'
@@ -39,7 +41,6 @@ import {
   CHECK_PHONE_NUMBER_MATCH_REGEX
 } from '../../../utils/validateInform'
 import CustomizedSwitch from './CustomizedSwitch'
-import { getListAppointment } from '../../../redux/thunk/appointmentThunk'
 
 const flagVN = require('../../../assets/img/vietnam_flag.png')
 
@@ -105,6 +106,7 @@ export default function FormAppointment(props: Props) {
       timeSlotResponse?.timeSlotDTO.id as number
     )
     await dispatch(getListAppointment())
+    toast.success('Your appointment has been booked successfully.')
   }
 
   const updateProfile = async (dataUserProfile: DataUserProfile) => {

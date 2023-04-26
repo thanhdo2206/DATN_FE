@@ -19,6 +19,7 @@ import { toast } from 'react-toastify'
 import '../../../assets/css/pages/doctorPage/appointmentDoctor/appointment_doctor.css'
 import { IAppointmentPageable } from '../../../interface/AppointmentInterface'
 import { DispatchType, RootState } from '../../../redux/configStore'
+import { useAppSelector } from '../../../redux/hooks'
 import {
   changeStatusAppointmentThunk,
   getAllAppointmentDoctorPageableThunk
@@ -43,6 +44,7 @@ export default function AppointmentDoctor({}: Props) {
   const { appointmentPageable } = useSelector(
     (state: RootState) => state.appointments
   )
+  const { isCheckInitialStatus } = useAppSelector((state) => state.auths)
 
   const [status, setStatus] = useState(`${StatusAppointment.Pending}`)
   const [page, setPage] = useState(1)
@@ -67,7 +69,9 @@ export default function AppointmentDoctor({}: Props) {
   }
 
   useEffect(() => {
-    getAllAppointmentDoctorPageable(page, PAGINATION_LIMIT, +status)
+    if (!isCheckInitialStatus) {
+      getAllAppointmentDoctorPageable(page, PAGINATION_LIMIT, +status)
+    }
   }, [])
 
   const handleChangePagination = (

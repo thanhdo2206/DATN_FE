@@ -1,5 +1,5 @@
 export const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
-export const NAME_REGEX = /^[A-Za-z]+([-']?[A-Za-z]+)?$/
+export const NAME_REGEX = /^[a-zA-Z]+(?:[ ]{1}[a-zA-Z]+)*$/
 export const PASSWORD_REGEX =
   /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d][A-Za-z\d!@#$%^&*()_+]{7,19}$/
 
