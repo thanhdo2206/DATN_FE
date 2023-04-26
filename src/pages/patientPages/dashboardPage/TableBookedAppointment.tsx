@@ -77,10 +77,9 @@ function TableBookedAppointment() {
     setPage(newPage)
   }
   const { listAppointments } = useAppSelector((state) => state.appointments)
-
-  console.log(listAppointments)
+  const { isCheckInitialStatus } = useAppSelector((state) => state.auths)
   useEffect(() => {
-    if (listAppointments.length === 0) {
+    if (listAppointments.length === 0 && !isCheckInitialStatus) {
       const fetchApiGetListAppointment = async () => {
         await dispatch(getListAppointment())
       }

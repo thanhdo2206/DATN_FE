@@ -75,6 +75,7 @@ const PatientProfile = () => {
       setLoading(true)
       await dispatch(updateUserProfile(dataUserProfile))
       setLoading(false)
+      toast.success('Your profile update successfully')
     }
 
     const dataUserProfile: DataUserProfile = {
