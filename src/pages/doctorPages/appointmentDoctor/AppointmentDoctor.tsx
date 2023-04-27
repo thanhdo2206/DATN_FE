@@ -1,32 +1,32 @@
-import AccessTimeFilledOutlinedIcon from '@mui/icons-material/AccessTimeFilledOutlined'
-import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
-import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
-import EmailIcon from '@mui/icons-material/Email'
-import LocalPhoneIcon from '@mui/icons-material/LocalPhone'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
-import { Button } from '@mui/material'
-import FormControl from '@mui/material/FormControl'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import Pagination from '@mui/material/Pagination'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
-import Stack from '@mui/material/Stack'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { NavLink } from 'react-router-dom'
-import { toast } from 'react-toastify'
+import AccessTimeFilledOutlinedIcon from '@mui/icons-material/AccessTimeFilledOutlined';
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import EmailIcon from '@mui/icons-material/Email';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { Button } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Pagination from '@mui/material/Pagination';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Stack from '@mui/material/Stack';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-import '../../../assets/css/pages/doctorPage/appointmentDoctor/appointment_doctor.css'
-import { IAppointmentPageable } from '../../../interface/AppointmentInterface'
-import { DispatchType, RootState } from '../../../redux/configStore'
-import { useAppSelector } from '../../../redux/hooks'
-import {
-  changeStatusAppointmentThunk,
-  getAllAppointmentDoctorPageableThunk
-} from '../../../redux/slices/appointmentSlice'
-import { formatDate } from '../../../utils/date'
-import { StatusAppointment } from '../../../utils/statusAppointment'
-import SketonItem from './SketonItem'
+
+
+import '../../../assets/css/pages/doctorPage/appointmentDoctor/appointment_doctor.css';
+import { IAppointmentPageable } from '../../../interface/AppointmentInterface';
+import { DispatchType, RootState } from '../../../redux/configStore';
+import { useAppSelector } from '../../../redux/hooks';
+import { changeStatusAppointmentThunk, getAllAppointmentDoctorPageableThunk } from '../../../redux/slices/appointmentSlice';
+import { formatDate } from '../../../utils/date';
+import { StatusAppointment } from '../../../utils/statusAppointment';
+import SketonItem from './SketonItem';
+
 
 type Props = {}
 
@@ -113,6 +113,7 @@ export default function AppointmentDoctor({}: Props) {
             startIcon={<CheckOutlinedIcon />}
             onClick={() => {
               changeStatusAppointment(appointmentId, StatusAppointment.Approved)
+              toast.success('Appointment Approved')
             }}
           >
             Approve
@@ -123,6 +124,7 @@ export default function AppointmentDoctor({}: Props) {
             startIcon={<CloseOutlinedIcon />}
             onClick={() => {
               changeStatusAppointment(appointmentId, StatusAppointment.Cancel)
+              toast.success('Appointment Canceled')
             }}
           >
             Cancel
