@@ -62,9 +62,6 @@ export default function FilterDoctor() {
         )
         ProgressListener.emit('stop')
       }, 2000)
-
-      // setFieldValue('minPrice', 0)
-      // setFieldValue('maxPrice', 0)
     }
   })
 
@@ -76,7 +73,6 @@ export default function FilterDoctor() {
     const arrCategory = Object.keys(objCategoryCheck).filter(
       (item) => objCategoryCheck[item]
     )
-    // dispatch(filterMedicalExaminationTimeThunkByCategory(arrCategory))
     ProgressListener.emit('start')
     setTimeout(() => {
       dispatch(
@@ -124,7 +120,7 @@ export default function FilterDoctor() {
           </div>
           <div className='container__price__range filter__widget'>
             <CurrencyInput
-              placeholder='From'
+              placeholder='0 đ'
               name='minPrice'
               className='input__price min__price'
               intlConfig={{ locale: 'vi-VN', currency: 'VND' }}
@@ -134,24 +130,22 @@ export default function FilterDoctor() {
                   ? setFieldValue('minPrice', 0)
                   : setFieldValue('minPrice', Number(value))
               }}
-              defaultValue={0}
-              value={values.minPrice}
+              value={values.minPrice === 0 ? '' : values.minPrice}
             />
             <span className='separator__symbol'>-</span>
 
             <CurrencyInput
-              placeholder='To'
+              placeholder='999.999.999.999 đ'
               onValueChange={(value) => {
                 !value
-                  ? setFieldValue('maxPrice', 0)
+                  ? setFieldValue('maxPrice', 999999999999)
                   : setFieldValue('maxPrice', Number(value))
               }}
-              defaultValue={999999999999}
               name='maxPrice'
               className='input__price max__price'
               intlConfig={{ locale: 'vi-VN', currency: 'VND' }}
               groupSeparator='.'
-              value={values.maxPrice}
+              value={values.maxPrice === 999999999999 ? '' : values.maxPrice}
             />
           </div>
           <Button type='submit' text='Apply' className='btn__apply' />
