@@ -4,6 +4,8 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  min-height: calc(100vh - 75px);
+  margin-top: 75px;
 }
 
 .book__appointment > .box__personal__infor.container__form__book {
@@ -148,10 +150,10 @@
   font-weight: 600;
 }
 
-.booking__summary .payment{
+.booking__summary .payment {
   display: flex;
-  justify-content:space-between;
-  align-items:center;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .booking__summary .payment h3 {

@@ -38,7 +38,7 @@ export default function TableAppointment(props: Props) {
       ),
       field: 'bookingDate',
       headerName: 'Booking Date',
-      width: 200
+      width: 250
     },
     {
       renderHeader: (params: GridColumnHeaderParams) => (
@@ -65,7 +65,7 @@ export default function TableAppointment(props: Props) {
       field: 'price',
       headerName: 'Price',
       sortable: false,
-      width: 140
+      width: 180
     },
     {
       renderHeader: (params: GridColumnHeaderParams) => (

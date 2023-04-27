@@ -22,13 +22,13 @@ export default function NavBar({}: Props) {
           <BreadCrumbs />
         </div>
         <div className='nav__right'>
-          <div className='avatar'>
+          {/* <div className='avatar'>
             {currentUser.profilePicture ? (
               <img src={currentUser.profilePicture} alt='' />
             ) : (
               <Avatar facebookId='100008343750912' size='120' />
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </nav>

@@ -8,7 +8,7 @@ const styles = {
     top: 0,
     right: 0,
     left: 0,
-    zIndex: 2
+    zIndex: 20
   },
   progress: {
     height: '6px',

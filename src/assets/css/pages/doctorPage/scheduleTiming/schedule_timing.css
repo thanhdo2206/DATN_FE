@@ -73,8 +73,8 @@
 .container__schedule .schedule__widget .tab__content-times .time__slot-item {
   display: inline-flex;
   align-items: center;
-  background-color: #d9534f;
-  border: 1px solid #d43f3a;
+  background-color: #199c7d;
+  border: 1px solid #199c7d;
   border-radius: 4px;
   color: #fff;
   font-size: 14px;
@@ -111,7 +111,7 @@
   .tab__content-times
   .time__slot-item
   .delete__time-icon {
-  color: #e48784;
+  color: #8bdbc8;
   margin-left: 5px;
   font-size: 18px;
 }
@@ -120,7 +120,7 @@
   .schedule__widget
   .tab__content-times
   .time__slot-item:hover {
-  background-color: #d43f3a;
+  background-color: #248f76;
   cursor: pointer;
 }
 

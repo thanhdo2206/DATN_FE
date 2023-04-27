@@ -57,7 +57,7 @@ export default function MainFindDoctor() {
             alt=''
           />
           <h1 className='title'>Search Doctor, Make an Appointment</h1>
-          <Search />
+          {/* <Search /> */}
         </div>
       </div>
       <section className='infor__appointment__container'>
