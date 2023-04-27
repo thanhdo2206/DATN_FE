@@ -287,7 +287,7 @@
 .container__infor .title__doctor {
   font-weight: bold;
   color: var(--color-title);
-  font-size: var(--font-size-title);
+  font-size: 18px;
   text-decoration: none;
   transition: all 0.2s ease;
 }
@@ -298,6 +298,12 @@
 
 .container__short-description {
   margin-top: 12px;
+}
+
+.container__short-description > p {
+  color: var(--color-text);
+  font-size: var(--font-size-text);
+  line-height: 20px;
 }
 
 .container__short-description .department {

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import CurrencyInput from 'react-currency-input-field'
 
 import Button from '../../../components/ButtonCustomize'
+import { ProgressListener } from '../../../components/Progress'
 import { ICategory } from '../../../interface/CategoryInterfaces'
 import { IMedicalExaminationFilter } from '../../../interface/MedicalExaminationInterfaces'
 import { useAppDispatch } from '../../../redux/hooks'
@@ -46,26 +47,28 @@ export default function FilterDoctor() {
     initialValues: {
       category: [],
       minPrice: 0,
-      maxPrice: 0
+      maxPrice: 999999999999
     },
     onSubmit: (values) => {
       let { category, minPrice, maxPrice } = values
-
-      dispatch(
-        filterMedicalExaminationTimeThunkByCategoryAndPrice(
-          category,
-          minPrice,
-          maxPrice
+      ProgressListener.emit('start')
+      setTimeout(() => {
+        dispatch(
+          filterMedicalExaminationTimeThunkByCategoryAndPrice(
+            category,
+            minPrice,
+            maxPrice
+          )
         )
-      )
+        ProgressListener.emit('stop')
+      }, 2000)
 
-      setFieldValue('minPrice', 0)
-      setFieldValue('maxPrice', 0)
+      // setFieldValue('minPrice', 0)
+      // setFieldValue('maxPrice', 0)
     }
   })
 
   const { handleChange, handleSubmit, setFieldValue, values } = formik
-
   const handleChangeCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
     handleChange(event)
     const objCategoryCheck = { ...categoryCheck }
@@ -73,7 +76,18 @@ export default function FilterDoctor() {
     const arrCategory = Object.keys(objCategoryCheck).filter(
       (item) => objCategoryCheck[item]
     )
-    dispatch(filterMedicalExaminationTimeThunkByCategory(arrCategory))
+    // dispatch(filterMedicalExaminationTimeThunkByCategory(arrCategory))
+    ProgressListener.emit('start')
+    setTimeout(() => {
+      dispatch(
+        filterMedicalExaminationTimeThunkByCategoryAndPrice(
+          arrCategory,
+          values.minPrice,
+          values.maxPrice
+        )
+      )
+      ProgressListener.emit('stop')
+    }, 2000)
 
     setCategoryCheck(objCategoryCheck)
   }
@@ -132,7 +146,7 @@ export default function FilterDoctor() {
                   ? setFieldValue('maxPrice', 0)
                   : setFieldValue('maxPrice', Number(value))
               }}
-              defaultValue={0}
+              defaultValue={999999999999}
               name='maxPrice'
               className='input__price max__price'
               intlConfig={{ locale: 'vi-VN', currency: 'VND' }}

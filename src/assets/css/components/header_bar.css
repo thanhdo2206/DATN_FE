@@ -7,7 +7,7 @@
   position: fixed;
   top: 0; 
   background-color: white;
-  z-index: 1000;
+  z-index: 10;
   width: 100%;
   box-shadow: 0px 0px 2px 1px #d5edea;
 }

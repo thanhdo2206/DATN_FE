@@ -5,6 +5,7 @@
 .container__detail__examination .container__information {
   padding: 80px 80px 120px 80px;
   background-color: var(--background-color);
+  min-height: calc(100vh - 75px);
 }
 
 .container__short__information {
