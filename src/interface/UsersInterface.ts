@@ -28,6 +28,7 @@ export interface UserInformation {
   firstName?: string
   lastName?: string
   phoneNumber?: string
+  age?: number
   gender?: boolean
   role?: string
 }
