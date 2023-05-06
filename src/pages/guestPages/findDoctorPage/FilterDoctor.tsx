@@ -120,11 +120,10 @@ export default function FilterDoctor() {
           </div>
           <div className='container__price__range filter__widget'>
             <CurrencyInput
-              placeholder='0 đ'
+              placeholder='$0'
               name='minPrice'
               className='input__price min__price'
-              intlConfig={{ locale: 'vi-VN', currency: 'VND' }}
-              groupSeparator='.'
+              intlConfig={{ locale: 'en-US', currency: 'USD' }}
               onValueChange={(value) => {
                 !value
                   ? setFieldValue('minPrice', 0)
@@ -135,7 +134,7 @@ export default function FilterDoctor() {
             <span className='separator__symbol'>-</span>
 
             <CurrencyInput
-              placeholder='999.999.999.999 đ'
+              placeholder='$999,999,999,999'
               onValueChange={(value) => {
                 !value
                   ? setFieldValue('maxPrice', 999999999999)
@@ -143,8 +142,7 @@ export default function FilterDoctor() {
               }}
               name='maxPrice'
               className='input__price max__price'
-              intlConfig={{ locale: 'vi-VN', currency: 'VND' }}
-              groupSeparator='.'
+              intlConfig={{ locale: 'en-US', currency: 'USD' }}
               value={values.maxPrice === 999999999999 ? '' : values.maxPrice}
             />
           </div>
