@@ -1,4 +1,5 @@
 import requestApi from '../utils/requestApi/requestApi'
+import requestPythonApi from '../utils/requestApi/requestPythonApi'
 
 export const filterMedicalExaminationTimeByCategoryAndPriceService = async (
   categories: string[],
@@ -51,6 +52,22 @@ export const getDetailMedicalExaminationTimeService = async (id: string) => {
       method: 'get'
     })
     return result.data
+  } catch (error) {
+    return error
+  }
+}
+
+export const getListPythonDepartmentIdApi = async (searchText: string) => {
+  try {
+    const response = await requestPythonApi({
+      method: 'post',
+      url: `/search_doctor`,
+      data: {
+        searchText
+      }
+    })
+    const { departmentId } = response.data
+    return departmentId
   } catch (error) {
     return error
   }

@@ -1,14 +1,15 @@
-import SearchIcon from '@mui/icons-material/Search';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import SearchIcon from '@mui/icons-material/Search'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 
-
-
-import Button from '../../../components/ButtonCustomize';
-import { RootState } from '../../../redux/configStore';
-import { useAppDispatch } from '../../../redux/hooks';
-import { getAllMedicalExaminationTimeAction } from '../../../redux/slices/medicalExaminationSlice';
-
+import Button from '../../../components/ButtonCustomize'
+import { RootState } from '../../../redux/configStore'
+import { useAppDispatch } from '../../../redux/hooks'
+import {
+  clearListDepartmentId,
+  getAllMedicalExaminationTimeAction,
+  getListPythonDepartmentId
+} from '../../../redux/slices/medicalExaminationSlice'
 
 export default function Search() {
   const [inputSearch, setInputSearch] = useState('')
@@ -27,6 +28,14 @@ export default function Search() {
         .includes(inputSearch.toLowerCase())
     })
 
+    console.log(arrMedicalExaminations)
+    const fetchApiGetListPythonDepartmentId = async () => {
+      await dispatch(getListPythonDepartmentId(inputSearch.toLowerCase()))
+    }
+    if (inputSearch) {
+      fetchApiGetListPythonDepartmentId()
+    }
+    dispatch(clearListDepartmentId())
     // dispatch(getAllMedicalExaminationTimeAction(data))
     // setInputSearch('')
 
