@@ -14,7 +14,7 @@ import Search from './Search'
 
 export default function MainFindDoctor() {
   const dispatch = useAppDispatch()
-  const { arrMedicalExaminations } = useSelector(
+  const { arrMedicalExaminations, arrDeparmentId } = useSelector(
     (state: RootState) => state.medicalExaminationReducer
   )
   const getMedicalExaminationTimeApi = async () => {
@@ -37,14 +37,29 @@ export default function MainFindDoctor() {
           </div>
         </div>
       )
+    if (arrDeparmentId.length === 0) {
+      return arrMedicalExaminations.map(
+        (medicalExamination: IMedicalExaminationTime, index: number) => {
+          return (
+            <InformationAppointment
+              key={index}
+              examinationAndTime={medicalExamination}
+            />
+          )
+        }
+      )
+    }
     return arrMedicalExaminations.map(
       (medicalExamination: IMedicalExaminationTime, index: number) => {
-        return (
-          <InformationAppointment
-            key={index}
-            examinationAndTime={medicalExamination}
-          />
-        )
+        const departmentId = medicalExamination.medicalExamination.department.id
+        if (arrDeparmentId.includes(departmentId)) {
+          return (
+            <InformationAppointment
+              key={index}
+              examinationAndTime={medicalExamination}
+            />
+          )
+        }
       }
     )
   }
@@ -57,7 +72,7 @@ export default function MainFindDoctor() {
             alt=''
           />
           <h1 className='title'>Search Doctor, Make an Appointment</h1>
-          {/* <Search /> */}
+          <Search />
         </div>
       </div>
       <section className='infor__appointment__container'>
