@@ -1,4 +1,5 @@
 import { Box } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 
 import '../../../assets/css/pages/guestPage/homePage/home_page.css'
 import ButtonCustomize from '../../../components/ButtonCustomize'
@@ -30,6 +31,11 @@ const cardItem: CardItemInterface[] = [
 ]
 
 export default function HomePage() {
+  const navigate = useNavigate()
+  const handleClickBtn = () => {
+    navigate('/search-doctor')
+  }
+
   return (
     <Box className='home__page--container'>
       <Box className='home__banner--container'>
@@ -40,14 +46,14 @@ export default function HomePage() {
               <span>for you now !</span>
             </p>
             <p className='banner__intor--des'>
-              We take the guesswork out of locating a doctor, hospital, or other
-              medical facility in your area for you and your family.
+              Discover the right doctor for you and your health needs - Find a Doctor now!
             </p>
           </Box>
           <Box className='banner__intro--btn'>
             <ButtonCustomize
               text='Get Appointment'
               className='btn__appointment btn__radius'
+              onClickBtn={handleClickBtn}
             />
           </Box>
         </Box>
