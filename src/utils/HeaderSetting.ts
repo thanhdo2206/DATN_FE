@@ -30,3 +30,10 @@ export const settings: MenuSettingsInteface[] = [
     action: true
   }
 ]
+
+export const settingsAdmin: MenuSettingsInteface[] = [
+  {
+    menuItem: 'Logout',
+    action: true
+  }
+]

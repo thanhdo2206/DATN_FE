@@ -47,3 +47,9 @@
 .btn__alert--close:hover {
   background-color: #f6f6f6;
 }
+
+.btn__department--add {
+  font-weight: normal;
+  padding: 10px 15px; 
+  border-radius: 5px;
+}
