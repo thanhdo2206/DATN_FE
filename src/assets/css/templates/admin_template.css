@@ -1,0 +1,57 @@
+.admin__container {
+  display: flex;
+}
+
+.admin__header {
+  height: 75px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.admin__sidebar {
+  width: 280px;
+}
+
+.admin__sidebar--header {
+  border-right: 1px solid rgb(216 216 216);
+}
+
+.admin__sidebar--body {
+  padding: 0 20px;
+  height: calc(99vh - 75px);
+  position: relative;
+  box-shadow: rgb(60 64 67 / 30%) -4px 11px 10px;
+  border-top: 1px solid rgb(216 216 216);
+}
+
+.admin__content--container {
+  width: calc(100% - 280px);
+}
+
+.admin__content--header {
+  width: 100%;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 10px;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.admin__outlet--container {
+  background-color: #f8f9fa;
+  height: calc(99vh - 75px);
+  padding: 0 14px;
+  padding-top: 20px;
+}
+
+/*Mui*/
+.admin__sidebar--body .MuiTreeView-root {
+  height: calc(99vh - 75px);
+}
+
+.admin__sidebar--body .style__box--icon {
+  border-radius: 5px;
+  background-color: #ecedf0;
+  padding: 5px 6px;
+}
+

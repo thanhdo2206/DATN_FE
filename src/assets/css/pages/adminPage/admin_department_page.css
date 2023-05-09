@@ -1,0 +1,66 @@
+.department__header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.department__p--title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.department__body {
+  margin-top: 30px;
+}
+
+.department__group--name {
+  display: flex;
+  align-items: center;
+}
+
+.department__name {
+  margin-left: 10px;
+  font-size: 15px;
+}
+
+.department__lable--focus .MuiBox-root {
+  color: var(--color-title-hover);
+}
+
+.div__group--action {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.div__group--action .btn__group--action {
+  font-size: 14px;
+  text-transform: capitalize;
+}
+
+.div__group--action .btn__edit {
+  background-color: rgba(15, 183, 107, 0.12);
+  color: #26af48;
+  margin-right: 9px;
+  padding: 3px 1px;
+}
+
+.div__group--action .btn__edit:hover {
+  background-color: rgba(15, 183, 107, 0.12);
+}
+.div__group--action .btn__delete {
+  background-color: rgba(242, 17, 54, 0.12);
+  color: #e63c3c;
+  padding: 3px 9px;
+}
+
+.div__group--action .btn__delete:hover {
+  background-color: rgba(242, 17, 54, 0.12);
+}
+
+.div__group--action .MuiButton-startIcon .MuiSvgIcon-root {
+  font-size: 15px;
+  margin-bottom: 3px;
+}
+
+.div__group--action .MuiButton-startIcon {
+  margin-right: 3px;
+}

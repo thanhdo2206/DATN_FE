@@ -2,7 +2,7 @@ import { Box } from '@mui/material'
 import { NavLink } from 'react-router-dom'
 
 import '../../assets/css/components/header_bar.css'
-import { pages } from '../../utils/HeaderSetting'
+import { pages, settings } from '../../utils/HeaderSetting'
 import MenuHeader from './HeaderBoxAvatar'
 import HeaderBoxLogo from './HeaderBoxLogo'
 
@@ -29,7 +29,7 @@ const HeaderBar = () => {
             })}
           </ul>
         </Box>
-        <MenuHeader />
+        <MenuHeader settings={settings}/>
       </Box>
     </Box>
   )

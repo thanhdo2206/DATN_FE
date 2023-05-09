@@ -28,6 +28,10 @@ function AuthTemplate() {
     if (isAuth && role === Role.Doctor) {
       navigate('/doctor/appointment')
     }
+
+    if (isAuth && role === Role.Admin) {
+      navigate('/admin/appointments')
+    }
   }, [isAuth])
 
   const handleCloseAlert = () => {

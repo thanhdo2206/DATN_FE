@@ -10,13 +10,19 @@ import {
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { MenuSettingsInteface } from '../../interface/HeaderInterface'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { logoutUser } from '../../redux/thunk/authThunk'
 import { MenuItemOverride, MenuListOverrride } from '../../themes/headerTheme'
 import { settings } from '../../utils/HeaderSetting'
 import ButtonCustomize from '../ButtonCustomize'
 
-const MenuHeader = () => {
+type Props = {
+  settings: MenuSettingsInteface[]
+}
+
+const MenuHeader = (props: Props) => {
+  const { settings } = props
   const navigate = useNavigate()
 
   const { isAuth, currentUser } = useAppSelector((state) => state.auths)
