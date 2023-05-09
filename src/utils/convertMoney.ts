@@ -1,4 +1,4 @@
-export const convertVND = new Intl.NumberFormat('vi-VN', {
+export const convertVND = new Intl.NumberFormat('en-US', {
   style: 'currency',
-  currency: 'VND'
+  currency: 'USD'
 })
