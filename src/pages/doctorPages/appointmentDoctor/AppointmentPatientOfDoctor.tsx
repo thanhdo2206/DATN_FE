@@ -33,7 +33,7 @@ export default function AppointmentPatientOfDoctor({}: Props) {
     },
     {
       title: 'Age:',
-      value: '30'
+      value: appointments[0]?.patient.age
     },
     {
       title: 'Phone:',
