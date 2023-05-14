@@ -227,7 +227,7 @@ type IProps = {
   status?: number
 }
 
-const RenderStatus = (props: IProps) => {
+export const RenderStatus = (props: IProps) => {
   const { status } = props
   if (status === StatusAppointment.Pending)
     return <p className='apt__txt--status txt--pending'>Pending</p>

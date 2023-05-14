@@ -1,18 +1,17 @@
 import AccessibleIcon from '@mui/icons-material/Accessible'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
-import GroupAddIcon from '@mui/icons-material/GroupAdd'
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
 import HandshakeIcon from '@mui/icons-material/Handshake'
+import {LocalHospital} from '@mui/icons-material'
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom'
-import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount'
-import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism'
 import TreeItem, { TreeItemProps, treeItemClasses } from '@mui/lab/TreeItem'
 import TreeView from '@mui/lab/TreeView'
 import Box from '@mui/material/Box'
 import { SvgIconProps } from '@mui/material/SvgIcon'
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import '../assets/css/templates/admin_template.css'
@@ -39,8 +38,7 @@ const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
   color: theme.palette.text.secondary,
   [`& .${treeItemClasses.content}`]: {
     color: theme.palette.text.secondary,
-    borderTopRightRadius: theme.spacing(2),
-    borderBottomRightRadius: theme.spacing(2),
+    borderRadius: theme.spacing(1),
     paddingRight: theme.spacing(1),
     marginTop: '10px',
     fontWeight: theme.typography.fontWeightMedium,
@@ -48,22 +46,20 @@ const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
       fontWeight: theme.typography.fontWeightRegular
     },
     '&:hover': {
-      backgroundColor: 'white',
-      color: 'var(--color-title-hover)'
+      backgroundColor: 'rgba(17, 25, 39, 0.04)'
     },
     '&.Mui-focused, &.Mui-selected, &.Mui-selected.Mui-focused': {
-      backgroundColor: 'white',
-      color: 'var(--color-title-hover)'
-    },
-    '&.Mui-selected:hover': {
-      backgroundColor: 'white'
+      backgroundColor: 'rgba(17, 25, 39, 0.12)'
     },
     [`& .${treeItemClasses.label}`]: {
       fontWeight: 'inherit',
       color: 'inherit'
     },
     '&.MuiTreeItem-content': {
-      position: 'relative'
+      position: 'relative',
+      display: 'flex',
+      alignItem: 'center',
+      height: '35px'
     },
     '&.MuiTreeItem-content .MuiTreeItem-iconContainer': {
       position: 'absolute',
@@ -150,11 +146,10 @@ function AdminTemplate() {
               labelText='Appointment'
               labelIcon={HandshakeIcon}
               onClick={() => {
+                setUrl('appointments')
                 navigate('/admin/appointments')
               }}
-              className={
-                url === 'appointments' ? 'department__lable--focus' : ''
-              }
+              className={url === 'appointments' ? 'label--focus' : ''}
             />
             <StyledTreeItem
               nodeId='2'
@@ -164,36 +159,46 @@ function AdminTemplate() {
                 setUrl('deparments')
                 navigate('/admin/departments')
               }}
-              className={
-                url === 'departments' ? 'department__lable--focus' : ''
-              }
+              className={url === 'departments' ? 'label--focus' : ''}
             />
             <StyledTreeItem
               nodeId='3'
               labelText='Doctors'
-              labelIcon={VolunteerActivismIcon}
+              labelIcon={LocalHospital}
+              onClick={() => {
+                url !== 'list' || url !== 'add-doctor'
+                  ? setUrl('')
+                  : setUrl(url)
+              }}
+              className={
+                url === 'list' || url === 'add-doctor'
+                  ? 'label__parent--focus'
+                  : ''
+              }
             >
               <StyledTreeItem
                 nodeId='4'
-                labelText='Doctors'
-                labelIcon={SupervisorAccountIcon}
+                labelText='List'
+                labelIcon={FiberManualRecordIcon}
                 onClick={() => {
-                  setUrl('doctors')
-                  navigate('/admin/doctors')
+                  setUrl('list')
+                  navigate('/admin/doctors/list')
                 }}
-                className={url === 'doctors' ? 'department__lable--focus' : ''}
+                className={`item__child ${
+                  url === 'list' ? 'item__child--focus' : ''
+                }`}
               />
               <StyledTreeItem
                 nodeId='5'
                 labelText='Add Doctor'
-                labelIcon={GroupAddIcon}
+                labelIcon={FiberManualRecordIcon}
                 onClick={() => {
                   setUrl('add-doctor')
                   navigate('/admin/add-doctor')
                 }}
-                className={
-                  url === 'add-doctor' ? 'department__lable--focus' : ''
-                }
+                className={`item__child ${
+                  url === 'add-doctor' ? 'item__child--focus' : ''
+                }`}
               />
             </StyledTreeItem>
             <StyledTreeItem
@@ -204,7 +209,7 @@ function AdminTemplate() {
                 setUrl('patients')
                 navigate('/admin/patients')
               }}
-              className={url === 'patients' ? 'department__lable--focus' : ''}
+              className={url === 'patients' ? 'label--focus' : ''}
             />
           </TreeView>
         </div>

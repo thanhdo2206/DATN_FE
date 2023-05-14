@@ -7,7 +7,7 @@ import '../../../assets/css/pages/guestPage/findDoctorPage/find_doctor.css'
 import { IMedicalExaminationTime } from '../../../interface/MedicalExaminationInterfaces'
 import { RootState } from '../../../redux/configStore'
 import { useAppDispatch } from '../../../redux/hooks'
-import { getAllMedicalExaminationTimeThunk } from '../../../redux/slices/medicalExaminationSlice'
+import { clearListDepartmentId, getAllMedicalExaminationTimeThunk } from '../../../redux/slices/medicalExaminationSlice'
 import FilterDoctor from './FilterDoctor'
 import InformationAppointment from './InformationAppointment'
 import Search from './Search'
@@ -23,6 +23,7 @@ export default function MainFindDoctor() {
 
   useEffect(() => {
     getMedicalExaminationTimeApi()
+    dispatch(clearListDepartmentId())
   }, [])
 
   const renderMedicalExamination = () => {
@@ -49,18 +50,41 @@ export default function MainFindDoctor() {
         }
       )
     }
-    return arrMedicalExaminations.map(
-      (medicalExamination: IMedicalExaminationTime, index: number) => {
-        const departmentId = medicalExamination.medicalExamination.department.id
-        if (arrDeparmentId.includes(departmentId)) {
-          return (
-            <InformationAppointment
-              key={index}
-              examinationAndTime={medicalExamination}
-            />
-          )
-        }
-      }
+    let count = 0
+    return (
+      <>
+        {arrMedicalExaminations.map(
+          (medicalExamination: IMedicalExaminationTime, index: number) => {
+            const departmentId =
+              medicalExamination.medicalExamination.department.id
+            if (arrDeparmentId.includes(departmentId)) {
+              count++
+              return (
+                <InformationAppointment
+                  key={index}
+                  examinationAndTime={medicalExamination}
+                />
+              )
+            }
+          }
+        )}
+        <div>
+          {count === 0 ? (
+            <>
+              <div className='box__filter__not__found'>
+                <div className='filter__not__found-view'>
+                  <FmdBadIcon />
+                  <p className='filter__not__found-text'>
+                    No matches were found, please choose again
+                  </p>
+                </div>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+        </div>
+      </>
     )
   }
   return (
