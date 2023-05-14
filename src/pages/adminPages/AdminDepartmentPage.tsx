@@ -1,8 +1,5 @@
-import DeleteIcon from '@mui/icons-material/Delete'
-import EditIcon from '@mui/icons-material/Edit'
+import AddIcon from '@mui/icons-material/Add'
 import {
-  Avatar,
-  Button,
   Paper,
   Table,
   TableBody,
@@ -15,26 +12,23 @@ import { useState } from 'react'
 
 import '../../assets/css/pages/adminPage/admin_department_page.css'
 import ButtonCustomize from '../../components/ButtonCustomize'
+import {
+  AdminTableColumn,
+  TableDepartment
+} from '../../interface/AdminTableInterface'
 import { TableCellProfile } from '../../themes/profileStyle'
+import AdminModelCustomize from '../../utils/models/AdminModelCustomize'
+import ModalAddDepartmentBody from '../../utils/models/ModalAddDepartmentBody'
+import AdminBreadCrumb from './adminBreadcrumb/AdminBreadCrumb'
+import AdminDepartmentTableCell from './adminTable/AdminDepartmentTableCell'
 
-interface Column {
-  id: 'id' | 'departmentName' | 'actions'
-  label: string
-  minWidth?: number
-  align?: 'right'
-}
+const urology = require('../../assets/img/departments/urology.png')
 
-const columns: readonly Column[] = [
+const columns: AdminTableColumn[] = [
   { id: 'id', label: '#', minWidth: 70 },
   { id: 'departmentName', label: 'Departments', minWidth: 170 },
   { id: 'actions', label: 'Actions', minWidth: 100, align: 'right' }
 ]
-
-interface TableDepartment {
-  id: number
-  departmentName: string
-  departmentPicture: string
-}
 
 function createDataTableDepartment(
   id: number,
@@ -48,45 +42,44 @@ function createDataTableDepartment(
   }
 }
 
-const rowsPerPage = 6
+const rowsPerPage = 5
 
 const rowsDepartment = [
-  createDataTableDepartment(
-    1,
-    'Urology',
-    'https://doccure.dreamguystech.com/html/template/admin/assets/img/specialities/specialities-01.png'
-  ),
-  createDataTableDepartment(
-    2,
-    'Urology',
-    'https://doccure.dreamguystech.com/html/template/admin/assets/img/specialities/specialities-01.png'
-  ),
-  createDataTableDepartment(
-    3,
-    'Urology',
-    'https://doccure.dreamguystech.com/html/template/admin/assets/img/specialities/specialities-01.png'
-  )
+  createDataTableDepartment(1, 'Urology', urology),
+  createDataTableDepartment(2, 'Urology', urology),
+  createDataTableDepartment(3, 'Urology', urology),
+  createDataTableDepartment(4, 'Urology', urology),
+  createDataTableDepartment(5, 'Urology', urology),
+  createDataTableDepartment(6, 'Urology', urology),
+  createDataTableDepartment(7, 'abc', urology)
 ]
+
 const AdminDepartmentPage = () => {
   const [page, setPage] = useState(0)
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
   }
+  const [openAdd, setOpenAdd] = useState<boolean>(false)
+
+  const handleOpenAdd = () => setOpenAdd(true)
+  const handleCloseAdd = () => setOpenAdd(false)
 
   return (
     <div className='admin__department'>
       <div className='department__header'>
-        <p className='department__p--title'>Departments</p>
+        <AdminBreadCrumb breadcrumbTitle='Departments' />
         <ButtonCustomize
-          text='Add Department'
+          text='Add'
           className='btn__department--add'
+          onClickBtn={() => handleOpenAdd()}
+          icon={<AddIcon />}
         />
       </div>
       <div className='department__body'>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label='simple table'>
-            <TableHead>
+            <TableHead className='admin__table--head'>
               <TableRow>
                 {columns.map((column, index) => (
                   <TableCellProfile
@@ -104,54 +97,11 @@ const AdminDepartmentPage = () => {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   return (
-                    <TableRow hover role='checkbox' tabIndex={-1} key={row.id}>
-                      {columns.map((column) => {
-                        if (column.id !== 'actions') {
-                          const value = row[column.id]
-                          return (
-                            <TableCellProfile
-                              key={column.id}
-                              align={column.align}
-                            >
-                              {value === row.departmentName ? (
-                                <>
-                                  <div className='department__group--name'>
-                                    <div className='department__picture'>
-                                      <Avatar src={row.departmentPicture} />
-                                    </div>
-                                    <div className='department__name'>
-                                      {row.departmentName}
-                                    </div>
-                                  </div>
-                                </>
-                              ) : (
-                                value
-                              )}
-                            </TableCellProfile>
-                          )
-                        }
-                        return (
-                          <TableCellProfile key={row.id}>
-                            <div className='div__group--action'>
-                              <Button
-                                variant='contained'
-                                className='btn__edit btn__group--action'
-                                startIcon={<EditIcon />}
-                              >
-                                Edit
-                              </Button>
-                              <Button
-                                variant='contained'
-                                className='btn__delete btn__group--action'
-                                startIcon={<DeleteIcon />}
-                              >
-                                Delete
-                              </Button>
-                            </div>
-                          </TableCellProfile>
-                        )
-                      })}
-                    </TableRow>
+                    <AdminDepartmentTableCell
+                      columns={columns}
+                      row={row}
+                      key={row.id}
+                    />
                   )
                 })}
             </TableBody>
@@ -166,8 +116,14 @@ const AdminDepartmentPage = () => {
           onPageChange={handleChangePage}
         />
       </div>
+      <AdminModelCustomize
+        classNameHeader='success'
+        title='Add Department'
+        open={openAdd}
+        handleClose={() => handleCloseAdd()}
+        bodyModal={<ModalAddDepartmentBody inputEdit='' />}
+      />
     </div>
   )
 }
-
 export default AdminDepartmentPage

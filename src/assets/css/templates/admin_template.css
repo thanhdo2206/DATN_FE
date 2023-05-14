@@ -13,16 +13,10 @@
   width: 280px;
 }
 
-.admin__sidebar--header {
-  border-right: 1px solid rgb(216 216 216);
-}
-
 .admin__sidebar--body {
   padding: 0 20px;
-  height: calc(99vh - 75px);
+  padding-top: 15px;
   position: relative;
-  box-shadow: rgb(60 64 67 / 30%) -4px 11px 10px;
-  border-top: 1px solid rgb(216 216 216);
 }
 
 .admin__content--container {
@@ -31,7 +25,8 @@
 
 .admin__content--header {
   width: 100%;
-  box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 10px;
+  background-color: #f8f9fa;
+  /* box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 10px; */
   display: flex;
   justify-content: flex-end;
   position: relative;
@@ -40,18 +35,209 @@
 .admin__outlet--container {
   background-color: #f8f9fa;
   height: calc(99vh - 75px);
-  padding: 0 14px;
-  padding-top: 20px;
+  padding: 0px 20px;
+  padding-top: 35px;
 }
 
-/*Mui*/
+/*Mui sidebar*/
 .admin__sidebar--body .MuiTreeView-root {
-  height: calc(99vh - 75px);
+  height: calc(100vh - 92px);
 }
 
-.admin__sidebar--body .style__box--icon {
-  border-radius: 5px;
-  background-color: #ecedf0;
-  padding: 5px 6px;
+.admin__sidebar--body p {
+  font-size: 14px;
+  font-weight: 600;
+  margin-left: 10px;
 }
 
+.admin__sidebar--body svg {
+  color: #91979f;
+}
+
+.label--focus .MuiTreeItem-content {
+  background-color: rgba(17, 25, 39, 0.12);
+  border-radius: 10px;
+}
+
+.label__parent--focus .Mui-expanded {
+  background-color: rgba(17, 25, 39, 0.12);
+  border-radius: 10px;
+}
+
+.item__child .style__box--icon {
+  font-size: 10px;
+}
+
+.item__child--focus .MuiTreeItem-content {
+  background-color: white !important;
+}
+
+.item__child--focus .MuiBox-root svg {
+  color: var(--color-title-hover);
+}
+
+/*Admin model customize css*/
+.admin__modal--container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  width: 400px;
+  border-radius: 15px;
+}
+
+.admin__modal--header {
+  height: 47px;
+  border-radius: 15px 15px 0 0;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+}
+
+.admin__modal--container .success {
+  background-color: var(--primary-color);
+}
+
+.admin__modal--container .danger {
+  background-color: var(--color-text-error);
+}
+
+.admin__modal--detailAppt {
+  width: 850px;
+}
+
+.admin__modal--detailAppt .admin__modal--body {
+  min-height: 85vh;
+  max-height: 85vh;
+  overflow: auto;
+}
+
+.admin__model--title {
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+}
+
+.admin__modal--body {
+  padding: 15px 0px;
+}
+
+.admin__model--footer {
+  border-top: 1px solid rgb(216 216 216);
+  padding: 15px 15px;
+}
+
+.admin__modal--delete {
+  text-align: center;
+}
+
+.admin__title--delete {
+  font-size: 16px;
+}
+
+.admin__des--delete {
+  font-size: 15px;
+  color: var(--color-text-error);
+  margin-top: 5px;
+}
+
+/*admin button*/
+.admin__btn {
+  color: #fff;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 10px;
+  width: 100%;
+  padding: 7px 0;
+  font-size: var(--font-size-title);
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0px 4px 9px 2px #d5edea;
+  transition: all 500ms ease;
+  margin-top: 15px;
+}
+
+.admin__btn--disable {
+  background-color: #7f8f8b;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.footer__group--delete {
+  display: flex;
+  justify-content: space-between;
+}
+
+.admin__btn--cancle {
+  margin-top: 0;
+  background-color: #7f8f8b;
+  width: 47%;
+  box-shadow: none;
+}
+
+.admin__btn-delete {
+  margin-top: 0;
+  background-color: var(--color-text-error);
+  width: 47%;
+  box-shadow: none;
+}
+
+/*table*/
+.admin__appointment--body {
+  margin-top: 30px;
+}
+
+.admin__table--head {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 600;
+  background-color: rgba(17, 25, 39, 0.12);
+  color: rgb(47, 55, 70);
+}
+
+.admin__table--head th {
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
+
+/*Admin breadcrumb*/
+.admin__p--title {
+  font-size: 2.0833rem;
+  font-weight: 600;
+}
+
+.admin__breadcrumds .MuiSvgIcon-root {
+  font-size: 10px;
+}
+
+.admin__breadcrumds {
+  margin-top: 10px;
+}
+
+/*Admin table group name*/
+.admin__tablegroup--name {
+  display: flex;
+  align-items: center;
+}
+
+.admin__tablegroup--name .tablegroup__name {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.admin__tablegroup--name .tablegroup--name__name span {
+  font-size: 12px;
+  color: var(--color-text);
+}
+
+/*Admin table appointment*/
+.admin__table--apptDate {
+  display: flex;
+  flex-direction: column;
+}
+
+.table__p--time {
+  color: var(--color-text);
+}
