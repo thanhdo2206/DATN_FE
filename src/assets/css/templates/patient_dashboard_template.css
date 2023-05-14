@@ -30,10 +30,13 @@ input[type='search']::-webkit-search-cancel-button {
 }
 
 .apt__txt--status {
-  padding: 5px 5px;
+  width: 100px;
+  height: 25px;
   border-radius: 18px;
   font-size: 0.875rem;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .apt__txt--status.txt--pending {
@@ -54,6 +57,7 @@ input[type='search']::-webkit-search-cancel-button {
 /*table appointment*/
 .doctor__group--name {
   display: flex;
+  align-items: center;
 }
 
 .doctor__name {

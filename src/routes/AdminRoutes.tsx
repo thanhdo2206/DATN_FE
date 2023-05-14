@@ -24,7 +24,7 @@ const adminRoutes: RouteObject[] = [
         element: <AdminAppointmentPage />
       },
       {
-        path: 'doctors',
+        path: 'doctors/list',
         element: <AdminDoctorPage />
       },
       {

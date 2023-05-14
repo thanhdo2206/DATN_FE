@@ -1,11 +1,7 @@
 .department__header {
   display: flex;
   justify-content: space-between;
-}
-
-.department__p--title {
-  font-size: 18px;
-  font-weight: 600;
+  align-items: flex-start;
 }
 
 .department__body {
@@ -22,45 +18,65 @@
   font-size: 15px;
 }
 
-.department__lable--focus .MuiBox-root {
-  color: var(--color-title-hover);
-}
-
 .div__group--action {
   display: flex;
   justify-content: flex-end;
 }
 
+/*Group button deparment action*/
 .div__group--action .btn__group--action {
-  font-size: 14px;
-  text-transform: capitalize;
+  background-color: transparent;
+  border-radius: 50%;
+  padding: 0;
+  min-width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: none;
 }
 
-.div__group--action .btn__edit {
-  background-color: rgba(15, 183, 107, 0.12);
-  color: #26af48;
-  margin-right: 9px;
-  padding: 3px 1px;
-}
-
-.div__group--action .btn__edit:hover {
-  background-color: rgba(15, 183, 107, 0.12);
-}
-.div__group--action .btn__delete {
-  background-color: rgba(242, 17, 54, 0.12);
-  color: #e63c3c;
-  padding: 3px 9px;
-}
-
-.div__group--action .btn__delete:hover {
-  background-color: rgba(242, 17, 54, 0.12);
-}
-
-.div__group--action .MuiButton-startIcon .MuiSvgIcon-root {
-  font-size: 15px;
-  margin-bottom: 3px;
+.div__group--action .btn__group--action:hover {
+  background-color: rgba(17, 25, 39, 0.12);
 }
 
 .div__group--action .MuiButton-startIcon {
-  margin-right: 3px;
+  margin: 0;
 }
+
+.div__group--action .MuiButton-startIcon .MuiSvgIcon-root {
+  font-size: 24px;
+  color: rgb(108, 115, 127);
+}
+
+.div__group--action .btn__edit {
+  margin-right: 10px;
+}
+
+.div__group--action .btn__delete {
+  margin-right: 10px;
+}
+
+/*add department*/
+.department__form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px 15px 15px;
+  border-bottom: 1px solid rgb(216 216 216);
+}
+
+.department__form--label {
+  font-size: 15px;
+}
+
+.department__input {
+  width: 255px;
+  height: 26px;
+  border-radius: 10px;
+}
+
+.department__div--btn {
+  padding: 0 15px;
+}
+

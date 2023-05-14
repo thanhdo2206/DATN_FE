@@ -23,7 +23,19 @@ export default function ButtonCustomize(props: Props) {
       onClick={onClickBtn}
       style={btnStyle}
     >
-      {text ?? icon}
+      {text ? (
+        icon ? (
+          <>
+            {icon} {text}
+          </>
+        ) : (
+          text
+        )
+      ) : icon ? (
+        icon
+      ) : (
+        <></>
+      )}
     </button>
   )
 }
