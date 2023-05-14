@@ -7,7 +7,9 @@ export interface AdminTableColumn {
     | 'patientName'
     | 'apptDate'
     | 'status'
-    | 'actions'
+    | 'gmail'
+    | 'phoneNumber'
+    | 'address'
   label: string
   minWidth?: number
   align?: 'right'
