@@ -5,7 +5,7 @@ import AdminAppointmentPage from '../pages/adminPages/AdminAppointmentPage'
 import AdminDepartmentPage from '../pages/adminPages/AdminDepartmentPage'
 import AdminDoctorPage from '../pages/adminPages/AdminDoctorPage'
 import AdminPatientPage from '../pages/adminPages/AdminPatientPage'
-import TestAdminPages from '../pages/adminPages/TestAdminPages'
+import AdminProfileDoctorPage from '../pages/adminPages/AdminProfileDoctorPage'
 import AdminTemplate from '../templates/AdminTemplate'
 import AuthRoute from '../utils/AuthRoute'
 import { Role } from '../utils/roles'
@@ -24,8 +24,21 @@ const adminRoutes: RouteObject[] = [
         element: <AdminAppointmentPage />
       },
       {
-        path: 'doctors/list',
-        element: <AdminDoctorPage />
+        path: 'doctors',
+        children: [
+          {
+            path: 'list',
+            element: <AdminDoctorPage />
+          },
+          {
+            path: 'add',
+            element: <AdminAddDoctorPage />
+          },
+          {
+            path: 'profile/:id',
+            element: <AdminProfileDoctorPage />
+          }
+        ]
       },
       {
         path: 'patients',
@@ -34,10 +47,6 @@ const adminRoutes: RouteObject[] = [
       {
         path: 'departments',
         element: <AdminDepartmentPage />
-      },
-      {
-        path: 'add-doctor',
-        element: <AdminAddDoctorPage />
       }
     ]
   }

@@ -1,7 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close'
-import CreateIcon from '@mui/icons-material/Create'
-import PersonIcon from '@mui/icons-material/Person'
-import { CircularProgress, Modal, ThemeProvider } from '@mui/material'
+import { CircularProgress, Modal } from '@mui/material'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
@@ -10,8 +8,7 @@ import '../assets/css/components/patient_sidebar.css'
 import { DataUserProfilePicture } from '../interface/UsersInterface'
 import { useAppDispatch, useAppSelector } from '../redux/hooks'
 import { updateUserProfilePicture } from '../redux/thunk/userThunk'
-import { customFontIconHeader } from '../themes/profileStyle'
-import { AvatarProfile } from '../themes/profileStyle'
+import AvartarCustomize from './header/AvartarCustomize'
 
 interface ProfileItemInterface {
   profileItem: string
@@ -78,21 +75,11 @@ function PatientSidebar() {
   return (
     <div className='patient__sidebar--container'>
       <div className='patient__div--header'>
-        <div className='avatar__div--container'>
-          <div className='avatar__div--edit'>
-            <ThemeProvider theme={customFontIconHeader}>
-              <AvatarProfile src={currentUser.profilePicture}>
-                <PersonIcon sx={{ fontSize: '60px' }} />
-              </AvatarProfile>
-              <motion.button
-                whileTap={{ scale: 1.2 }}
-                className='avatar__btn--edit'
-                onClick={handleOpen}
-              >
-                <CreateIcon fontSize='small' />
-              </motion.button>
-            </ThemeProvider>
-          </div>
+        <div className='avatar__div--containers'>
+          <AvartarCustomize
+            profilePicture={currentUser.profilePicture}
+            onClickBtn={handleOpen}
+          />
         </div>
         <div className='patient__header--content'>
           <p className='patient__text--username'>{`${currentUser.firstName} ${currentUser.lastName}`}</p>

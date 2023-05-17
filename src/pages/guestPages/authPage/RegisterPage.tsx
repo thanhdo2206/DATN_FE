@@ -8,6 +8,7 @@ import { FormRegisterValues } from '../../../interface/ValidateInterface'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 import { clearMessage } from '../../../redux/slices/authSlice'
 import { registerUser } from '../../../redux/thunk/authThunk'
+import { customFontLoginTheme } from '../../../themes/authTheme'
 import FormikCustomize from '../../../utils/formik/FormikCustomize'
 import { EMAIL_REGEX, NAME_REGEX, PASSWORD_REGEX } from '../../../utils/regex'
 import { Role } from '../../../utils/roles'
@@ -150,6 +151,7 @@ const RegisterPage: React.FC = () => {
           onValidate={handleRegisterValidation}
           onSubmitFormik={handleRegisterSubmit}
           btnText='Sign up'
+          theme={customFontLoginTheme}
         />
       </Box>
       <Box className='auth__footer'>

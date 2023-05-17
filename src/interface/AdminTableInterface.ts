@@ -33,9 +33,17 @@ export interface TableDepartment {
   departmentPicture: string
 }
 
+export interface TableDoctor {
+  id: number
+  doctorname: string
+  profilePictureDoctor: string
+  departmentName: string
+}
+
 export interface TablePatient {
   id: number
   patientName: string
+  profilePicturePatient: string
   gmail: string
   phoneNumber: string
   address: string

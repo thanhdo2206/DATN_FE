@@ -11,8 +11,6 @@
 
 .avatar__div--edit {
   position: relative;
-  /* width: 250px; */
-  /* height: 100px; */
   margin-bottom: 30px;
   display: flex;
   justify-content: center;
@@ -25,11 +23,9 @@
   border-radius: 20px;
   width: 25px;
   height: 25px;
-  right: 25px;
-  bottom: 8px;
+  right: 13px;
+  bottom: 6px;
   position: absolute;
-  /* right: 140px;
-  bottom: 2px; */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -86,7 +82,7 @@
 .modal__box--header {
   display: flex;
   justify-content: space-between;
-  align-items: start;
+  align-items: flex-start;
   margin-top: 10px;
   margin-bottom: 20px;
 }

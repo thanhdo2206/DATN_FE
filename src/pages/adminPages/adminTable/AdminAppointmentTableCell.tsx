@@ -64,7 +64,12 @@ const AdminAppointmentTableCell = (props: Props) => {
             </TableCellProfile>
           )
         }
-        return <></>
+
+        return (
+          <TableCellProfile key={column.id} align={column.align}>
+            {value}
+          </TableCellProfile>
+        )
       })}
     </TableRow>
   )

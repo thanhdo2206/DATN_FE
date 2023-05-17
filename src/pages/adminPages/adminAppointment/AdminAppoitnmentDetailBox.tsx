@@ -1,9 +1,9 @@
-import Avatar from '@mui/material/Avatar'
 import Grid from '@mui/material/Grid'
 import React from 'react'
 
 import { RenderStatus } from '../../patientPages/dashboardPage/TableBookedAppointment'
 import { DataAdminDetailAppointment } from './AdminAppointmentDetail'
+import AdminAppointmnetDetailBoxAvatar from './AdminAppointmnetDetailBoxAvatar'
 
 type Props = {
   dataInfor: DataAdminDetailAppointment[]
@@ -25,22 +25,19 @@ const AdminAppoitnmentDetailBox = (props: Props) => {
         <p>{title}</p>
       </Grid>
       {status ? (
-        <Grid item xs={3} className='admin__apptdetail--bodyleft'>
-          <Avatar
-            src={'https://uko-react.vercel.app/static/avatar/001-man.svg'}
-            sx={{
-              width: 90,
-              height: 90,
-              border: '1px solid var(--color-text)'
-            }}
+        <Grid item xs={3}>
+          <AdminAppointmnetDetailBoxAvatar
+            name={name}
+            profilePicture={
+              'https://uko-react.vercel.app/static/avatar/001-man.svg'
+            }
           />
-          <p className='bodyleft__p'>{name}</p>
         </Grid>
       ) : (
         <></>
       )}
 
-      <Grid item xs={9} className='admin__apptdetail--bodyright'>
+      <Grid item xs={status ? 9 : 12} className='admin__apptdetail--bodyright'>
         {dataInfor.map((item, index) => {
           return (
             <div className='bodyright__div' key={index}>

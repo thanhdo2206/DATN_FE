@@ -32,7 +32,7 @@ const AdminBreadCrumb = (props: Props) => {
     if (breadcrumbs.length <= removeSegments.length) {
       breadcrumbs.push(
         <Typography key={index + 2} color='text.primary'>
-          {segment}
+          {segment.charAt(0).toUpperCase() + segment.slice(1)}
         </Typography>
       )
     }

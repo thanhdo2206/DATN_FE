@@ -46,6 +46,7 @@
   font-weight: 600;
   padding-bottom: 5px;
   position: relative;
+  cursor: pointer;
 }
 
 .header__nav--link::before {
@@ -69,6 +70,7 @@
   padding-bottom: 5px;
   text-decoration: none;
   position: relative;
+  cursor: pointer;
 }
 
 .header__nav--active::before {
@@ -107,7 +109,7 @@
 
 .header__button--avatar {
   border: none;
-  background-color: white;
+  background-color: transparent;
   display: flex;
   align-items: center;
   cursor: pointer;
