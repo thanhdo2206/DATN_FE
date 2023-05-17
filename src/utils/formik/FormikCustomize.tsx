@@ -3,10 +3,12 @@ import {
   Button,
   CircularProgress,
   Grid,
+  Theme,
   ThemeProvider
 } from '@mui/material'
 import { Form, Formik } from 'formik'
 
+import { UserProfileField } from '../../interface/FormikInterface'
 import { FormUserProfileValues } from '../../interface/UsersInterface'
 import {
   FormLoginValues,
@@ -14,8 +16,6 @@ import {
 } from '../../interface/ValidateInterface'
 import { LoginInputField } from '../../pages/guestPages/authPage/LoginPage'
 import { RegisterInputField } from '../../pages/guestPages/authPage/RegisterPage'
-import { UserProfileField } from '../../pages/patientPages/dashboardPage/PatientProfile'
-import { customFontLoginTheme } from '../../themes/authTheme'
 import FieldInputFormik from './FieldInputFormik'
 
 type Props = {
@@ -29,6 +29,7 @@ type Props = {
   onSubmitFormik: (values: any) => void
   loadingFormik?: boolean
   btnText: string
+  theme: Theme
 }
 
 function FormikCustomize(props: Props) {
@@ -39,7 +40,8 @@ function FormikCustomize(props: Props) {
     onValidationSchema,
     onSubmitFormik,
     loadingFormik,
-    btnText
+    btnText,
+    theme
   } = props
 
   return (
@@ -56,7 +58,7 @@ function FormikCustomize(props: Props) {
       {({ handleSubmit, handleChange, values, errors }) => (
         <Box className='box__login'>
           <Form className='auth__form' onSubmit={handleSubmit}>
-            <ThemeProvider theme={customFontLoginTheme}>
+            <ThemeProvider theme={theme}>
               <Grid container spacing={2}>
                 {inputFields.map((field) => {
                   return (

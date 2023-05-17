@@ -57,3 +57,17 @@
   font-weight: 600;
   font-size: 16px;
 }
+
+.btn__archive {
+  background-color: var(--color-text-error);
+}
+
+.btn__archive:hover {
+  background-color: #e45a5a;
+}
+
+.admin__table--header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}

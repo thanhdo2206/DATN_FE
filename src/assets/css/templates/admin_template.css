@@ -11,32 +11,43 @@
 
 .admin__sidebar {
   width: 280px;
+  position: fixed;
+  background: white;
 }
 
 .admin__sidebar--body {
   padding: 0 20px;
-  padding-top: 15px;
   position: relative;
 }
 
 .admin__content--container {
   width: calc(100% - 280px);
+  margin-left: 280px;
 }
 
 .admin__content--header {
-  width: 100%;
+  width: calc(100% - 280px);
   background-color: #f8f9fa;
-  /* box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 10px; */
   display: flex;
   justify-content: flex-end;
   position: relative;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.admin__content--header-scrolled {
+  backdrop-filter: blur(6px);
+  background-color: transparent;
 }
 
 .admin__outlet--container {
   background-color: #f8f9fa;
-  height: calc(99vh - 75px);
+  min-height: 99vh;
+  overflow: auto;
   padding: 0px 20px;
-  padding-top: 35px;
+  padding-top: 80px;
 }
 
 /*Mui sidebar*/
@@ -113,6 +124,10 @@
   overflow: auto;
 }
 
+.admin__modal--detailPatient {
+  width: 555px;
+}
+
 .admin__model--title {
   font-size: 18px;
   font-weight: 600;
@@ -184,6 +199,16 @@
 }
 
 /*table*/
+.admin__table--body {
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.admin__table--body .admin__grid--doctor{
+  display: flex;
+  justify-content: space-between;
+}
+
 .admin__appointment--body {
   margin-top: 30px;
 }

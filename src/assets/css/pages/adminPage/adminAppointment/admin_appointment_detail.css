@@ -10,6 +10,7 @@
 
 .apptdetail__grid--last {
   border: none;
+  padding: 0;
 }
 
 .admin__apptdetail--container .admin__apptdetail--bodyleft {
@@ -22,10 +23,13 @@
   margin-top: 10px;
 }
 
-.admin__apptdetail--container .admin__apptdetail--header {
+.admin__apptdetail--header {
   display: flex;
   justify-content: flex-start;
   padding: 5px 0;
+}
+
+.admin__apptdetail--header p {
   font-weight: 600;
   font-size: 15px;
   color: var(--color-text);

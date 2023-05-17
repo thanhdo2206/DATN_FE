@@ -7,11 +7,13 @@ import React, { useState } from 'react'
 import AdminModelCustomize from '../../../utils/models/AdminModelCustomize'
 import ModalAddDepartmentBody from '../../../utils/models/ModalAddDepartmentBody'
 import AdminAppointmentDetail from '../adminAppointment/AdminAppointmentDetail'
+import AdminPatientDetail from '../adminPatient/AdminPatientDetail'
 import { FooterModalDelete } from './AdminDepartmentTableCell'
 
 type Props = {
   departmentName?: string
   apptId?: number
+  patientId?: number
 }
 
 interface openModelDepartment {
@@ -21,7 +23,7 @@ interface openModelDepartment {
 }
 
 const AdminGroupBtnAction = (props: Props) => {
-  const { departmentName, apptId } = props
+  const { departmentName, apptId, patientId } = props
   const [open, setOpen] = useState<openModelDepartment>({
     openEdit: false,
     openDelete: false,
@@ -86,7 +88,7 @@ const AdminGroupBtnAction = (props: Props) => {
           <></>
         )}
 
-        {apptId ? (
+        {apptId || patientId ? (
           <Button
             onClick={() => handleOpen('view')}
             variant='contained'
@@ -127,10 +129,22 @@ const AdminGroupBtnAction = (props: Props) => {
             classNameHeader='success'
             classNameContainer='admin__modal--detailAppt'
             title='Detail Appointment'
-            // open={true}
             open={open.openView}
             handleClose={() => handleClose('view')}
-            bodyModal={<AdminAppointmentDetail idAppointment={apptId} />}
+            bodyModal={<AdminAppointmentDetail apptId={apptId} />}
+          />
+        ) : (
+          <></>
+        )}
+
+        {patientId ? (
+          <AdminModelCustomize
+            classNameHeader='success'
+            classNameContainer='admin__modal--detailPatient'
+            title='Detail Information Of Patient'
+            open={open.openView}
+            handleClose={() => handleClose('view')}
+            bodyModal={<AdminPatientDetail patientId={patientId} />}
           />
         ) : (
           <></>

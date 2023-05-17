@@ -1,9 +1,9 @@
+import { LocalHospital } from '@mui/icons-material'
 import AccessibleIcon from '@mui/icons-material/Accessible'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
 import HandshakeIcon from '@mui/icons-material/Handshake'
-import {LocalHospital} from '@mui/icons-material'
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom'
 import TreeItem, { TreeItemProps, treeItemClasses } from '@mui/lab/TreeItem'
 import TreeView from '@mui/lab/TreeView'
@@ -12,7 +12,7 @@ import { SvgIconProps } from '@mui/material/SvgIcon'
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
 import React, { useEffect, useState } from 'react'
-import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import '../assets/css/templates/admin_template.css'
 import MenuHeader from '../components/header/HeaderBoxAvatar'
@@ -122,8 +122,26 @@ function AdminTemplate() {
   const [url, setUrl] = useState<String>('')
 
   useEffect(() => {
-    const url = segments[segments.length - 1]
-    setUrl(url)
+    let url = segments[segments.length - 1]
+    parseInt(url) ? setUrl(segments[segments.length - 2]) : setUrl(url)
+  }, [])
+
+  const [scroll, setScroll] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setScroll(true)
+      } else {
+        setScroll(false)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
   }, [])
 
   return (
@@ -171,7 +189,7 @@ function AdminTemplate() {
                   : setUrl(url)
               }}
               className={
-                url === 'list' || url === 'add-doctor'
+                url === 'list' || url === 'add' || url === 'profile'
                   ? 'label__parent--focus'
                   : ''
               }
@@ -193,16 +211,28 @@ function AdminTemplate() {
                 labelText='Add Doctor'
                 labelIcon={FiberManualRecordIcon}
                 onClick={() => {
-                  setUrl('add-doctor')
-                  navigate('/admin/add-doctor')
+                  setUrl('add')
+                  navigate('/admin/doctors/add')
                 }}
                 className={`item__child ${
-                  url === 'add-doctor' ? 'item__child--focus' : ''
+                  url === 'add' ? 'item__child--focus' : ''
+                }`}
+              />
+              <StyledTreeItem
+                nodeId='6'
+                labelText='Profile'
+                labelIcon={FiberManualRecordIcon}
+                onClick={() => {
+                  setUrl('profile')
+                  navigate('/admin/doctors/profile/1')
+                }}
+                className={`item__child ${
+                  url === 'profile' ? 'item__child--focus' : ''
                 }`}
               />
             </StyledTreeItem>
             <StyledTreeItem
-              nodeId='6'
+              nodeId='7'
               labelText='Patients'
               labelIcon={AccessibleIcon}
               onClick={() => {
@@ -215,7 +245,11 @@ function AdminTemplate() {
         </div>
       </div>
       <div className='admin__content--container'>
-        <div className='admin__header admin__content--header'>
+        <div
+          className={`admin__header admin__content--header ${
+            scroll ? 'admin__content--header-scrolled' : ''
+          }`}
+        >
           <MenuHeader settings={settingsAdmin} />
         </div>
         <div className='admin__outlet--container'>

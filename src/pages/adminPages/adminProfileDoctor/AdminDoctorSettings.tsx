@@ -9,16 +9,17 @@ import {
 import { FormRegisterValues } from '../../../interface/ValidateInterface'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 import { updateUserProfile } from '../../../redux/thunk/userThunk'
-import { customFontLoginTheme } from '../../../themes/authTheme'
+import { customFontDoctorProfileTheme } from '../../../themes/authTheme'
 import {
   converGenderToBoolen,
   convertGenderToString
 } from '../../../utils/convertGenderToString'
 import FormikCustomize from '../../../utils/formik/FormikCustomize'
-import { userProfileFields } from '../../../utils/formik/formikData'
+import { adminProfileFields } from '../../../utils/formik/formikData'
 import { NAME_REGEX, PHONE_REGEX_VN } from '../../../utils/regex'
 import {
   CHECK_ADDRESS_EMPTY,
+  CHECK_AGE_EMPTY,
   CHECK_FIRST_NAME_EMPTY,
   CHECK_LAST_NAME_EMPTY,
   CHECK_NAME_EMPTY,
@@ -26,18 +27,31 @@ import {
   CHECK_PHONE_NUMBER_EMPTY,
   CHECK_PHONE_NUMBER_MATCH_REGEX
 } from '../../../utils/validateInform'
+import AdminDoctorSettingAvatar from './AdminDoctorSettingAvatar'
 
-const PatientProfile = () => {
+type Props = {
+  id?: number
+}
+
+const AdminDoctorSettings = (props: Props) => {
+  const { id } = props
   const dispatch = useAppDispatch()
-  const { currentUser } = useAppSelector((state) => state.auths)
-  const { id, firstName, lastName, gender, address, phoneNumber } = currentUser
 
+  // const initialUserProfileValues = {
+  //   firstName: firstName ? firstName : '',
+  //   lastName: lastName ? lastName : '',
+  //   gender: convertGenderToString(gender),
+  //   address: address ? address : '',
+  //   phoneNumber: phoneNumber ? phoneNumber : ''
+  // }
   const initialUserProfileValues = {
-    firstName: firstName ? firstName : '',
-    lastName: lastName ? lastName : '',
-    gender: convertGenderToString(gender),
-    address: address ? address : '',
-    phoneNumber: phoneNumber ? phoneNumber : ''
+    firstName: '',
+    lastName: '',
+    gender: convertGenderToString(true),
+    address: '',
+    age: '',
+    phoneNumber: '',
+    department: 1
   }
 
   const handleUpdateProfilesSubmit = (values: FormUserProfileValues) => {
@@ -48,13 +62,20 @@ const PatientProfile = () => {
       toast.success('Your profile update successfully')
     }
 
+    // const dataUserProfile: DataUserProfile = {
+    //   userId: id,
+    //   ...values,
+    //   gender: converGenderToBoolen(values.gender)
+    // }
     const dataUserProfile: DataUserProfile = {
       userId: id,
       ...values,
       gender: converGenderToBoolen(values.gender)
     }
 
-    fetchApiUpdateProfile(dataUserProfile)
+    console.log(dataUserProfile)
+
+    // fetchApiUpdateProfile(dataUserProfile)
   }
 
   const handleProfilesValidationSchema = () => {
@@ -63,7 +84,8 @@ const PatientProfile = () => {
       phoneNumber: Yup.string()
         .trim()
         .required(CHECK_PHONE_NUMBER_EMPTY)
-        .matches(PHONE_REGEX_VN, CHECK_PHONE_NUMBER_MATCH_REGEX)
+        .matches(PHONE_REGEX_VN, CHECK_PHONE_NUMBER_MATCH_REGEX),
+      age: Yup.string().trim().required(CHECK_AGE_EMPTY)
     })
   }
 
@@ -106,27 +128,21 @@ const PatientProfile = () => {
   }
 
   return (
-    <div className='profile__div--container'>
-      <div className='profile__div--header'>
-        <p className='profile__p--title'>Profile Settings</p>
-        <p className='profile__p--des'>
-          Manage your personal information, including phone numbers and email,
-          address <span>where you can be contacted</span>
-        </p>
-        <div className='profile__form'>
-          <FormikCustomize
-            initialFormikValues={initialUserProfileValues}
-            inputFields={userProfileFields}
-            onValidationSchema={handleProfilesValidationSchema}
-            onValidate={handleProfilesValidation}
-            onSubmitFormik={handleUpdateProfilesSubmit}
-            btnText='Save'
-            theme={customFontLoginTheme}
-          />
-        </div>
+    <div className='admin__doctor--setting'>
+      <AdminDoctorSettingAvatar />
+      <div className='setting__div--formik'>
+        <FormikCustomize
+          initialFormikValues={initialUserProfileValues}
+          inputFields={adminProfileFields}
+          onValidationSchema={handleProfilesValidationSchema}
+          onValidate={handleProfilesValidation}
+          onSubmitFormik={handleUpdateProfilesSubmit}
+          btnText='Save'
+          theme={customFontDoctorProfileTheme}
+        />
       </div>
     </div>
   )
 }
 
-export default PatientProfile
+export default AdminDoctorSettings

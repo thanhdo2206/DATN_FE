@@ -2,16 +2,17 @@ import '../../../assets/css/pages/adminPage/adminAppointment/admin_appointment_d
 import AdminAppoitnmentDetailBox from './AdminAppoitnmentDetailBox'
 
 type Props = {
-  idAppointment: number
+  apptId: number
 }
 
 export interface DataAdminDetailAppointment {
   title: string
   data: string
 }
+
 function AdminAppointmentDetail(props: Props) {
-  const { idAppointment } = props
-  console.log(idAppointment)
+  const { apptId } = props
+  console.log(apptId)
   const patientInfor: DataAdminDetailAppointment[] = [
     { title: 'gmail', data: 'patient@gmail.com' },
     { title: 'gender', data: 'female' },

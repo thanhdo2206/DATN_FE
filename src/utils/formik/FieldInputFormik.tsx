@@ -6,8 +6,10 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
+  MenuItem,
   Radio,
   RadioGroup,
+  Select,
   TextField
 } from '@mui/material'
 import { FormikErrors } from 'formik'
@@ -33,6 +35,12 @@ type propsFieldInput = {
 
 const VIETNAMFAG = require('../../assets/img/vietnam_flag.png')
 
+const departmentArr = [
+  { id: 1, name: 'Dentist' },
+  { id: 2, name: 'Neurologist' },
+  { id: 3, name: 'Eye Care' }
+]
+
 function FieldInputFormik(props: propsFieldInput) {
   const { fieldId, fieldLable, fieldAutoFocus, onFieldChange, values, errors } =
     props
@@ -45,93 +53,135 @@ function FieldInputFormik(props: propsFieldInput) {
   }
 
   const fieldKey = fieldId as keyof typeof values
-  return fieldId === 'gender' ? (
-    <Grid item xs={12} className='auth__div-radio'>
-      <InputLabel shrink htmlFor={fieldId} className='lable__input'>
-        {fieldLable}
-        <span>*</span>
-      </InputLabel>
-      <RadioGroup
-        row
-        aria-labelledby='demo-radio-buttons-group-label'
-        defaultValue='female'
-        name='radio-buttons-group'
-        value={values[fieldKey]}
-        onChange={onFieldChange}
-      >
-        <FormControlLabel
-          value='female'
-          name='gender'
-          control={<Radio />}
-          label='Female'
-        />
-        <FormControlLabel
-          value='male'
-          name='gender'
-          control={<Radio />}
-          label='Male'
-        />
-      </RadioGroup>
-    </Grid>
-  ) : (
-    <Grid
-      item
-      xs={12}
-      sm={fieldId === 'firstName' || fieldId === 'lastName' ? 6 : 0}
-    >
-      <InputLabel shrink htmlFor={fieldId} className='lable__input'>
-        {fieldLable}
-        <span>*</span>
-      </InputLabel>
-      <TextField
-        error={errors[fieldKey] ? true : false}
-        fullWidth
-        id={fieldId}
-        autoFocus={fieldAutoFocus}
-        size='small'
-        className={`auth__input ${
-          errors[fieldKey] === CHECK_NAME_MATCH_REGEX
-            ? 'auth__input--extra'
-            : ''
-        }`}
-        value={values[fieldKey]}
-        onChange={onFieldChange}
-        helperText={errors[fieldKey]}
-        type={
-          fieldId === 'password' || fieldId === 'confirmPassword'
-            ? showPassword
-              ? 'text'
-              : 'password'
-            : 'text'
-        }
-        InputProps={
-          fieldId === 'phoneNumber'
-            ? {
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <img src={VIETNAMFAG} alt='#' className='auth__vn--flag' />
-                  </InputAdornment>
-                )
-              }
-            : fieldId === 'password' || fieldId === 'confirmPassword'
-            ? {
-                endAdornment: (
-                  <InputAdornment position='end'>
-                    <IconButton
-                      aria-label='toggle password visibility'
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge='end'
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }
-            : {}
-        }
-      />
-    </Grid>
+  return (
+    <>
+      {fieldId === 'gender' ? (
+        <Grid item xs={12} className='auth__div-radio'>
+          <InputLabel shrink htmlFor={fieldId} className='lable__input'>
+            {fieldLable}
+            <span>*</span>
+          </InputLabel>
+          <RadioGroup
+            row
+            aria-labelledby='demo-radio-buttons-group-label'
+            defaultValue='female'
+            name='radio-buttons-group'
+            value={values[fieldKey]}
+            onChange={onFieldChange}
+          >
+            <FormControlLabel
+              value='female'
+              name='gender'
+              control={<Radio />}
+              label='Female'
+            />
+            <FormControlLabel
+              value='male'
+              name='gender'
+              control={<Radio />}
+              label='Male'
+            />
+          </RadioGroup>
+        </Grid>
+      ) : (
+        <></>
+      )}
+
+      {fieldId === 'department' ? (
+        <Grid item xs={12}>
+          <InputLabel shrink htmlFor={fieldId} className='lable__input'>
+            {fieldLable}
+            <span>*</span>
+          </InputLabel>
+          <Select
+            labelId='demo-select-small-label'
+            name={fieldId}
+            value={values[fieldKey]}
+            onChange={onFieldChange}
+          >
+            <MenuItem value=''>
+              <em>None</em>
+            </MenuItem>
+            {departmentArr.map((departmentArr) => {
+              return (
+                <MenuItem value={departmentArr.id} key={departmentArr.id}>
+                  {departmentArr.name}
+                </MenuItem>
+              )
+            })}
+          </Select>
+        </Grid>
+      ) : (
+        <></>
+      )}
+
+      {fieldId !== 'department' && fieldId !== 'gender' ? (
+        <Grid
+          item
+          xs={12}
+          sm={fieldId === 'firstName' || fieldId === 'lastName' ? 6 : 0}
+        >
+          <InputLabel shrink htmlFor={fieldId} className='lable__input'>
+            {fieldLable}
+            <span>*</span>
+          </InputLabel>
+          <TextField
+            error={errors[fieldKey] ? true : false}
+            fullWidth
+            id={fieldId}
+            autoFocus={fieldAutoFocus}
+            size='small'
+            className={`auth__input ${
+              errors[fieldKey] === CHECK_NAME_MATCH_REGEX
+                ? 'auth__input--extra'
+                : ''
+            }`}
+            value={values[fieldKey]}
+            onChange={onFieldChange}
+            helperText={errors[fieldKey]}
+            type={
+              fieldId === 'password' || fieldId === 'confirmPassword'
+                ? showPassword
+                  ? 'text'
+                  : 'password'
+                : 'text'
+            }
+            InputProps={
+              fieldId === 'phoneNumber'
+                ? {
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <img
+                          src={VIETNAMFAG}
+                          alt='#'
+                          className='auth__vn--flag'
+                        />
+                      </InputAdornment>
+                    )
+                  }
+                : fieldId === 'password' || fieldId === 'confirmPassword'
+                ? {
+                    endAdornment: (
+                      <InputAdornment position='end'>
+                        <IconButton
+                          aria-label='toggle password visibility'
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge='end'
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }
+                : {}
+            }
+          />
+        </Grid>
+      ) : (
+        <></>
+      )}
+    </>
   )
 }
 

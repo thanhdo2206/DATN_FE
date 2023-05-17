@@ -1,4 +1,5 @@
 export const CHECK_ADDRESS_EMPTY = 'Enter your address'
+export const CHECK_AGE_EMPTY = 'Enter your age'
 export const CHECK_EMAIL_EMPTY = 'Enter your email '
 export const CHECK_EMAIL_MATCH_REGEX =
   'Sorry, only letters (a-z), numbers (0-9), and periods (.) are allowed'

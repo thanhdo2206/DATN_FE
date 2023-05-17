@@ -9,6 +9,7 @@ import { FormLoginValues } from '../../../interface/ValidateInterface'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 import { clearMessage } from '../../../redux/slices/authSlice'
 import { loginUser } from '../../../redux/thunk/authThunk'
+import { customFontLoginTheme } from '../../../themes/authTheme'
 import FormikCustomize from '../../../utils/formik/FormikCustomize'
 import { EMAIL_REGEX } from '../../../utils/regex'
 import {
@@ -82,6 +83,7 @@ export default function LoginPage() {
             onValidationSchema={handleLoginValidationSchema}
             onSubmitFormik={handleLoginSubmit}
             btnText='Sign in'
+            theme={customFontLoginTheme}
           />
         </Box>
         <Box className='auth__footer'>
