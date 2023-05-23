@@ -7,13 +7,15 @@ import {
   TablePagination,
   TableRow
 } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
   AdminTableColumn,
   TableAppointment
 } from '../../interface/AdminTableInterface'
+import { getAllAppointmentService } from '../../services/adminServices/adminAppointmentServices'
 import { TableCellProfile } from '../../themes/profileStyle'
+import { addHoursToDate, formatDate, getTimeZone } from '../../utils/date'
 import AdminBreadCrumb from './adminBreadcrumb/AdminBreadCrumb'
 import AdminAppointmentTableCell from './adminTable/AdminAppointmentTableCell'
 
@@ -51,46 +53,70 @@ function createDataTableAppointment(
 
 const rowsPerPage = 5
 
-const rowsDepartment = [
-  createDataTableAppointment(
-    1,
-    'Darren Elder',
-    'https://doccure.dreamguystech.com/html/template/admin/assets/img/doctors/doctor-thumb-02.jpg',
-    'Travis Trimble',
-    'https://doccure.dreamguystech.com/html/template/admin/assets/img/patients/patient2.jpg',
-    'Monday - 4/17/2023',
-    '11.00 AM',
-    '11.35 AM',
-    0
-  ),
-  createDataTableAppointment(
-    2,
-    'Darren Elder',
-    'https://doccure.dreamguystech.com/html/template/admin/assets/img/doctors/doctor-thumb-02.jpg',
-    'Travis Trimble',
-    'https://doccure.dreamguystech.com/html/template/admin/assets/img/patients/patient2.jpg',
-    'Monday - 4/17/2023',
-    '11.00 AM',
-    '11.35 AM',
-    1
-  ),
-  createDataTableAppointment(
-    3,
-    'Darren Elder',
-    'https://doccure.dreamguystech.com/html/template/admin/assets/img/doctors/doctor-thumb-02.jpg',
-    'Travis Trimble',
-    'https://doccure.dreamguystech.com/html/template/admin/assets/img/patients/patient2.jpg',
-    'Monday - 4/17/2023',
-    '11.00 AM',
-    '11.35 AM',
-    2
-  )
-]
-
 const AdminAppointmentPage = () => {
   const [page, setPage] = useState(0)
+  const [totalPage, setTotalPage] = useState<number>(0)
+  const [rowsAppointment, setRowsAppointment] = useState<any[]>([])
+  const [rowsRenderAppt, setRowsRenderAppt] = useState<any[]>([])
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const fetchGetAllAppointmentApi = async (pageIndex: number) => {
+    const response = await getAllAppointmentService(pageIndex, rowsPerPage)
+    setTotalPage(response.totalPage)
+    const appointments = response.listAppointmentResult.map(
+      (appointment: any) => {
+        const { id, status, doctor, patient, timeSlot } = appointment
+        const date = new Date(timeSlot.startTime)
+        return createDataTableAppointment(
+          id,
+          `Dr ${doctor.firstName} ${doctor.lastName}`,
+          doctor.profilePicture,
+          `${patient.firstName} ${patient.lastName}`,
+          patient.profilePicture,
+          `${formatDate(date)}`,
+          `${getTimeZone(timeSlot.startTime)}`,
+          `${getTimeZone(addHoursToDate(date, timeSlot.duration))}`,
+          status
+        )
+      }
+    )
+    if (rowsAppointment.length === 0) {
+      setRowsAppointment(appointments)
+      return
+    }
+
+    const rowsAppointmentClone = rowsAppointment
+    appointments.forEach((appointment: any) => {
+      if (
+        appointment.id >
+        rowsAppointmentClone[rowsAppointmentClone.length - 1].id
+      ) {
+        rowsAppointmentClone.push(appointment)
+      }
+      if (
+        appointment.id <=
+        rowsAppointmentClone[rowsAppointmentClone.length - 1].id
+      ) {
+        rowsAppointmentClone.map((rowAppointment) => {
+          if (appointment.id === rowAppointment.id) {
+            return appointment
+          }
+          return rowAppointment
+        })
+      }
+    })
+    setRowsAppointment(rowsAppointmentClone)
+  }
+
+  useEffect(() => {
+    fetchGetAllAppointmentApi(1)
+  }, [])
+
+  useEffect(() => {
+    setRowsRenderAppt(rowsAppointment)
+  }, [rowsAppointment])
+
+  const handleChangePage = async (event: unknown, newPage: number) => {
+    await fetchGetAllAppointmentApi(newPage + 1)
     setPage(newPage)
   }
 
@@ -117,24 +143,28 @@ const AdminAppointmentPage = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rowsDepartment
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
-                    return (
-                      <AdminAppointmentTableCell
-                        columns={columns}
-                        row={row}
-                        key={row.id}
-                      />
-                    )
-                  })}
+                {rowsRenderAppt ? (
+                  rowsRenderAppt
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => {
+                      return (
+                        <AdminAppointmentTableCell
+                          columns={columns}
+                          row={row}
+                          key={index}
+                        />
+                      )
+                    })
+                ) : (
+                  <></>
+                )}
               </TableBody>
             </Table>
           </TableContainer>
           <TablePagination
             rowsPerPageOptions={[6]}
             component='div'
-            count={rowsDepartment.length}
+            count={totalPage * rowsPerPage}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

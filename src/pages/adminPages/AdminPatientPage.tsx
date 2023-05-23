@@ -7,12 +7,15 @@ import {
   TablePagination,
   TableRow
 } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
+import { ProgressListener } from '../../components/Progress'
 import {
   AdminTableColumn,
   TablePatient
 } from '../../interface/AdminTableInterface'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import { getAllPatientByAdmin } from '../../redux/thunk/adminThunk/adminPatientThunk'
 import { TableCellProfile } from '../../themes/profileStyle'
 import AdminBreadCrumb from './adminBreadcrumb/AdminBreadCrumb'
 import AdminPatientTableCell from './adminTable/AdminPatientTableCell'
@@ -20,9 +23,9 @@ import AdminPatientTableCell from './adminTable/AdminPatientTableCell'
 const columns: AdminTableColumn[] = [
   { id: 'patientName', label: 'patients', minWidth: 170 },
   { id: 'gmail', label: 'gmail', minWidth: 170 },
-  { id: 'phoneNumber', label: 'phone number', minWidth: 170 },
-  { id: 'address', label: 'address', minWidth: 170 },
-  { id: 'actions', label: 'Actions', minWidth: 100, align: 'right' }
+  { id: 'phoneNumber', label: 'phone number', minWidth: 150 },
+  { id: 'address', label: 'address', minWidth: 200 },
+  { id: 'actions', label: 'Actions', minWidth: 40, align: 'right' }
 ]
 
 function createDataTablePatient(
@@ -43,65 +46,47 @@ function createDataTablePatient(
   }
 }
 
-const rowsPerPage = 5
-
-const rowsPatient = [
-  createDataTablePatient(
-    1,
-    'patient name',
-    'https://doccure.dreamguystech.com/html/template/admin/assets/img/patients/patient2.jpg',
-    'patient@gmail.com',
-    '0987112345',
-    '20 Ton Duc Thang, quan Lien Chieu, Da Nang'
-  ),
-  createDataTablePatient(
-    2,
-    'patient name',
-    'https://doccure.dreamguystech.com/html/template/admin/assets/img/patients/patient2.jpg',
-    'patient@gmail.com',
-    '0987112345',
-    '20 Ton Duc Thang, quan Lien Chieu, Da Nang'
-  ),
-  createDataTablePatient(
-    3,
-    'patient name',
-    'https://doccure.dreamguystech.com/html/template/admin/assets/img/patients/patient2.jpg',
-    'patient@gmail.com',
-    '0987112345',
-    '20 Ton Duc Thang, quan Lien Chieu, Da Nang'
-  ),
-  createDataTablePatient(
-    4,
-    'patient name',
-    'https://doccure.dreamguystech.com/html/template/admin/assets/img/patients/patient2.jpg',
-    'patient@gmail.com',
-    '0987112345',
-    '20 Ton Duc Thang, quan Lien Chieu, Da Nang'
-  ),
-  createDataTablePatient(
-    5,
-    'patient name',
-    'https://doccure.dreamguystech.com/html/template/admin/assets/img/patients/patient2.jpg',
-    'patient@gmail.com',
-    '0987112345',
-    '20 Ton Duc Thang, quan Lien Chieu, Da Nang'
-  ),
-  createDataTablePatient(
-    6,
-    'patient name',
-    'https://doccure.dreamguystech.com/html/template/admin/assets/img/patients/patient2.jpg',
-    'patient@gmail.com',
-    '0987112345',
-    '20 Ton Duc Thang, quan Lien Chieu, Da Nang'
-  )
-]
+const rowsPerPage = 6
 
 const AdminPatientPage = () => {
   const [page, setPage] = useState(0)
+  const [rowsPatient, setRowsPatient] = useState<TablePatient[]>([])
 
+  const { isCheckInitialStatus } = useAppSelector((state) => state.auths)
+  const { listPatient } = useAppSelector((state) => state.admin)
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
   }
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    if (!isCheckInitialStatus) {
+      const fetchApiGetAllPatientByAdmin = async () => {
+        ProgressListener.emit('start')
+        await dispatch(getAllPatientByAdmin())
+        ProgressListener.emit('stop')
+      }
+      fetchApiGetAllPatientByAdmin()
+      return
+    }
+  }, [])
+
+  useEffect(() => {
+    if (listPatient !== undefined) {
+      const patients = listPatient.map((patient) => {
+        return createDataTablePatient(
+          patient.id,
+          `${patient.firstName} ${patient.lastName}`,
+          `${patient.profilePicture}`,
+          `${patient.email}`,
+          `${patient.phoneNumber}`,
+          `${patient.address}`
+        )
+      })
+
+      setRowsPatient(patients)
+    }
+  }, [listPatient])
 
   return (
     <div className='admin__patients--contianer'>

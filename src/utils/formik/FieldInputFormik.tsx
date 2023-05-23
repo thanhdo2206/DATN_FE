@@ -20,6 +20,7 @@ import {
   FormLoginValues,
   FormRegisterValues
 } from '../../interface/ValidateInterface'
+import { useAppSelector } from '../../redux/hooks'
 import { CHECK_NAME_MATCH_REGEX } from '../validateInform'
 
 type propsFieldInput = {
@@ -35,12 +36,6 @@ type propsFieldInput = {
 
 const VIETNAMFAG = require('../../assets/img/vietnam_flag.png')
 
-const departmentArr = [
-  { id: 1, name: 'Dentist' },
-  { id: 2, name: 'Neurologist' },
-  { id: 3, name: 'Eye Care' }
-]
-
 function FieldInputFormik(props: propsFieldInput) {
   const { fieldId, fieldLable, fieldAutoFocus, onFieldChange, values, errors } =
     props
@@ -51,6 +46,7 @@ function FieldInputFormik(props: propsFieldInput) {
   ) => {
     event.preventDefault()
   }
+  const { listDepartment } = useAppSelector((state) => state.admin)
 
   const fieldKey = fieldId as keyof typeof values
   return (
@@ -87,7 +83,7 @@ function FieldInputFormik(props: propsFieldInput) {
         <></>
       )}
 
-      {fieldId === 'department' ? (
+      {fieldId === 'departmentId' ? (
         <Grid item xs={12}>
           <InputLabel shrink htmlFor={fieldId} className='lable__input'>
             {fieldLable}
@@ -96,26 +92,29 @@ function FieldInputFormik(props: propsFieldInput) {
           <Select
             labelId='demo-select-small-label'
             name={fieldId}
-            value={values[fieldKey]}
+            value={values[fieldKey] ? values[fieldKey] : ''}
             onChange={onFieldChange}
           >
-            <MenuItem value=''>
-              <em>None</em>
-            </MenuItem>
-            {departmentArr.map((departmentArr) => {
-              return (
-                <MenuItem value={departmentArr.id} key={departmentArr.id}>
-                  {departmentArr.name}
-                </MenuItem>
-              )
-            })}
+            {listDepartment ? (
+              listDepartment.map((department) => {
+                return (
+                  <MenuItem value={`${department.id}`} key={`${department.id}`}>
+                    {`${department.name}`}
+                  </MenuItem>
+                )
+              })
+            ) : (
+              <MenuItem value=''>
+                <em>None</em>
+              </MenuItem>
+            )}
           </Select>
         </Grid>
       ) : (
         <></>
       )}
 
-      {fieldId !== 'department' && fieldId !== 'gender' ? (
+      {fieldId !== 'departmentId' && fieldId !== 'gender' ? (
         <Grid
           item
           xs={12}

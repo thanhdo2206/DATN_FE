@@ -34,7 +34,7 @@
   position: fixed;
   top: 0;
   right: 0;
-  z-index: 100;
+  z-index: 20;
 }
 
 .admin__content--header-scrolled {
@@ -50,6 +50,23 @@
   padding-top: 80px;
 }
 
+/*Empty doctors*/
+.admin__doctor--empty {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.admin__doctor--empty .empty__img {
+  width: 130px;
+  height: 130px;
+  color: var(--color-text);
+}
+
+.admin__doctor--empty .empty__p {
+  font-weight: 600;
+  margin-top: 10px;
+  color: var(--color-text);
+}
 /*Mui sidebar*/
 .admin__sidebar--body .MuiTreeView-root {
   height: calc(100vh - 92px);
@@ -77,6 +94,10 @@
 
 .item__child .style__box--icon {
   font-size: 10px;
+}
+
+.admin__sidebar--body .item__child .Mui-selected {
+  background-color: white !important;
 }
 
 .item__child--focus .MuiTreeItem-content {
@@ -125,7 +146,7 @@
 }
 
 .admin__modal--detailPatient {
-  width: 555px;
+  width: 620px;
 }
 
 .admin__model--title {
@@ -204,11 +225,6 @@
   margin-bottom: 10px;
 }
 
-.admin__table--body .admin__grid--doctor{
-  display: flex;
-  justify-content: space-between;
-}
-
 .admin__appointment--body {
   margin-top: 30px;
 }
@@ -265,4 +281,14 @@
 
 .table__p--time {
   color: var(--color-text);
+}
+
+/*breadcrumb*/
+.breadcrumb__link {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.breadcrumb__link:hover {
+  text-decoration: underline;
 }

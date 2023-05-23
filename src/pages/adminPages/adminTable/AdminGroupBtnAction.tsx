@@ -4,6 +4,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
 import { Button } from '@mui/material'
 import React, { useState } from 'react'
 
+import { useAppSelector } from '../../../redux/hooks'
 import AdminModelCustomize from '../../../utils/models/AdminModelCustomize'
 import ModalAddDepartmentBody from '../../../utils/models/ModalAddDepartmentBody'
 import AdminAppointmentDetail from '../adminAppointment/AdminAppointmentDetail'
@@ -14,6 +15,8 @@ type Props = {
   departmentName?: string
   apptId?: number
   patientId?: number
+  file?: File | string
+  departmentId?: number
 }
 
 interface openModelDepartment {
@@ -23,7 +26,9 @@ interface openModelDepartment {
 }
 
 const AdminGroupBtnAction = (props: Props) => {
-  const { departmentName, apptId, patientId } = props
+  const { departmentName, apptId, patientId, file, departmentId } = props
+  const { messageDeleteDepartment } = useAppSelector((state) => state.admin)
+
   const [open, setOpen] = useState<openModelDepartment>({
     openEdit: false,
     openDelete: false,
@@ -101,14 +106,21 @@ const AdminGroupBtnAction = (props: Props) => {
       </div>
 
       <div>
-        {departmentName ? (
+        {departmentName && file ? (
           <>
             <AdminModelCustomize
               classNameHeader='success'
               title='Edit Department'
               open={open.openEdit}
               handleClose={() => handleClose('edit')}
-              bodyModal={<ModalAddDepartmentBody inputEdit={departmentName} />}
+              bodyModal={
+                <ModalAddDepartmentBody
+                  inputEdit={departmentName}
+                  file={file}
+                  id={departmentId}
+                  handleClose={() => handleClose('edit')}
+                />
+              }
             />
             <AdminModelCustomize
               classNameHeader='danger'
@@ -116,8 +128,17 @@ const AdminGroupBtnAction = (props: Props) => {
               open={open.openDelete}
               handleClose={() => handleClose('delete')}
               titleDelete='You are about to delete this department'
-              desDelete='This will delete this department. Are you sure?'
-              footerModal={<FooterModalDelete />}
+              desDelete={
+                messageDeleteDepartment
+                  ? messageDeleteDepartment
+                  : 'This will delete this department. Are you sure?'
+              }
+              footerModal={
+                <FooterModalDelete
+                  departmentId={departmentId}
+                  handleClose={() => handleClose('delete')}
+                />
+              }
             />
           </>
         ) : (

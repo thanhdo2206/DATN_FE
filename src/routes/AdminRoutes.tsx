@@ -1,9 +1,10 @@
 import { RouteObject } from 'react-router-dom'
 
+import AdminActiveDoctor from '../pages/adminPages/AdminActiveDoctor'
 import AdminAddDoctorPage from '../pages/adminPages/AdminAddDoctorPage'
 import AdminAppointmentPage from '../pages/adminPages/AdminAppointmentPage'
+import AdminArchiveDoctor from '../pages/adminPages/AdminArchiveDoctor'
 import AdminDepartmentPage from '../pages/adminPages/AdminDepartmentPage'
-import AdminDoctorPage from '../pages/adminPages/AdminDoctorPage'
 import AdminPatientPage from '../pages/adminPages/AdminPatientPage'
 import AdminProfileDoctorPage from '../pages/adminPages/AdminProfileDoctorPage'
 import AdminTemplate from '../templates/AdminTemplate'
@@ -28,7 +29,11 @@ const adminRoutes: RouteObject[] = [
         children: [
           {
             path: 'list',
-            element: <AdminDoctorPage />
+            element: <AdminActiveDoctor />
+          },
+          {
+            path: 'archive',
+            element: <AdminArchiveDoctor />
           },
           {
             path: 'add',

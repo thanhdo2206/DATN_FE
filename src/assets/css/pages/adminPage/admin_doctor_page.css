@@ -12,7 +12,7 @@
 }
 
 .admin__doctors--container .doctor__img {
-  height: auto;
+  height: 100%;
   width: 100%;
   border-radius: 10px 10px 0 0;
   border-bottom: 1px solid rgba(39, 43, 65, 0.2);
@@ -20,6 +20,7 @@
 
 .admin__doctors--container .doctor__div--header {
   border-radius: 15px 15px 0 0;
+  height: 29vh;
 }
 
 .admin__doctors--container .doctor__div--box:hover .doctor__div--header {
@@ -56,4 +57,18 @@
 .admin__doctors--container .doctor__div--box:hover .doctor__span--department {
   color: white;
   transition: 0.4s;
+}
+
+.admin__doctors--container .doctor__placeholder {
+  height: 100%;
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+  border-bottom: 1px solid rgba(39, 43, 65, 0.2);
+  background-color: white;
+}
+
+.admin__doctors--container .doctor__placeholder--icon {
+  height: 100%;
+  width: 100%;
+  color: var(--color-text);
 }
