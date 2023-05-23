@@ -60,12 +60,38 @@
 /*add department*/
 .department__form {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   padding: 0 15px 15px 15px;
   border-bottom: 1px solid rgb(216 216 216);
 }
 
+.department__form .input__div--name {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.department__form .input__div--img {
+  margin-top: 10px;
+}
+
+.department__form .input__p--title {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.department__form .input__p--error {
+  color: var(--color-text-error);
+  font-size: 13px;
+  width: 80%;
+  margin-top: 10px;
+}
+
+.department__form .input__div--error {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
 .department__form--label {
   font-size: 15px;
 }

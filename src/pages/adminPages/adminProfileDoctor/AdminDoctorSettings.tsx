@@ -1,22 +1,23 @@
-import { toast } from 'react-toastify'
 import * as Yup from 'yup'
 
-import { ProgressListener } from '../../../components/Progress'
 import {
-  DataUserProfile,
-  FormUserProfileValues
-} from '../../../interface/UsersInterface'
+  AdminDepartmentInterface,
+  AdminUserInterface,
+  FormAdminSetDoctorProfileValues
+} from '../../../interface/AdminInformationInterface'
 import { FormRegisterValues } from '../../../interface/ValidateInterface'
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
-import { updateUserProfile } from '../../../redux/thunk/userThunk'
 import { customFontDoctorProfileTheme } from '../../../themes/authTheme'
-import {
-  converGenderToBoolen,
-  convertGenderToString
-} from '../../../utils/convertGenderToString'
+import { convertGenderToString } from '../../../utils/convertGenderToString'
 import FormikCustomize from '../../../utils/formik/FormikCustomize'
-import { adminProfileFields } from '../../../utils/formik/formikData'
-import { NAME_REGEX, PHONE_REGEX_VN } from '../../../utils/regex'
+import {
+  adminProfileFields,
+  adminRegisterProfileFields
+} from '../../../utils/formik/formikData'
+import {
+  NAME_REGEX,
+  PASSWORD_REGEX,
+  PHONE_REGEX_VN
+} from '../../../utils/regex'
 import {
   CHECK_ADDRESS_EMPTY,
   CHECK_AGE_EMPTY,
@@ -24,6 +25,10 @@ import {
   CHECK_LAST_NAME_EMPTY,
   CHECK_NAME_EMPTY,
   CHECK_NAME_MATCH_REGEX,
+  CHECK_PASSWORD_CONFIRM_EMPTY,
+  CHECK_PASSWORD_CONFIRM_MATCH_PASSWORD,
+  CHECK_PASSWORD_EMPTY,
+  CHECK_PASSWORD_MATCH_REGEX,
   CHECK_PHONE_NUMBER_EMPTY,
   CHECK_PHONE_NUMBER_MATCH_REGEX
 } from '../../../utils/validateInform'
@@ -31,62 +36,55 @@ import AdminDoctorSettingAvatar from './AdminDoctorSettingAvatar'
 
 type Props = {
   id?: number
+  doctorInfor: Partial<AdminUserInterface>
+  department: Partial<AdminDepartmentInterface>
+  onSubmitDoctorProfile: (values: FormAdminSetDoctorProfileValues) => void
+  handleUpdateProfilePictureChange?: (
+    selectedFile: string | File
+  ) => string | File
 }
 
 const AdminDoctorSettings = (props: Props) => {
-  const { id } = props
-  const dispatch = useAppDispatch()
+  const { id, doctorInfor, department, onSubmitDoctorProfile } = props
+  const { firstName, lastName, gender, address, phoneNumber, age, email } =
+    doctorInfor
 
-  // const initialUserProfileValues = {
-  //   firstName: firstName ? firstName : '',
-  //   lastName: lastName ? lastName : '',
-  //   gender: convertGenderToString(gender),
-  //   address: address ? address : '',
-  //   phoneNumber: phoneNumber ? phoneNumber : ''
-  // }
-  const initialUserProfileValues = {
-    firstName: '',
-    lastName: '',
-    gender: convertGenderToString(true),
-    address: '',
-    age: '',
-    phoneNumber: '',
-    department: 1
-  }
-
-  const handleUpdateProfilesSubmit = (values: FormUserProfileValues) => {
-    const fetchApiUpdateProfile = async (dataUserProfile: DataUserProfile) => {
-      ProgressListener.emit('start')
-      await dispatch(updateUserProfile(dataUserProfile))
-      ProgressListener.emit('stop')
-      toast.success('Your profile update successfully')
-    }
-
-    // const dataUserProfile: DataUserProfile = {
-    //   userId: id,
-    //   ...values,
-    //   gender: converGenderToBoolen(values.gender)
-    // }
-    const dataUserProfile: DataUserProfile = {
-      userId: id,
-      ...values,
-      gender: converGenderToBoolen(values.gender)
-    }
-
-    console.log(dataUserProfile)
-
-    // fetchApiUpdateProfile(dataUserProfile)
+  const initialAdminProfileValues = {
+    firstName: firstName ? firstName : '',
+    lastName: lastName ? lastName : '',
+    gender: convertGenderToString(gender),
+    age: age ? age.toString() : '',
+    address: address ? address : '',
+    email: email ? email : '',
+    phoneNumber: phoneNumber ? phoneNumber : '',
+    departmentId: department.id,
+    ...(!id && { password: '' }),
+    ...(!id && { confirmPassword: '' })
   }
 
   const handleProfilesValidationSchema = () => {
-    return Yup.object().shape({
+    const validateObject = {
       address: Yup.string().trim().required(CHECK_ADDRESS_EMPTY),
       phoneNumber: Yup.string()
         .trim()
         .required(CHECK_PHONE_NUMBER_EMPTY)
         .matches(PHONE_REGEX_VN, CHECK_PHONE_NUMBER_MATCH_REGEX),
-      age: Yup.string().trim().required(CHECK_AGE_EMPTY)
-    })
+      age: Yup.string().trim().required(CHECK_AGE_EMPTY),
+      password: Yup.string()
+        .trim()
+        .required(CHECK_PASSWORD_EMPTY)
+        .matches(PASSWORD_REGEX, CHECK_PASSWORD_MATCH_REGEX),
+      confirmPassword: Yup.string()
+        .trim()
+        .required(CHECK_PASSWORD_CONFIRM_EMPTY)
+        .oneOf([Yup.ref('password'), ''], CHECK_PASSWORD_CONFIRM_MATCH_PASSWORD)
+    }
+    if (id) {
+      const { password, confirmPassword, ...validateSettingsObject } =
+        validateObject
+      return Yup.object().shape(validateSettingsObject)
+    }
+    return Yup.object().shape(validateObject)
   }
 
   const handleProfilesValidation = (values: FormRegisterValues) => {
@@ -129,14 +127,17 @@ const AdminDoctorSettings = (props: Props) => {
 
   return (
     <div className='admin__doctor--setting'>
-      <AdminDoctorSettingAvatar />
+      <AdminDoctorSettingAvatar
+        profilePicture={doctorInfor.profilePicture}
+        idDoctor={id}
+      />
       <div className='setting__div--formik'>
         <FormikCustomize
-          initialFormikValues={initialUserProfileValues}
-          inputFields={adminProfileFields}
+          initialFormikValues={initialAdminProfileValues}
+          inputFields={id ? adminProfileFields : adminRegisterProfileFields}
           onValidationSchema={handleProfilesValidationSchema}
           onValidate={handleProfilesValidation}
-          onSubmitFormik={handleUpdateProfilesSubmit}
+          onSubmitFormik={onSubmitDoctorProfile}
           btnText='Save'
           theme={customFontDoctorProfileTheme}
         />

@@ -10,10 +10,11 @@ type Props = {
   name: string
   title: string
   status: boolean
+  profilePicture?: string
 }
 
 const AdminAppoitnmentDetailBox = (props: Props) => {
-  const { dataInfor, name, title, status } = props
+  const { dataInfor, name, title, status, profilePicture } = props
   return (
     <Grid
       container
@@ -28,9 +29,7 @@ const AdminAppoitnmentDetailBox = (props: Props) => {
         <Grid item xs={3}>
           <AdminAppointmnetDetailBoxAvatar
             name={name}
-            profilePicture={
-              'https://uko-react.vercel.app/static/avatar/001-man.svg'
-            }
+            profilePicture={profilePicture as string}
           />
         </Grid>
       ) : (

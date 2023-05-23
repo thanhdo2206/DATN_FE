@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 
+import adminReducer from './slices/adminSlice'
 import appointmentReducer from './slices/appointmentSlice'
 import authReducer from './slices/authSlice'
 import medicalExaminationReducer from './slices/medicalExaminationSlice'
@@ -14,6 +15,7 @@ export const store = configureStore({
     auths: authReducer,
     appointments: appointmentReducer,
     medicalExaminationReducer,
-    timeSlotsReducer
+    timeSlotsReducer,
+    admin: adminReducer
   }
 })

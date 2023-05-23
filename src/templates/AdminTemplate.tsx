@@ -121,10 +121,11 @@ function AdminTemplate() {
   const segments = path.split('/')
   const [url, setUrl] = useState<String>('')
 
+  let route = segments[segments.length - 1]
+
   useEffect(() => {
-    let url = segments[segments.length - 1]
-    parseInt(url) ? setUrl(segments[segments.length - 2]) : setUrl(url)
-  }, [])
+    parseInt(route) ? setUrl(segments[segments.length - 2]) : setUrl(route)
+  }, [route])
 
   const [scroll, setScroll] = useState(false)
 
@@ -189,13 +190,16 @@ function AdminTemplate() {
                   : setUrl(url)
               }}
               className={
-                url === 'list' || url === 'add' || url === 'profile'
+                url === 'list' ||
+                url === 'add' ||
+                url === 'profile' ||
+                url === 'archive'
                   ? 'label__parent--focus'
                   : ''
               }
             >
               <StyledTreeItem
-                nodeId='4'
+                nodeId='5'
                 labelText='List'
                 labelIcon={FiberManualRecordIcon}
                 onClick={() => {
@@ -203,11 +207,25 @@ function AdminTemplate() {
                   navigate('/admin/doctors/list')
                 }}
                 className={`item__child ${
-                  url === 'list' ? 'item__child--focus' : ''
+                  url === 'list' || url === 'profile'
+                    ? 'item__child--focus'
+                    : ''
                 }`}
               />
               <StyledTreeItem
-                nodeId='5'
+                nodeId='6'
+                labelText='Archive'
+                labelIcon={FiberManualRecordIcon}
+                onClick={() => {
+                  setUrl('archive')
+                  navigate('/admin/doctors/archive')
+                }}
+                className={`item__child ${
+                  url === 'archive' ? 'item__child--focus' : ''
+                }`}
+              />
+              <StyledTreeItem
+                nodeId='7'
                 labelText='Add Doctor'
                 labelIcon={FiberManualRecordIcon}
                 onClick={() => {
@@ -218,8 +236,8 @@ function AdminTemplate() {
                   url === 'add' ? 'item__child--focus' : ''
                 }`}
               />
-              <StyledTreeItem
-                nodeId='6'
+              {/* <StyledTreeItem
+                nodeId='8'
                 labelText='Profile'
                 labelIcon={FiberManualRecordIcon}
                 onClick={() => {
@@ -229,10 +247,10 @@ function AdminTemplate() {
                 className={`item__child ${
                   url === 'profile' ? 'item__child--focus' : ''
                 }`}
-              />
+              /> */}
             </StyledTreeItem>
             <StyledTreeItem
-              nodeId='7'
+              nodeId='9'
               labelText='Patients'
               labelIcon={AccessibleIcon}
               onClick={() => {

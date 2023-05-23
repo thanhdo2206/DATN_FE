@@ -29,6 +29,7 @@ requestAuthApi.interceptors.response.use(
     if (responseErr.status === 401 || responseErr.status === 403) {
       return handleAccessTokenExpired(error)
     }
+    return Promise.reject(error)
   }
 )
 

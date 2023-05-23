@@ -13,7 +13,6 @@ import {
 export const updateUserProfile = createAsyncThunk(
   'user/profile/update',
   async (data: DataUserProfile) => {
-    // console.log('api', data)
     const response: UserInformation = await updateUserProfileService(data)
     return response
   }

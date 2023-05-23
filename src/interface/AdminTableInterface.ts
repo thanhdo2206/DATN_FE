@@ -36,7 +36,7 @@ export interface TableDepartment {
 export interface TableDoctor {
   id: number
   doctorname: string
-  profilePictureDoctor: string
+  profilePictureDoctor?: string
   departmentName: string
 }
 

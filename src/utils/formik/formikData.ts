@@ -10,12 +10,16 @@ export const adminProfileFields: UserProfileField[] = [
     id: 'lastName',
     label: 'Last Name'
   },
+  {
+    id: 'email',
+    label: 'Email'
+  },
   { id: 'age', label: 'Age' },
   {
     id: 'gender',
     label: 'Gender'
   },
-  { id: 'department', label: 'Department' },
+  { id: 'departmentId', label: 'Department' },
   {
     id: 'address',
     label: 'Address'
@@ -23,6 +27,44 @@ export const adminProfileFields: UserProfileField[] = [
   {
     id: 'phoneNumber',
     label: 'Phone Number'
+  }
+]
+
+export const adminRegisterProfileFields: UserProfileField[] = [
+  {
+    id: 'firstName',
+    label: 'First Name',
+    autoFoucus: true
+  },
+  {
+    id: 'lastName',
+    label: 'Last Name'
+  },
+  {
+    id: 'email',
+    label: 'Email'
+  },
+  { id: 'age', label: 'Age' },
+  {
+    id: 'gender',
+    label: 'Gender'
+  },
+  { id: 'departmentId', label: 'Department' },
+  {
+    id: 'address',
+    label: 'Address'
+  },
+  {
+    id: 'phoneNumber',
+    label: 'Phone Number'
+  },
+  {
+    id: 'password',
+    label: 'Password'
+  },
+  {
+    id: 'confirmPassword',
+    label: 'Confirm Password'
   }
 ]
 

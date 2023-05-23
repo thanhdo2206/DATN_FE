@@ -1,10 +1,21 @@
 import { NavigateBefore, NavigateNext } from '@mui/icons-material'
 import { Button, Typography } from '@mui/material'
 import { Box, Step, StepLabel, Stepper } from '@mui/material'
-import React, { useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import '../../assets/css/pages/adminPage/admin_add_doctor.css'
 import ButtonCustomize from '../../components/ButtonCustomize'
+import { ProgressListener } from '../../components/Progress'
+import { FormAdminSetDoctorProfileValues } from '../../interface/AdminInformationInterface'
+import { useAppDispatch } from '../../redux/hooks'
+import { getAllDepartmentByAdmin } from '../../redux/thunk/adminThunk/adminDoctorThunk'
+import {
+  addAdminSetDoctorProfileService,
+  checkValidDoctorInforService
+} from '../../services/adminServices/adminDoctorService'
+import { checkResponseFailed } from '../../utils/checkResponseStatus'
+import { converGenderToBoolen } from '../../utils/convertGenderToString'
 import {
   QontoConnector,
   QontoStepIcon,
@@ -17,27 +28,147 @@ import AdminDoctorSettings from './adminProfileDoctor/AdminDoctorSettings'
 
 const completedSurvey = require('../../assets/img/completed-survey.jpg')
 
+interface DataContextType {
+  profilePictureDoctor: File | string
+  setProfilePictureDoctor: React.Dispatch<React.SetStateAction<string | File>>
+}
+export const DataContextAddDoctor = createContext<DataContextType>(
+  {} as DataContextType
+)
+
 const AdminAddDoctorPage = () => {
   const [activeStep, setActiveStep] = useState<number>(0)
   const [stepFailed, setStepFaild] = useState<number | undefined>()
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  const [isAllowBack, setIsAllowBack] = useState<boolean>(false)
+  const [isAllowNext, setIsAllowNext] = useState<boolean>(false)
+  const [profilePictureDoctor, setProfilePictureDoctor] = useState<
+    File | string
+  >('')
+  const [doctorInfor, setDoctorInfor] = useState<
+    Partial<FormAdminSetDoctorProfileValues>
+  >({})
+  const [titleMedical, setTitleMedical] = useState<string>('')
+  const [sortDescriptionMedical, setSortDescriptionMedical] =
+    useState<string>('')
+  const [desscriptionMedical, setDescriptionMedical] = useState<string>('')
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  useEffect(() => {
+    const fetchData = async () => {
+      await dispatch(getAllDepartmentByAdmin())
+    }
+    fetchData()
+  }, [])
+
+  useEffect(() => {
+    if (activeStep === 0) {
+      setIsAllowBack(false)
+      setIsAllowNext(false)
+    }
+
+    if (activeStep === 1) {
+      setIsAllowBack(true)
+      setIsAllowNext(false)
+    }
+  }, [activeStep])
 
   const isStepFailed = (step: number) => {
     return step === stepFailed
   }
 
   const handleBackStep = () => {
-    const backstep = activeStep ? activeStep - 1 : 0
-    setActiveStep(backstep)
+    if (isAllowBack) {
+      const backstep = activeStep ? activeStep - 1 : 0
+      setActiveStep(backstep)
+    }
   }
 
   const handleNextStep = () => {
-    const nextStep = activeStep !== 2 ? activeStep + 1 : 2
-    setActiveStep(nextStep)
+    if (isAllowNext) {
+      const nextStep = activeStep !== 2 ? activeStep + 1 : 2
+      setActiveStep(nextStep)
+    }
   }
 
-  const handleChangeTextArea = (
+  const handleChangeSortDescription = (
     event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {}
+  ) => {
+    setSortDescriptionMedical(event.target.value)
+  }
+
+  const handleChangeDescription = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setDescriptionMedical(event.target.value)
+  }
+
+  const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTitleMedical(event.target.value)
+  }
+
+  const handleSubmitDoctorProfile = (
+    values: FormAdminSetDoctorProfileValues
+  ) => {
+    const fetchApiCheckValidDoctorInfor = async () => {
+      ProgressListener.emit('start')
+      const response = await checkValidDoctorInforService(values.email)
+      ProgressListener.emit('stop')
+
+      if (checkResponseFailed(response.status)) {
+        setErrorMessage('Email already exists')
+        setStepFaild(activeStep)
+        return
+      }
+      setDoctorInfor({ ...values, role: 'DOCTOR' })
+      const nextStep = activeStep + 1
+      setActiveStep(nextStep)
+      setStepFaild(undefined)
+    }
+
+    if (!profilePictureDoctor) {
+      setErrorMessage("You must submit doctor's profile picture")
+      setStepFaild(activeStep)
+      return
+    }
+    fetchApiCheckValidDoctorInfor()
+  }
+
+  const handleSubmitMedicalExamination = () => {
+    const { departmentId, confirmPassword, ...doctor } = doctorInfor
+    const dataMedicalExamination = {
+      doctor: {
+        ...doctor,
+        gender: converGenderToBoolen(doctor.gender as string)
+      },
+      medicalExamination: {
+        examinationPrice: 18,
+        title: titleMedical,
+        shortDescription: sortDescriptionMedical,
+        description: desscriptionMedical,
+        departmentId: parseInt(doctorInfor.departmentId as string)
+      }
+    }
+    console.log(dataMedicalExamination)
+
+    const formData = new FormData()
+    formData.append(
+      'data',
+      new Blob([JSON.stringify(dataMedicalExamination)], {
+        type: 'application/json'
+      })
+    )
+    formData.append('file', profilePictureDoctor)
+    const fetchAddAdminSetDoctorProfileApi = async () => {
+      ProgressListener.emit('start')
+      await addAdminSetDoctorProfileService(formData)
+      ProgressListener.emit('stop')
+      setActiveStep(activeStep + 1)
+    }
+
+    fetchAddAdminSetDoctorProfileApi()
+  }
+
   return (
     <div>
       <div className='admin__doctor--header'>
@@ -60,7 +191,7 @@ const AdminAddDoctorPage = () => {
                   if (isStepFailed(index)) {
                     labelProps.optional = (
                       <Typography variant='caption' color='error'>
-                        Alert message
+                        {errorMessage}
                       </Typography>
                     )
                     labelProps.error = true
@@ -88,21 +219,29 @@ const AdminAddDoctorPage = () => {
           <div className='doctor__add--body'>
             {activeStep === 0 ? (
               <div className='doctor__add--basic'>
-                <AdminDoctorSettings />
+                <DataContextAddDoctor.Provider
+                  value={{ profilePictureDoctor, setProfilePictureDoctor }}
+                >
+                  <AdminDoctorSettings
+                    doctorInfor={{}}
+                    department={{}}
+                    onSubmitDoctorProfile={handleSubmitDoctorProfile}
+                  />
+                </DataContextAddDoctor.Provider>
               </div>
             ) : (
               <></>
             )}
             {activeStep === 1 ? (
               <div className='doctor__add--des'>
-                <AdminDoctorOverviewInput />
+                <AdminDoctorOverviewInput onChangeTitle={handleChangeTitle} />
                 <AdminDoctorOverviewTextArea
-                  onChangeTextArea={handleChangeTextArea}
+                  onChangeTextArea={handleChangeSortDescription}
                   rows={4}
                   title='Short Description'
                 />
                 <AdminDoctorOverviewTextArea
-                  onChangeTextArea={handleChangeTextArea}
+                  onChangeTextArea={handleChangeDescription}
                   rows={15}
                   title='Description'
                 />
@@ -110,6 +249,7 @@ const AdminAddDoctorPage = () => {
                   <ButtonCustomize
                     text='Save'
                     className='btn__department--add'
+                    onClickBtn={handleSubmitMedicalExamination}
                   />
                 </div>
               </div>
@@ -125,13 +265,21 @@ const AdminAddDoctorPage = () => {
                   <ButtonCustomize
                     text='Go to the list of doctors'
                     className='btn__department--add'
+                    onClickBtn={() => {
+                      navigate('/admin/doctors/list')
+                    }}
                   />
                 </div>
               </div>
             ) : (
               <></>
             )}
-            <div className='div__group--action'>
+            <div
+              className='div__group--action'
+              style={
+                activeStep === 2 ? { display: 'none' } : { display: 'flex' }
+              }
+            >
               <Button
                 onClick={() => handleBackStep()}
                 variant='contained'

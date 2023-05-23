@@ -1,18 +1,38 @@
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto'
-import React, { ChangeEvent, useRef, useState } from 'react'
+import React, {
+  ChangeEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
+
+import { ProgressListener } from '../../../components/Progress'
+import { DataUserProfilePicture } from '../../../interface/UsersInterface'
+import { useAppDispatch } from '../../../redux/hooks'
+import { updateDoctorProfilePicture } from '../../../redux/thunk/adminThunk/adminDoctorThunk'
+import { DataContextAddDoctor } from '../AdminAddDoctorPage'
 
 type Props = {
   profilePicture?: string
+  idDoctor?: number
 }
 
 const AdminDoctorSettingAvatar = (props: Props) => {
-  const { profilePicture } = props
+  const { profilePicture, idDoctor } = props
+  const { setProfilePictureDoctor } = useContext(DataContextAddDoctor)
+
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const dispatch = useAppDispatch()
 
   const [errorMsg, setErrorMsg] = useState<boolean>(false)
   const [selectedFile, setSelectedFile] = useState<File | string>('')
 
   const [urlProfile, setUrlProfile] = useState(profilePicture)
+
+  useEffect(() => {
+    setUrlProfile(profilePicture)
+  }, [profilePicture])
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const MAX_FILE_SIZE = 10240
@@ -28,14 +48,43 @@ const AdminDoctorSettingAvatar = (props: Props) => {
 
       setErrorMsg(false)
       setSelectedFile(file)
-      const objectUrl = URL.createObjectURL(file)
-      setUrlProfile(objectUrl)
+
+      if (!profilePicture) {
+        const objectUrl = URL.createObjectURL(file)
+        setUrlProfile(objectUrl)
+      }
     }
   }
 
   const handleFileClick = () => {
     fileInputRef.current?.click()
   }
+
+  useEffect(() => {
+    const handleUpdatDoctorProfilePicture = () => {
+      if (selectedFile && profilePicture) {
+        const data: DataUserProfilePicture = {
+          userId: idDoctor,
+          profilePicture: selectedFile
+        }
+        const fetchApiUpdateDoctorProfilePicture = async (
+          data: DataUserProfilePicture
+        ) => {
+          ProgressListener.emit('start')
+          await dispatch(updateDoctorProfilePicture(data))
+          ProgressListener.emit('stop')
+          setSelectedFile('')
+        }
+        fetchApiUpdateDoctorProfilePicture(data)
+      }
+
+      if (selectedFile && !profilePicture) {
+        setProfilePictureDoctor(selectedFile)
+      }
+    }
+
+    handleUpdatDoctorProfilePicture()
+  }, [selectedFile])
 
   return (
     <div className='setting__div--avatar'>

@@ -8,7 +8,7 @@ import {
   TablePagination,
   TableRow
 } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import '../../assets/css/pages/adminPage/admin_department_page.css'
 import ButtonCustomize from '../../components/ButtonCustomize'
@@ -16,13 +16,13 @@ import {
   AdminTableColumn,
   TableDepartment
 } from '../../interface/AdminTableInterface'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import { getAllDepartmentByAdmin } from '../../redux/thunk/adminThunk/adminDoctorThunk'
 import { TableCellProfile } from '../../themes/profileStyle'
 import AdminModelCustomize from '../../utils/models/AdminModelCustomize'
 import ModalAddDepartmentBody from '../../utils/models/ModalAddDepartmentBody'
 import AdminBreadCrumb from './adminBreadcrumb/AdminBreadCrumb'
 import AdminDepartmentTableCell from './adminTable/AdminDepartmentTableCell'
-
-const urology = require('../../assets/img/departments/urology.png')
 
 const columns: AdminTableColumn[] = [
   { id: 'id', label: '#', minWidth: 70 },
@@ -44,19 +44,35 @@ function createDataTableDepartment(
 
 const rowsPerPage = 5
 
-const rowsDepartment = [
-  createDataTableDepartment(1, 'Urology', urology),
-  createDataTableDepartment(2, 'Urology', urology),
-  createDataTableDepartment(3, 'Urology', urology),
-  createDataTableDepartment(4, 'Urology', urology),
-  createDataTableDepartment(5, 'Urology', urology),
-  createDataTableDepartment(6, 'Urology', urology),
-  createDataTableDepartment(7, 'abc', urology)
-]
-
 const AdminDepartmentPage = () => {
   const [page, setPage] = useState(0)
+  const dispatch = useAppDispatch()
+  const { listDepartment } = useAppSelector((state) => state.admin)
+  const { isCheckInitialStatus } = useAppSelector((state) => state.auths)
+  const [rowsDepartment, setRowsDepartment] = useState<TableDepartment[]>([])
 
+  useEffect(() => {
+    if (!isCheckInitialStatus) {
+      const fetchData = async () => {
+        await dispatch(getAllDepartmentByAdmin())
+      }
+      fetchData()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (listDepartment) {
+      const departments = listDepartment.map((department) => {
+        return createDataTableDepartment(
+          department.id,
+          department.name,
+          department.backgroundImage
+        )
+      })
+
+      setRowsDepartment(departments)
+    }
+  }, [listDepartment])
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
   }
@@ -121,7 +137,13 @@ const AdminDepartmentPage = () => {
         title='Add Department'
         open={openAdd}
         handleClose={() => handleCloseAdd()}
-        bodyModal={<ModalAddDepartmentBody inputEdit='' />}
+        bodyModal={
+          <ModalAddDepartmentBody
+            inputEdit=''
+            file=''
+            handleClose={() => handleCloseAdd()}
+          />
+        }
       />
     </div>
   )

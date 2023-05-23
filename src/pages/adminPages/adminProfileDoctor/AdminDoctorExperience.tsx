@@ -1,30 +1,59 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import ButtonCustomize from '../../../components/ButtonCustomize'
-import { IMedicalExamination } from '../../../interface/MedicalExaminationInterfaces'
+import { ProgressListener } from '../../../components/Progress'
+import { AdminMedicalExaminationInterface } from '../../../interface/AdminInformationInterface'
+import { useAppDispatch } from '../../../redux/hooks'
+import { editMedicalExamination } from '../../../redux/thunk/adminThunk/adminDoctorThunk'
 import AdminDoctorOverviewTextArea from './AdminDoctorOverviewTextArea'
 
 type Props = {
-  medical?: IMedicalExamination
+  medicalExamination?: AdminMedicalExaminationInterface
 }
 
 function AdminDoctorExperience(props: Props) {
-  const { medical } = props
+  const { medicalExamination } = props
+  const dispatch = useAppDispatch()
 
+  const [description, setDescription] = useState(
+    medicalExamination?.description
+  )
   const handleChangeTextArea = (
     event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {}
+  ) => {
+    setDescription(event.target.value)
+  }
+
+  const handleBtnSubmit = () => {
+    if (medicalExamination) {
+      const medicalExaminationData = {
+        ...medicalExamination,
+        description: description ? description : medicalExamination.description
+      }
+      const fetchApiEditMedicalExamination = async () => {
+        ProgressListener.emit('start')
+        await dispatch(editMedicalExamination(medicalExaminationData))
+        ProgressListener.emit('stop')
+      }
+
+      fetchApiEditMedicalExamination()
+    }
+  }
 
   return (
     <div className='admin__doctor--experience'>
       <AdminDoctorOverviewTextArea
-        des={medical?.description}
+        des={medicalExamination?.description}
         onChangeTextArea={handleChangeTextArea}
         rows={15}
         title='Description'
       />
       <div className='admim__btn--overview'>
-        <ButtonCustomize text='Save' className='btn__department--add' />
+        <ButtonCustomize
+          text='Save'
+          className='btn__department--add'
+          onClickBtn={handleBtnSubmit}
+        />
       </div>
     </div>
   )
