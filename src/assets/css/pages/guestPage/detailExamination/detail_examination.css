@@ -64,6 +64,11 @@
   margin-right: 5px;
 }
 
+.brief__information .btn_sendMessage {
+  margin-top: 20px;
+  padding: 7px 20px;
+}
+
 .container__schedule {
   background-color: #fff;
   border-radius: 10px;
