@@ -1,6 +1,5 @@
-import { ITimeSlot } from './TimeSlotInterfaces';
-import { UserInformation } from './UsersInterface';
-
+import { ITimeSlot } from './TimeSlotInterfaces'
+import { UserInformation } from './UsersInterface'
 
 export interface AppointmentInforInterface {
   duration: number
@@ -33,4 +32,9 @@ export interface IAppointmentPageable {
   pageIndex: number
   totalPage: number
   listAppointmentResult: IAppointment[]
+}
+
+export interface ICheckAppointment {
+  statusCode: number
+  message: string
 }
