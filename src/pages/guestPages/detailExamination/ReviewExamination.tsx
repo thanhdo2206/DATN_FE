@@ -106,11 +106,13 @@ export default function ReviewExamination(props: Props) {
               onChange={onChangeTextarea}
               value={inputFeedback}
             ></textarea>
-            <ButtonCustomize
-              text='Add comment'
-              className='btn__comment'
-              type='submit'
-            />
+            <div>
+              <ButtonCustomize
+                text='Add comment'
+                className='btn__comment'
+                type='submit'
+              />
+            </div>
           </form>
         </div>
       ) : (
