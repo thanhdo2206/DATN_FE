@@ -1,7 +1,7 @@
 import RemoveIcon from '@mui/icons-material/Remove'
 import { Avatar } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import '../../assets/css/pages/adminPage/admin_doctor_profile.css'
@@ -23,6 +23,7 @@ import {
   getDetailDoctorByAdmin,
   updateDoctorProfile
 } from '../../redux/thunk/adminThunk/adminDoctorThunk'
+import { archiveDoctorByAdminService } from '../../services/adminServices/adminDoctorService'
 import { converGenderToBoolen } from '../../utils/convertGenderToString'
 import AdminModelCustomize from '../../utils/models/AdminModelCustomize'
 import AdminBreadCrumb from './adminBreadcrumb/AdminBreadCrumb'
@@ -70,6 +71,7 @@ const AdminProfileDoctorPage = (props: Props) => {
   const { doctorInfor, medicalExamination, department } = doctorState
   const id = params.id
 
+  const navigate = useNavigate()
   const fetchInformationApi = async () => {
     if (id) {
       ProgressListener.emit('start')
@@ -96,14 +98,25 @@ const AdminProfileDoctorPage = (props: Props) => {
     setNavListActive(navListClone)
   }
 
-  const [openModel, setOpenModel] = useState<boolean>(false)
+  const [openModel, setOpenModel] = useState({
+    isArchive: false,
+    isUnarchvie: false
+  })
 
   const handleCloseModel = () => {
-    setOpenModel(false)
+    setOpenModel({
+      isArchive: false,
+      isUnarchvie: false
+    })
   }
 
   const hadleOpenModel = () => {
-    setOpenModel(true)
+    const statusArchive = doctorDetail.statusArchive
+
+    setOpenModel({
+      isArchive: statusArchive ? false : true,
+      isUnarchvie: statusArchive ? true : false
+    })
   }
 
   const handleUpdateProfilesSubmit = (
@@ -130,16 +143,34 @@ const AdminProfileDoctorPage = (props: Props) => {
     }
   }
 
+  const handleArchiveDoctor = async () => {
+    ProgressListener.emit('start')
+    await archiveDoctorByAdminService(parseInt(id as string))
+    ProgressListener.emit('stop')
+    toast.success('Doctor archived successfully!')
+    navigate('/admin/doctors/archive')
+  }
+
   return (
     <div className='admin__doctor--profile'>
       <div className='admin__table--header'>
         <AdminBreadCrumb breadcrumbTitle='Profile Doctor' />
-        <ButtonCustomize
-          onClickBtn={hadleOpenModel}
-          text='Archive'
-          className='btn__department--add btn__archive'
-          icon={<RemoveIcon />}
-        />
+        {doctorDetail.statusArchive ? (
+          <ButtonCustomize
+            onClickBtn={hadleOpenModel}
+            text='Unarchive'
+            className='btn__department--add btn__archive'
+            icon={<RemoveIcon />}
+          />
+        ) : (
+          <ButtonCustomize
+            onClickBtn={hadleOpenModel}
+            text='Archive'
+            className='
+            btn__department--add btn__archive'
+            icon={<RemoveIcon />}
+          />
+        )}
       </div>
       <div className='admin__table--body'>
         <div className='doctor__profile--container'>
@@ -204,14 +235,30 @@ const AdminProfileDoctorPage = (props: Props) => {
       <AdminModelCustomize
         classNameHeader='danger'
         title='Archive Doctor'
-        open={openModel}
+        open={openModel.isArchive}
         handleClose={handleCloseModel}
-        titleDelete='You are about to delete this doctor'
+        titleDelete='You are about to archive this doctor'
         desDelete='This will archive this doctor. Are you sure?'
         footerModal={
           <FooterModalDelete
-            doctorId={parseInt(id as string)}
             handleClose={() => handleCloseModel()}
+            text={'Archive'}
+            onClickBtn={handleArchiveDoctor}
+          />
+        }
+      />
+      <AdminModelCustomize
+        classNameHeader='danger'
+        title='Unarchive Doctor'
+        open={openModel.isUnarchvie}
+        handleClose={handleCloseModel}
+        titleDelete='You are about to archive this doctor'
+        desDelete='This will unarchive this doctor. Are you sure?'
+        footerModal={
+          <FooterModalDelete
+            handleClose={() => handleCloseModel()}
+            text={'Unarchive'}
+            onClickBtn={handleArchiveDoctor}
           />
         }
       />

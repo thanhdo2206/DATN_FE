@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FormEvent } from 'react'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { ProgressListener } from '../../components/Progress'
 import { useAppDispatch } from '../../redux/hooks'
@@ -25,13 +26,26 @@ const ModalAddDepartmentBody = (props: Props) => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    selectedFile
-      ? !errorMsg && textInput !== inputEdit
-        ? setDisabledBtn(false)
-        : setDisabledBtn(true)
-      : selectedFile && !errorMsg && textInput !== inputEdit
-      ? setDisabledBtn(false)
-      : setDisabledBtn(true)
+    let isTextChange = false
+    let isFileChange = false
+    if (textInput !== inputEdit) {
+      isTextChange = false
+    }
+
+    if (errorMsg && selectedFile !== file) {
+      console.log(errorMsg)
+      isFileChange = true
+    }
+
+    if (selectedFile === file) {
+      isFileChange = true
+    }
+
+    if (isTextChange || isFileChange) {
+      setDisabledBtn(true)
+      return
+    }
+    setDisabledBtn(false)
   }, [textInput, errorMsg, selectedFile])
 
   const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -50,6 +64,7 @@ const ModalAddDepartmentBody = (props: Props) => {
         setErrorMsg(
           'Your image is lager than maximum limit. Please choose a smaller image'
         )
+        setSelectedFile(file)
         return
       }
 
@@ -76,12 +91,14 @@ const ModalAddDepartmentBody = (props: Props) => {
       ProgressListener.emit('start')
       await dispatch(createDepartmentByAdmin(formData))
       ProgressListener.emit('stop')
+      toast.success('Department created successfully!')
       handleClose()
     }
 
     const fetchEditDepartmentApi = async () => {
       ProgressListener.emit('start')
       await dispatch(editDepartmentByAdmin([formData, id as number]))
+      toast.success('Department edited successfully!')
       ProgressListener.emit('stop')
       handleClose()
     }

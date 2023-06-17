@@ -4,7 +4,10 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
 import { Button } from '@mui/material'
 import React, { useState } from 'react'
 
-import { useAppSelector } from '../../../redux/hooks'
+import { ProgressListener } from '../../../components/Progress'
+import { useAppDispatch } from '../../../redux/hooks'
+import { clearMessageDeleteDepartment } from '../../../redux/slices/adminSlice'
+import { deleteDepartmentByAdmin } from '../../../redux/thunk/adminThunk/adminDepartmentThunk'
 import AdminModelCustomize from '../../../utils/models/AdminModelCustomize'
 import ModalAddDepartmentBody from '../../../utils/models/ModalAddDepartmentBody'
 import AdminAppointmentDetail from '../adminAppointment/AdminAppointmentDetail'
@@ -27,7 +30,7 @@ interface openModelDepartment {
 
 const AdminGroupBtnAction = (props: Props) => {
   const { departmentName, apptId, patientId, file, departmentId } = props
-  const { messageDeleteDepartment } = useAppSelector((state) => state.admin)
+  const dispatch = useAppDispatch()
 
   const [open, setOpen] = useState<openModelDepartment>({
     openEdit: false,
@@ -67,7 +70,19 @@ const AdminGroupBtnAction = (props: Props) => {
           ...open,
           openView: false
         })
+    if (status === 'delete') {
+      dispatch(clearMessageDeleteDepartment())
+    }
   }
+
+  const handleDeleteDepartment = async () => {
+    if (departmentId) {
+      ProgressListener.emit('start')
+      await dispatch(deleteDepartmentByAdmin(departmentId as number))
+      ProgressListener.emit('stop')
+    }
+  }
+
   return (
     <>
       <div className='div__group--action'>
@@ -129,14 +144,13 @@ const AdminGroupBtnAction = (props: Props) => {
               handleClose={() => handleClose('delete')}
               titleDelete='You are about to delete this department'
               desDelete={
-                messageDeleteDepartment
-                  ? messageDeleteDepartment
-                  : 'This will delete this department. Are you sure?'
+                'To delete this department, it must not have any doctors in it'
               }
               footerModal={
                 <FooterModalDelete
-                  departmentId={departmentId}
                   handleClose={() => handleClose('delete')}
+                  text={'Delete'}
+                  onClickBtn={handleDeleteDepartment}
                 />
               }
             />

@@ -115,7 +115,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-  width: 400px;
+  width: 465px;
   border-radius: 15px;
 }
 
@@ -197,7 +197,11 @@
 .admin__btn--disable {
   background-color: #7f8f8b;
   box-shadow: none;
-  cursor: not-allowed;
+  cursor: context-menu;
+}
+
+.admin__btn--disable:hover {
+  background-color: #7f8f8b;
 }
 
 .footer__group--delete {

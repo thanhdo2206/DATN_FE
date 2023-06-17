@@ -47,6 +47,7 @@ function FieldInputFormik(props: propsFieldInput) {
     event.preventDefault()
   }
   const { listDepartment } = useAppSelector((state) => state.admin)
+  const { doctorDetail } = useAppSelector((state) => state.admin)
 
   const fieldKey = fieldId as keyof typeof values
   return (
@@ -70,12 +71,14 @@ function FieldInputFormik(props: propsFieldInput) {
               name='gender'
               control={<Radio />}
               label='Female'
+              disabled={Boolean(doctorDetail.statusArchive)}
             />
             <FormControlLabel
               value='male'
               name='gender'
               control={<Radio />}
               label='Male'
+              disabled={Boolean(doctorDetail.statusArchive)}
             />
           </RadioGroup>
         </Grid>
@@ -90,6 +93,7 @@ function FieldInputFormik(props: propsFieldInput) {
             <span>*</span>
           </InputLabel>
           <Select
+            disabled={Boolean(doctorDetail.statusArchive)}
             labelId='demo-select-small-label'
             name={fieldId}
             value={values[fieldKey] ? values[fieldKey] : ''}
@@ -125,6 +129,7 @@ function FieldInputFormik(props: propsFieldInput) {
             <span>*</span>
           </InputLabel>
           <TextField
+            disabled={Boolean(doctorDetail.statusArchive)}
             error={errors[fieldKey] ? true : false}
             fullWidth
             id={fieldId}

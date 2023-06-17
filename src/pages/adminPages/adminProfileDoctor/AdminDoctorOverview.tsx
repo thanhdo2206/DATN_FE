@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import ButtonCustomize from '../../../components/ButtonCustomize'
 import { ProgressListener } from '../../../components/Progress'
 import { AdminMedicalExaminationInterface } from '../../../interface/AdminInformationInterface'
-import { useAppDispatch } from '../../../redux/hooks'
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 import { editMedicalExamination } from '../../../redux/thunk/adminThunk/adminDoctorThunk'
 import AdminDoctorOverviewInput from './AdminDoctorOverviewInput'
 import AdminDoctorOverviewTextArea from './AdminDoctorOverviewTextArea'
@@ -15,6 +15,7 @@ type Props = {
 const AdminDoctorOverview = (props: Props) => {
   const { medicalExamination } = props
   const dispatch = useAppDispatch()
+  const { doctorDetail } = useAppSelector((state) => state.admin)
 
   const [title, setTitle] = useState(medicalExamination?.title)
   const [shortDescription, setSortDescription] = useState(
@@ -32,7 +33,8 @@ const AdminDoctorOverview = (props: Props) => {
   }
 
   const handleBtnSubmit = () => {
-    if (medicalExamination) {
+    const statusArchive = doctorDetail.statusArchive
+    if (medicalExamination && !statusArchive) {
       const medicalExaminationData = {
         ...medicalExamination,
         title: title ? title : medicalExamination.title,
@@ -65,7 +67,9 @@ const AdminDoctorOverview = (props: Props) => {
       <div className='admim__btn--overview'>
         <ButtonCustomize
           text='Save'
-          className='btn__department--add'
+          className={`btn__department--add ${
+            Boolean(doctorDetail.statusArchive) ? 'admin__btn--disable' : ''
+          }`}
           onClickBtn={handleBtnSubmit}
         />
       </div>

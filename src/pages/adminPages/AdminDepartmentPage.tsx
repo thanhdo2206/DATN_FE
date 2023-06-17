@@ -9,6 +9,7 @@ import {
   TableRow
 } from '@mui/material'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import '../../assets/css/pages/adminPage/admin_department_page.css'
 import ButtonCustomize from '../../components/ButtonCustomize'
@@ -17,6 +18,7 @@ import {
   TableDepartment
 } from '../../interface/AdminTableInterface'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import { clearMessageDeleteDepartment } from '../../redux/slices/adminSlice'
 import { getAllDepartmentByAdmin } from '../../redux/thunk/adminThunk/adminDoctorThunk'
 import { TableCellProfile } from '../../themes/profileStyle'
 import AdminModelCustomize from '../../utils/models/AdminModelCustomize'
@@ -50,6 +52,19 @@ const AdminDepartmentPage = () => {
   const { listDepartment } = useAppSelector((state) => state.admin)
   const { isCheckInitialStatus } = useAppSelector((state) => state.auths)
   const [rowsDepartment, setRowsDepartment] = useState<TableDepartment[]>([])
+  const { messageDeleteDepartment } = useAppSelector((state) => state.admin)
+
+  useEffect(() => {
+    if (messageDeleteDepartment === "Can't delete this department") {
+      toast.error(messageDeleteDepartment)
+      dispatch(clearMessageDeleteDepartment())
+    }
+
+    if (messageDeleteDepartment === 'Department deleted successfully!') {
+      toast.success(messageDeleteDepartment)
+      dispatch(clearMessageDeleteDepartment())
+    }
+  }, [messageDeleteDepartment])
 
   useEffect(() => {
     if (!isCheckInitialStatus) {
