@@ -68,7 +68,6 @@ function AdminDoctorPage(props: Props) {
   }, [])
 
   useEffect(() => {
-    console.log(listDoctor.length)
     if (listDoctor.length !== 0) {
       const doctors = listDoctor.map((doctor) => {
         const { doctorInfor, department } = doctor
@@ -126,10 +125,8 @@ function AdminDoctorPage(props: Props) {
                   >
                     <div
                       className='doctor__div--container'
-                      onClick={
-                        isArchive
-                          ? () => {}
-                          : () => navigate(`/admin/doctors/profile/${row.id}`)
+                      onClick={() =>
+                        navigate(`/admin/doctors/profile/${row.id}`)
                       }
                     >
                       <div className='doctor__div--header'>

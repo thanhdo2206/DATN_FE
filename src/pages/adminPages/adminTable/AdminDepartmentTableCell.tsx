@@ -1,14 +1,9 @@
 import { Avatar, TableRow } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
 
-import { ProgressListener } from '../../../components/Progress'
 import {
   AdminTableColumn,
   TableDepartment
 } from '../../../interface/AdminTableInterface'
-import { useAppDispatch } from '../../../redux/hooks'
-import { deleteDepartmentByAdmin } from '../../../redux/thunk/adminThunk/adminDepartmentThunk'
-import { archiveDoctorByAdminService } from '../../../services/adminServices/adminDoctorService'
 import { TableCellProfile } from '../../../themes/profileStyle'
 import AdminGroupBtnAction from './AdminGroupBtnAction'
 
@@ -58,41 +53,20 @@ const AdminDepartmentTableCell = (props: Props) => {
 }
 
 interface FooterModalDeleteInterface {
-  departmentId?: number
   handleClose: () => void
-  doctorId?: number
+  text: string
+  onClickBtn: () => void
 }
 export const FooterModalDelete = (props: FooterModalDeleteInterface) => {
-  const { departmentId, handleClose, doctorId } = props
-
-  const dipatch = useAppDispatch()
-  const navigate = useNavigate()
-
-  const handleDeleteDepartment = async () => {
-    if (departmentId) {
-      ProgressListener.emit('start')
-      await dipatch(deleteDepartmentByAdmin(departmentId as number))
-      ProgressListener.emit('stop')
-    }
-
-    if (doctorId) {
-      ProgressListener.emit('start')
-      await archiveDoctorByAdminService(doctorId as number)
-      ProgressListener.emit('stop')
-      navigate('/admin/doctors/archive')
-    }
-  }
+  const { handleClose, text, onClickBtn } = props
 
   return (
     <div className='footer__group--delete'>
       <button className='admin__btn admin__btn--cancle' onClick={handleClose}>
         Cancle
       </button>
-      <button
-        className='admin__btn admin__btn-delete'
-        onClick={handleDeleteDepartment}
-      >
-        Delete
+      <button className='admin__btn admin__btn-delete' onClick={onClickBtn}>
+        {text}
       </button>
     </div>
   )

@@ -11,6 +11,7 @@ import { Form, Formik } from 'formik'
 import { UserProfileField } from '../../interface/FormikInterface'
 import { LoginInputField } from '../../pages/guestPages/authPage/LoginPage'
 import { RegisterInputField } from '../../pages/guestPages/authPage/RegisterPage'
+import { useAppSelector } from '../../redux/hooks'
 import FieldInputFormik from './FieldInputFormik'
 
 type Props = {
@@ -35,6 +36,8 @@ function FormikCustomize(props: Props) {
     btnText,
     theme
   } = props
+
+  const { doctorDetail } = useAppSelector((state) => state.admin)
 
   return (
     <Formik
@@ -71,6 +74,12 @@ function FormikCustomize(props: Props) {
                 fullWidth
                 variant='contained'
                 sx={{ mt: 3, mb: 2 }}
+                disabled={Boolean(doctorDetail.statusArchive)}
+                className={` ${
+                  Boolean(doctorDetail.statusArchive)
+                    ? 'admin__btn--disable'
+                    : ''
+                }`}
               >
                 {loadingFormik ? (
                   <>

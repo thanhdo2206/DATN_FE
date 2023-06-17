@@ -85,6 +85,17 @@
   margin-bottom: 10px;
 }
 
+.overview__input--disable {
+  opacity: 1;
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.38);
+}
+
+.overview__input--disable:focus {
+  opacity: 1;
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.38);
+  outline: none;
+  cursor: context-menu;
+}
 .overview__textarea {
   width: 99%;
   border-radius: 5px;
@@ -260,8 +271,12 @@
   font-size: 16px;
 }
 
+.admin__doctor--setting .setting__div--formik .admin__btn--disable {
+  background-color: #7f8f8b;
+  color: white;
+}
+
 .admin__doctor--setting {
   display: flex;
   justify-content: space-between;
 }
-

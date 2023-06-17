@@ -33,11 +33,12 @@ export const getDetailDoctorByAdmin = createAsyncThunk(
   'admin/doctor/getDetail',
   async (dotorId: number) => {
     const response = await getDetailDoctorByAdminService(dotorId)
-    const { department } = response.medicalExamination
+    const { department, statusArchive } = response.medicalExamination
     const doctor = {
       doctorInfor: response.doctor,
       medicalExamination: response.medicalExamination,
-      department: department
+      department: department,
+      statusArchive: statusArchive
     }
     return doctor
   }
@@ -47,10 +48,10 @@ export const updateDoctorProfile = createAsyncThunk(
   'admin/doctor/profile/update',
   async (dataUserProfile: DataAdminSetDoctorProfile) => {
     const response = await updateAdminProfileService(dataUserProfile)
-    const {doctor, medicalExamination} = response
-    const {department} = medicalExamination
+    const { doctor, medicalExamination } = response
+    const { department } = medicalExamination
     const dataResponse = {
-      doctorInfor: doctor, 
+      doctorInfor: doctor,
       departmentId: department.id
     }
     console.log(dataResponse)

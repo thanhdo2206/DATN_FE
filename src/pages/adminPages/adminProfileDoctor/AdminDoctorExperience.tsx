@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import ButtonCustomize from '../../../components/ButtonCustomize'
 import { ProgressListener } from '../../../components/Progress'
 import { AdminMedicalExaminationInterface } from '../../../interface/AdminInformationInterface'
-import { useAppDispatch } from '../../../redux/hooks'
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 import { editMedicalExamination } from '../../../redux/thunk/adminThunk/adminDoctorThunk'
 import AdminDoctorOverviewTextArea from './AdminDoctorOverviewTextArea'
 
@@ -14,6 +14,7 @@ type Props = {
 function AdminDoctorExperience(props: Props) {
   const { medicalExamination } = props
   const dispatch = useAppDispatch()
+  const { doctorDetail } = useAppSelector((state) => state.admin)
 
   const [description, setDescription] = useState(
     medicalExamination?.description
@@ -25,7 +26,8 @@ function AdminDoctorExperience(props: Props) {
   }
 
   const handleBtnSubmit = () => {
-    if (medicalExamination) {
+    const statusArchive = doctorDetail.statusArchive
+    if (medicalExamination && !statusArchive) {
       const medicalExaminationData = {
         ...medicalExamination,
         description: description ? description : medicalExamination.description
@@ -51,7 +53,9 @@ function AdminDoctorExperience(props: Props) {
       <div className='admim__btn--overview'>
         <ButtonCustomize
           text='Save'
-          className='btn__department--add'
+          className={`btn__department--add ${
+            Boolean(doctorDetail.statusArchive) ? 'admin__btn--disable' : ''
+          }`}
           onClickBtn={handleBtnSubmit}
         />
       </div>

@@ -19,6 +19,7 @@ import {
   updateDoctorProfilePicture
 } from '../thunk/adminThunk/adminDoctorThunk'
 import { getAllPatientByAdmin } from '../thunk/adminThunk/adminPatientThunk'
+import { logoutUser } from '../thunk/authThunk'
 
 interface UserState {
   listAppointment?: TableAppointment[]
@@ -39,7 +40,11 @@ const initialState: UserState = {
 export const adminSlice = createSlice({
   name: 'admin',
   initialState,
-  reducers: {},
+  reducers: {
+    clearMessageDeleteDepartment: (state) => {
+      state.messageDeleteDepartment = ''
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(getAllPatientByAdmin.fulfilled, (state, action) => {
       state.listPatient = action.payload
@@ -49,6 +54,9 @@ export const adminSlice = createSlice({
     })
     builder.addCase(editMedicalExamination.fulfilled, (state, action: any) => {
       state = { ...state, doctorDetail: action.payload }
+    })
+    builder.addCase(logoutUser.fulfilled, (state) => {
+      state = initialState
     })
     builder.addCase(
       updateDoctorProfilePicture.fulfilled,
@@ -87,12 +95,12 @@ export const adminSlice = createSlice({
       }
     })
     builder.addCase(deleteDepartmentByAdmin.pending, (state) => {
-      state.messageDeleteDepartment = 'Delete Successfully!'
+      state.messageDeleteDepartment = ''
     })
     builder.addCase(deleteDepartmentByAdmin.fulfilled, (state, action: any) => {
       if (state.listDepartment) {
         state.listDepartment = action.payload
-        state.messageDeleteDepartment = 'Delete Successfully!'
+        state.messageDeleteDepartment = 'Department deleted successfully!'
       }
     })
     builder.addCase(deleteDepartmentByAdmin.rejected, (state, action: any) => {
@@ -104,5 +112,6 @@ export const adminSlice = createSlice({
 })
 
 // export const { addProfilePictureDoctor } = adminSlice.actions
+export const { clearMessageDeleteDepartment } = adminSlice.actions
 const adminReducer = adminSlice.reducer
 export default adminReducer

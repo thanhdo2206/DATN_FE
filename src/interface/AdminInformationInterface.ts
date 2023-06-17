@@ -8,6 +8,7 @@ export interface AdminDoctorInterface {
   doctorInfor: AdminUserInterface
   medicalExamination: AdminMedicalExaminationInterface
   department: AdminDepartmentInterface
+  statusArchive: number
 }
 
 export interface AdminMedicalExaminationInterface {
