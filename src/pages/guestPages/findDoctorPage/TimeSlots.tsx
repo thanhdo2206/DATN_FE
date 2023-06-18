@@ -6,6 +6,7 @@ import {
   ITimeSlot,
   ITimeSlotResponse
 } from '../../../interface/TimeSlotInterfaces'
+import { useAppSelector } from '../../../redux/hooks'
 import { convertVND } from '../../../utils/convertMoney'
 import {
   addHoursToDate,
@@ -52,9 +53,14 @@ export default function TimeSlots(props: Props) {
     listDateSort[0]
   )
 
-  const [listTimeSlot, setListTimeSlot] = useState(
-    sortStartTime(listTimeSlotsCurrentDay)
-  )
+  // code fix
+  const [listTimeSlot, setListTimeSlot] = useState<ITimeSlot[]>([])
+
+  useEffect(() => {
+    setListTimeSlot(sortStartTime(listTimeSlotsCurrentDay))
+  }, [timeSlotsResponse])
+
+  // -----------
 
   const getDateSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const dateSelect: string = event.target.value

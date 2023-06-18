@@ -1,5 +1,4 @@
 import Grid from '@mui/material/Grid'
-import React from 'react'
 
 import { IMedicalExaminationTime } from '../../../interface/MedicalExaminationInterfaces'
 import ShortDescriptionDoctor from './ShortDescriptionDoctor'
@@ -12,6 +11,7 @@ type Props = {
 export default function InformationAppointment(props: Props) {
   const { examinationAndTime } = props
   const { medicalExamination, listTimeSlot } = examinationAndTime
+
   return (
     <div className='box__container__information'>
       <Grid container className='container__information-appointment'>
