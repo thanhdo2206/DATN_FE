@@ -1,13 +1,16 @@
 import FmdBadIcon from '@mui/icons-material/FmdBad'
 import Grid from '@mui/material/Grid'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import '../../../assets/css/pages/guestPage/findDoctorPage/find_doctor.css'
 import { IMedicalExaminationTime } from '../../../interface/MedicalExaminationInterfaces'
 import { RootState } from '../../../redux/configStore'
-import { useAppDispatch } from '../../../redux/hooks'
-import { clearListDepartmentId, getAllMedicalExaminationTimeThunk } from '../../../redux/slices/medicalExaminationSlice'
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
+import {
+  clearListDepartmentId,
+  getAllMedicalExaminationTimeThunk
+} from '../../../redux/slices/medicalExaminationSlice'
 import FilterDoctor from './FilterDoctor'
 import InformationAppointment from './InformationAppointment'
 import Search from './Search'
@@ -17,6 +20,7 @@ export default function MainFindDoctor() {
   const { arrMedicalExaminations, arrDeparmentId } = useSelector(
     (state: RootState) => state.medicalExaminationReducer
   )
+
   const getMedicalExaminationTimeApi = async () => {
     await dispatch(getAllMedicalExaminationTimeThunk())
   }
