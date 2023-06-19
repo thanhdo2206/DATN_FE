@@ -15,7 +15,6 @@ export default function NavBar({}: Props) {
         </div>
         <div className='nav__right'>
           <AppointmentNotification />
-          <ChatNotification />
         </div>
       </div>
     </nav>
