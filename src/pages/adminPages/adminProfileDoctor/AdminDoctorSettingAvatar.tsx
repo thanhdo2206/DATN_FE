@@ -9,7 +9,7 @@ import React, {
 
 import { ProgressListener } from '../../../components/Progress'
 import { DataUserProfilePicture } from '../../../interface/UsersInterface'
-import { useAppDispatch } from '../../../redux/hooks'
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 import { updateDoctorProfilePicture } from '../../../redux/thunk/adminThunk/adminDoctorThunk'
 import { DataContextAddDoctor } from '../AdminAddDoctorPage'
 
@@ -85,6 +85,7 @@ const AdminDoctorSettingAvatar = (props: Props) => {
 
     handleUpdatDoctorProfilePicture()
   }, [selectedFile])
+  const { doctorDetail } = useAppSelector((state) => state.admin)
 
   return (
     <div className='setting__div--avatar'>
@@ -98,6 +99,9 @@ const AdminDoctorSettingAvatar = (props: Props) => {
           className='avatar__input'
           ref={fileInputRef}
           onChange={handleFileChange}
+          disabled={
+            Boolean(doctorDetail.statusArchive) && idDoctor ? true : false
+          }
         />
         {urlProfile ? (
           <span className='avatar--active'>

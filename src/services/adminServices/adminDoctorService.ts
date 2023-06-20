@@ -116,6 +116,22 @@ export const getDetailDoctorByAdminService = async (
   }
 }
 
+export const unarchiveDoctorByAdminService = async (
+  doctorId: number
+): Promise<any> => {
+  try {
+    const response = await requestAuthApi({
+      method: 'patch',
+      url: `/medical_examinations/unarchive/${doctorId}`
+    })
+    const { data } = response
+    return data
+  } catch (error: any) {
+    const { data } = error.response
+    return data
+  }
+}
+
 export const updateAdminProfileService = async (
   dataAdminSetDoctorProfile: DataAdminSetDoctorProfile
 ): Promise<any> => {

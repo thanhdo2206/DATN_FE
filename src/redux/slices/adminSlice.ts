@@ -56,7 +56,11 @@ export const adminSlice = createSlice({
       state = { ...state, doctorDetail: action.payload }
     })
     builder.addCase(logoutUser.fulfilled, (state) => {
-      state = initialState
+      state.doctorDetail = {}
+      state.listAppointment = []
+      state.listDepartment = []
+      state.listPatient = []
+      state.messageDeleteDepartment = ''
     })
     builder.addCase(
       updateDoctorProfilePicture.fulfilled,
