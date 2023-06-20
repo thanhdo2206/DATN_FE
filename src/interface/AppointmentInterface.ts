@@ -14,7 +14,6 @@ export interface AppointmentInforInterface {
   appointmentId: number
   patientId: number
   status: number
-  modifiedDate: Date
 }
 
 export interface IAppointment {

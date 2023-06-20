@@ -16,34 +16,54 @@
   align-items: center;
   padding: 14px;
   cursor: pointer;
+  justify-content: space-between;
 }
 
 .appointment_notification-container .notification:hover {
   background-color: var(--background-color);
 }
 
-.appointment_notification-container .notification .avatar_patient {
+.appointment_notification-container .notification .infor_notification {
+  display: flex;
+}
+
+.appointment_notification-container
+  .notification
+  .infor_notification
+  .avatar_patient {
   width: 46px;
   height: 46px;
   margin-right: 10px;
 }
 
-.appointment_notification-container .notification .avatar_patient > img {
+.appointment_notification-container
+  .notification
+  .infor_notification
+  .avatar_patient
+  > img {
   width: 100%;
   height: 100%;
   border-radius: 50%;
 }
-.appointment_notification-container .notification .info_appointment {
+.appointment_notification-container
+  .notification
+  .infor_notification
+  .infor_appointment {
   font-size: 15px;
 }
 
-.appointment_notification-container .notification .info_appointment > p {
+.appointment_notification-container
+  .notification
+  .infor_notification
+  .infor_appointment
+  > p {
   margin-bottom: 8px;
 }
 
 .appointment_notification-container
   .notification
-  .info_appointment
+  .infor_notification
+  .infor_appointment
   .time_appointment
   strong:first-child {
   margin-right: 14px;
@@ -51,7 +71,8 @@
 
 .appointment_notification-container
   .notification
-  .info_appointment
+  .infor_notification
+  .infor_appointment
   .created_date {
   margin-top: 9px;
   color: var(--color-button-hover);

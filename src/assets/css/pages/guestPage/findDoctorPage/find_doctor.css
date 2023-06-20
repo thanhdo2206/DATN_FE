@@ -312,9 +312,9 @@
   align-items: center;
 }
 
-.container__short-description .department .icon__department {
-  margin-right: 12px;
-  color: red;
+.container__short-description .department > img {
+  width: 30px;
+  margin-right: 6px;
 }
 
 .container__infor .text__short {

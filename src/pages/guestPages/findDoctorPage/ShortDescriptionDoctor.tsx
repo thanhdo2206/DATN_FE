@@ -41,7 +41,8 @@ export default function ShortDescriptionDoctor(props: Props) {
           <div className='container__short-description'>
             <p>{medical?.shortDescription.split('\n')[0]}</p>
             <div className='department'>
-              <LocalHospitalIcon className='icon__department'/>
+              {/* <LocalHospitalIcon className='icon__department'/> */}
+              <img src={medical?.department.backgroundImage} alt='' />
               <span>{medical?.department.name}</span>
             </div>
           </div>

@@ -158,19 +158,31 @@
   padding: 12px;
   cursor: pointer;
   font-size: 14px;
+  justify-content: space-between;
 }
 
 .appointment_notification-container .patient_notification:hover {
   background-color: var(--background-color);
 }
 
-.appointment_notification-container .patient_notification .avatar_doctor {
+.appointment_notification-container .patient_notification .infor_notification {
+  display: flex;
+}
+
+.appointment_notification-container
+  .patient_notification
+  .infor_notification
+  .avatar_doctor {
   width: 30px;
   height: 30px;
   margin-right: 20px;
 }
 
-.appointment_notification-container .patient_notification .avatar_doctor > img {
+.appointment_notification-container
+  .patient_notification
+  .infor_notification
+  .avatar_doctor
+  > img {
   width: 100%;
   height: 100%;
   border-radius: 50%;
@@ -179,7 +191,7 @@
 .appointment_notification-container
   .patient_notification
   .info_appointment.isRead {
-  opacity: 0.5;
+  opacity: 0.8;
 }
 
 .appointment_notification-container
@@ -206,12 +218,10 @@
   margin-right: 14px;
 }
 
-
-.appointment_notification-container
-  .patient_notification .dot_read{
-    width: 12px;
-    height: 12px;
-    background-color: var(--primary-color);
-    border-radius: 50%;
-    margin-left: 14px;
-  }
+.appointment_notification-container .patient_notification .dot_read {
+  width: 12px;
+  height: 12px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  margin-left: 14px;
+}

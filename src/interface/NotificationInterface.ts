@@ -1,5 +1,4 @@
-import { AppointmentInforInterface, IAppointment } from './AppointmentInterface';
-
+import { AppointmentInforInterface, IAppointment } from './AppointmentInterface'
 
 export interface INotificationPatientSocket {
   patientId: number
@@ -14,6 +13,7 @@ export interface INotificationPatientSocket {
 }
 
 export interface INotificationPatientApi {
+  createdDate: Date
   isRead: boolean
   inforNotification: AppointmentInforInterface
 }
