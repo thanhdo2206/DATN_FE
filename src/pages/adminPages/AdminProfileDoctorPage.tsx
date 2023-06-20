@@ -23,7 +23,10 @@ import {
   getDetailDoctorByAdmin,
   updateDoctorProfile
 } from '../../redux/thunk/adminThunk/adminDoctorThunk'
-import { archiveDoctorByAdminService } from '../../services/adminServices/adminDoctorService'
+import {
+  archiveDoctorByAdminService,
+  unarchiveDoctorByAdminService
+} from '../../services/adminServices/adminDoctorService'
 import { converGenderToBoolen } from '../../utils/convertGenderToString'
 import AdminModelCustomize from '../../utils/models/AdminModelCustomize'
 import AdminBreadCrumb from './adminBreadcrumb/AdminBreadCrumb'
@@ -45,11 +48,6 @@ const AdminProfileDoctorPage = (props: Props) => {
     {
       name: 'Experience',
       status: 'experience',
-      isActive: false
-    },
-    {
-      name: 'Review',
-      status: 'review',
       isActive: false
     },
     {
@@ -149,6 +147,14 @@ const AdminProfileDoctorPage = (props: Props) => {
     ProgressListener.emit('stop')
     toast.success('Doctor archived successfully!')
     navigate('/admin/doctors/archive')
+  }
+
+  const handleUnarchiveDoctor = async () => {
+    ProgressListener.emit('start')
+    await unarchiveDoctorByAdminService(parseInt(id as string))
+    ProgressListener.emit('stop')
+    toast.success('Doctor unarchived successfully!')
+    navigate('/admin/doctors/list')
   }
 
   return (
@@ -258,7 +264,7 @@ const AdminProfileDoctorPage = (props: Props) => {
           <FooterModalDelete
             handleClose={() => handleCloseModel()}
             text={'Unarchive'}
-            onClickBtn={handleArchiveDoctor}
+            onClickBtn={handleUnarchiveDoctor}
           />
         }
       />
