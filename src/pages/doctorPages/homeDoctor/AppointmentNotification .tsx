@@ -117,28 +117,32 @@ export default function AppointmentNotification({}: Props) {
             }}
             key={index}
           >
-            <div className='avatar_patient'>
-              <img src={notification.avatarPatient} alt='' />
-            </div>
-            <div className='info_appointment'>
-              <p>
-                <strong>{notification.patientName}</strong> has booked an
-                appointment
-              </p>
-              <div className='time_appointment'>
-                <strong>{formatDate(new Date(notification.startTime))}</strong>
-                <strong>
-                  {getTimeZone(notification.startTime)} -
-                  {getTimeZone(
-                    addHoursToDate(
-                      new Date(notification.startTime),
-                      notification.duration
-                    )
-                  )}
-                </strong>
+            <div className='infor_notification'>
+              <div className='avatar_patient'>
+                <img src={notification.avatarPatient} alt='' />
               </div>
-              <div className='created_date'>
-                <Moment fromNow>{notification.createdDate}</Moment>
+              <div className='infor_appointment'>
+                <p>
+                  <strong>{notification.patientName}</strong> has booked an
+                  appointment
+                </p>
+                <div className='time_appointment'>
+                  <strong>
+                    {formatDate(new Date(notification.startTime))}
+                  </strong>
+                  <strong>
+                    {getTimeZone(notification.startTime)} -
+                    {getTimeZone(
+                      addHoursToDate(
+                        new Date(notification.startTime),
+                        notification.duration
+                      )
+                    )}
+                  </strong>
+                </div>
+                <div className='created_date'>
+                  <Moment fromNow>{notification.createdDate}</Moment>
+                </div>
               </div>
             </div>
             <span className='dot_read'></span>

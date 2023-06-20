@@ -63,7 +63,7 @@ export default function NotificationPatient({}: Props) {
     if (notificationsPatientApi.length > 0) {
       const listNotification = notificationsPatientApi.map(
         (item: INotificationPatientApi) => {
-          const { isRead, inforNotification } = item
+          const { isRead, inforNotification, createdDate } = item
           return {
             patientId: inforNotification.patientId,
             avatarDoctor: inforNotification.profilePictureDoctor,
@@ -76,7 +76,7 @@ export default function NotificationPatient({}: Props) {
             status: inforNotification.status,
             appointmentId: inforNotification.appointmentId,
             isRead,
-            modifiedDate: inforNotification.modifiedDate
+            modifiedDate: createdDate
           }
         }
       )
@@ -124,33 +124,35 @@ export default function NotificationPatient({}: Props) {
             readNotification(notification.appointmentId)
           }}
         >
-          <div className='avatar_doctor'>
-            <img src={notification.avatarDoctor} alt='' />
-          </div>
-          <div
-            className={`info_appointment ${
-              notification.isRead ? 'isRead' : ''
-            }`}
-          >
-            <p>
-              <strong>{notification.doctorName}</strong> has{' '}
-              {notification.status === 1 ? 'approved' : 'canceled'} your
-              appointment
-            </p>
-            <div className='time_appointment'>
-              <strong>{formatDate(new Date(notification.startTime))}</strong>
-              <strong>
-                {getTimeZone(notification.startTime)} -
-                {getTimeZone(
-                  addHoursToDate(
-                    new Date(notification.startTime),
-                    notification.duration
-                  )
-                )}
-              </strong>
+          <div className='infor_notification'>
+            <div className='avatar_doctor'>
+              <img src={notification.avatarDoctor} alt='' />
             </div>
-            <div className='modified_date'>
-              <Moment fromNow>{notification.modifiedDate}</Moment>
+            <div
+              className={`info_appointment ${
+                notification.isRead ? 'isRead' : ''
+              }`}
+            >
+              <p>
+                <strong>{notification.doctorName}</strong> has{' '}
+                {notification.status === 1 ? 'approved' : 'canceled'} your
+                appointment
+              </p>
+              <div className='time_appointment'>
+                <strong>{formatDate(new Date(notification.startTime))}</strong>
+                <strong>
+                  {getTimeZone(notification.startTime)} -
+                  {getTimeZone(
+                    addHoursToDate(
+                      new Date(notification.startTime),
+                      notification.duration
+                    )
+                  )}
+                </strong>
+              </div>
+              <div className='modified_date'>
+                <Moment fromNow>{notification.modifiedDate}</Moment>
+              </div>
             </div>
           </div>
           {notification.isRead ? '' : <span className='dot_read'></span>}

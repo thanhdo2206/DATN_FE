@@ -24,7 +24,7 @@ export default function ContextProviderPatient({ children }: Props) {
     let Sock = new SockJS(host)
 
     stompClient.current = over(Sock)
-    // stompClient.current.debug = (str) => {}
+    stompClient.current.debug = (str) => {}
 
     stompClient.current.connect({}, onConnected)
   }

@@ -52,17 +52,6 @@ export default function Contacts(props: Props) {
               )
             })}
           </div>
-
-          {/* <div className='current-user'>
-            <div className='avatar'>
-              <img src={`${currentUser.profilePicture}`} alt='avatar' />
-            </div>
-            <div className='username'>
-              <h2>
-                {currentUser.firstName} {currentUser.lastName}
-              </h2>
-            </div>
-          </div> */}
         </div>
       )}
     </>
